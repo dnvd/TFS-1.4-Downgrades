@@ -1,26 +1,14 @@
 # TFS 1.4 Nekiro's Downgrades
 
-This repository holds two TFS 1.4 (**not released yet**) downgrades.
+This repository holds three TFS 1.4 downgrades.
 
-There are two branches 7.72 and 8.60 respectively holding their name protocols.
+Keep in mind these downgrades are protocol downgrades.
+What it means? It means that it's not fully featured server.
+It's a nice base to start working on in desired protocol version.
 
-## How to compile
-[Wiki](https://github.com/otland/forgottenserver/wiki/Compiling)
-
-## Contributing
-Pull requests are welcome. 
-
-Just make sure you are using issue template and english language.
-
-## Links
-* https://github.com/otland/forgottenserver
+#### **[7.72](https://github.com/nekiro/TFS-1.4-Downgrades/tree/7.72)**
+#### **[8.0](https://github.com/nekiro/TFS-1.4-Downgrades/tree/8.0)**
+#### **[8.60](https://github.com/nekiro/TFS-1.4-Downgrades/tree/8.60)**
 
 ## Donate
-If you like my work and respect my time, you can consider sending me a small tip, very appreciated! Thanks!
-
-[![](https://i2.wp.com/dk-plugins.ru/wp-content/uploads/2017/06/donate-paypal-main.png)](https://www.nekiro.dev/donate)
-![](https://i.imgur.com/R09srNR.png)
-
-BTC: 1P7fUUzpUdKxDGectSZvMVvtAK1Mb3bnaV
-
-ETH: 0x9C2Db127A591Ca04970C132d775735Ab1737092D
+If you like my work and respect my time, you can consider becoming [Github Sponsor](https://github.com/sponsors/nekiro).
