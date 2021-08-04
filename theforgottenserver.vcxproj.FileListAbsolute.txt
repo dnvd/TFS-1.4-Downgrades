@@ -1,0 +1,14 @@
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\theforgottenserver.vcxproj.CopyComplete
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\theforgottenserver-Win32.exe
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\boost_filesystem-vc142-mt-x32-1_76.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\boost_iostreams-vc142-mt-x32-1_76.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\zlib1.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\bz2.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\lzma.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\zstd.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\fmt.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\libmariadb.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\libssl-1_1.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\libcrypto-1_1.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\lua51.dll
+G:\tfs\TFS-1.4-Downgrades-7.72\TFS-1.4-Downgrades-7.72\vc14\Release\pugixml.dll
