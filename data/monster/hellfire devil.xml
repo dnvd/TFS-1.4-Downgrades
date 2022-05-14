@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Hellfire Devil" nameDescription="a hellfire devil" race="fire" experience="7800" speed="360">
+	<health now="7600" max="7600" />
+	<look type="40" corpse="5985"/>
+	<targetchange interval="4000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-520" fire="180" />
+		<attack name="searing fire field" interval="2000" chance="15" />
+		<attack name="fire" interval="2000" chance="20" target="0" length="8" spread="0" min="-692" max="-2500">
+			<attribute key="areaEffect" value="fireattack" />
+		</attack>
+		<attack name="fire" interval="2000" chance="15" range="7" radius="3" target="0" min="-260" max="-730">
+			<attribute key="areaEffect" value="fire" />
+		</attack>
+		<attack name="hellfire devil soulfire" interval="5000" chance="15" />
+	</attacks>
+	<defenses armor="35" defense="35" />
+	<elements>
+		<element energyPercent="30" />
+		<element physicalPercent="10" />
+		<element deathPercent="20" />
+		<element earthPercent="20" />
+		<element holyPercent="-10" />
+		<element icePercent="-20" />
+	</elements>
+	<immunities>
+		<immunity fire="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<loot>
+		<item id="2136" chance="520" /><!-- demonbone amulet -->
+		<item name="platinum coin" countmax="4" chance="100000" />
+		<item name="underworld rod" chance="12450" />
+		<item name="spellbook of mind control" chance="300" />
+		<item name="dragon robe" chance="80" />
+		<item name="fire sword" chance="9140" />
+		<item name="fire axe" chance="1800" />
+		<item name="soul orb" chance="12150" />
+		<item name="demonic essence" chance="14500" />
+		<item name="magma legs" chance="1630" />
+		<item name="magma coat" chance="140" />
+		<item name="magma monocle" chance="1960" />
+		<item name="fiery heart" chance="9570" />
+		<item name="piece of hellfire armor" chance="6060" />
+	</loot>
+</monster>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Bog Champion" nameDescription="a bog champion" race="venom" experience="5000" speed="320">
+	<health now="6200" max="6200" />
+	<look type="299" corpse="8951" />
+	<targetchange interval="4000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag staticattack="90" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-400" poison="180" />
+		<attack name="lifedrain" interval="2000" chance="10" min="-290" max="-390" range="7" target="1">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+		<attack name="earth" interval="2000" chance="15" radius="3" target="0" min="-300" max="-405">
+			<attribute key="areaEffect" value="bubbles" />
+		</attack>
+		<attack name="earth" interval="3000" chance="15" length="8" spread="0" target="0" min="-300" max="-505">
+			<attribute key="areaEffect" value="bubbles" />
+		</attack>
+		<attack name="earth" interval="3000" chance="15" min="-356" max="-510" range="7" target="1">
+			<attribute key="shootEffect" value="smallearth" />
+		</attack>
+		<attack name="speed" interval="2000" chance="15" range="7" target="1" speedchange="-600" duration="15000">
+			<attribute key="areaEffect" value="smallplants" />
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="20">
+		<defense name="healing" interval="2000" chance="10" min="65" max="95">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element energyPercent="-10" />
+		<element earthPercent="30" />
+		<element icePercent="-5" />
+		<element physicalPercent="-5" />
+		<element holyPercent="-5" />
+		<element deathPercent="5" />
+		<element firePercent="85" />
+	</elements>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Tchhh!" />
+		<voice sentence="Slurp!" />
+	</voices>
+	<loot>
+		<item name="gold coin" countmax="100" chance="50750" />
+		<item name="platinum coin" countmax="5" chance="50750" />
+		<item name="boggy dreads" chance="39870" />
+		<item name="great health potion" chance="2030" />
+		<item name="plate legs" chance="2020" />
+		<item name="great spirit potion" chance="10000" />
+		<item name="springsprout rod" chance="2800" />
+		<item name="ultimate health potion" chance="1870" />
+		<item name="belted cape" chance="590" />
+		<item name="paladin armor" chance="1650" />
+		<item name="master archer's armor" chance="50" />
+		<item name="terra mantle" chance="910" />
+		<item name="terra legs" chance="666" />
+		<item name="terra boots" chance="766" />
+		<item name="spellbook of mind control" chance="200" />
+		<item id="8873" chance="8500"/><!-- hibiscus dress -->
+	</loot>
+</monster>

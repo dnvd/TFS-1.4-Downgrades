@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="DPS Dummy" nameDescription="a dps dummy" race="blood" experience="45" speed="0" manacost="320">
+	<health now="3000000" max="3000000"/>
+	<look typeex="5788" corpse="6007"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>		
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="5"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="10" attack="4"/>
+	</attacks>
+
+	<defenses armor="0" defense="0">
+		<defense name="healing" interval="4000" chance="10" min="100000" max="200000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+
+	<loot>
+	</loot>
+</monster>
