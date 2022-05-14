@@ -1,10 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
 
-	<!-- Quests -->
-	<action itemid="1740" script="quests/quests.lua" />
-	<action fromid="1747" toid="1749" script="quests/quests.lua" />
-	<action uniqueid="30015" script="quests/annihilator.lua" />
+	<!-- Quests System (based on map editor) -->
+	<action actionid="2000" script="system.lua"/>
+	<action actionid="2001" script="system2.lua"/>
+
+	<!-- .:: Rookgaard ::. -->
+	<!-- Switchs -->
+	<action actionid="11005" script="tibia/rookgaard/lever_sewers.lua"/>
+	<action actionid="11006" script="tibia/rookgaard/lever_bear_room.lua"/>
+	<action actionid="11007" script="tibia/rookgaard/lever_wall_1.lua"/>
+	<action actionid="11008" script="tibia/rookgaard/lever_wall_2.lua"/>
+	<action actionid="11009" script="tibia/rookgaard/lever_wall_3.lua"/>
+	<action actionid="11010" script="tibia/rookgaard/lever_wall_4.lua"/>
+	<action actionid="11011" script="tibia/rookgaard/lever_wall_5.lua"/>
+	<action actionid="11012" script="tibia/rookgaard/lever_katana.lua"/>
+	<action actionid="11013" script="tibia/rookgaard/door_katana.lua"/>
+
+	<!-- .:: Tibia ::. -->
+	<action actionid="102" script="tibia/teleport_drawwell.lua"/>
+	
+	<!-- Switchs -->
+	<action actionid="25004" script="tibia/lever_alawarsvault.lua"/>
+	<action actionid="25005" script="tibia/lever_orcsedron.lua"/>
+	<action actionid="25006" script="tibia/lever_behemothquest.lua"/>
+	<action actionid="25007" script="tibia/lever_molsentrance.lua"/>
+	<action actionid="25008" script="tibia/lever_molstrap.lua"/>
+	<action actionid="25009" script="tibia/lever_brightswordoven.lua"/>
+	<action actionid="25010" script="tibia/lever_brightswordring.lua"/>
+	<action actionid="25011" script="tibia/lever_brightswordbarrel.lua"/>
+	<action actionid="25014" script="tibia/lever_demonhelmet.lua"/>
+	<action uniqueid="2469" script="tibia/kazz_lever.lua"/>
+	<action uniqueid="33210" script="tibia/banuta.lua"/>
+	<action uniqueid="7000" script="tibia/lever_annihilator.lua"/>	<!-- The Annihilator Quest -->
+	<action uniqueid="8890" script="tibia/lever_desertquest.lua"/>	<!-- The Desert Dungeons Quest -->
+
+	<!-- Draconia Quest -->
+	<action uniqueid="1654" script="tibia/Draconia Quest/parede.lua"/>
+	<action uniqueid="1657" script="tibia/Draconia Quest/pedra.lua"/>
+
+	<!-- Paradox Tower Quest -->
+	<action actionid="50002" script="tibia/Paradox Tower Quest/paradox_lvl2.lua"/>
+	<action actionid="50005" script="tibia/Paradox Tower Quest/paradox_box.lua"/>
+	<action actionid="50007" script="tibia/Paradox Tower Quest/paradox_lvl4.lua"/>
+	<action actionid="50008" script="tibia/Paradox Tower Quest/paradox_lvl5.lua"/>
+
+	<!-- The Postman Missions Quest -->
+	<action actionid="50018" script="tibia/The Postman Missions Quest/crowbar_mail.lua"/>
+	<action itemid="2416" script="tibia/The Postman Missions Quest/crowbar_mail.lua"/>
+
+	<!-- The Queen of the Banshees Quest -->
+	<action actionid="50016" script="tibia/The Queen of the Banshees Quest/magic_wall_1.lua"/>
+	<action actionid="50019" script="tibia/The Queen of the Banshees Quest/entrance_lever.lua"/>
+	<action actionid="2451" script="tibia/The Queen of the Banshees Quest/campfires.lua"/>
+	<action actionid="2452" script="tibia/The Queen of the Banshees Quest/campfires.lua"/>
+	<action actionid="2453" script="tibia/The Queen of the Banshees Quest/campfires.lua"/>
+	<action actionid="2454" script="tibia/The Queen of the Banshees Quest/campfires.lua"/>
+	<action actionid="2455" script="tibia/The Queen of the Banshees Quest/campfires.lua"/>
+	<action actionid="2456" script="tibia/The Queen of the Banshees Quest/campfires.lua"/>
+	<action actionid="2551" script="tibia/The Queen of the Banshees Quest/seal6_levers_effects.lua"/>
+	<action actionid="2552" script="tibia/The Queen of the Banshees Quest/seal6_levers_effects.lua"/>
+	<action actionid="2553" script="tibia/The Queen of the Banshees Quest/seal6_levers_effects.lua"/>
+	<action actionid="2554" script="tibia/The Queen of the Banshees Quest/seal6_levers_effects.lua"/>
+	<action actionid="2555" script="tibia/The Queen of the Banshees Quest/seal6_levers_effects.lua"/>
+
+	<!-- Pits of Inferno -->
+	<action uniqueid="10203" script="tibia/The Pits of Inferno Quest/oil.lua"/>
+	<action uniqueid="10552" script="tibia/The Pits of Inferno Quest/poireward.lua"/>
 
 	<!-- Tools -->
 	<action itemid="2420" script="tools/machete.lua" />

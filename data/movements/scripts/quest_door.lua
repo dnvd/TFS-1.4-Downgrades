@@ -3,7 +3,7 @@ function onStepIn(creature, item, position, fromPosition)
 		return false
 	end
 
-	if creature:getStorageValue(item.actionid) == -1 then
+	if creature:getStorageValue(item.actionid) == -1 and item.actionid ~= 0 then
 		creature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
 		creature:teleportTo(fromPosition, true)
 		return false
