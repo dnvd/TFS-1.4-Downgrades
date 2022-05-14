@@ -84,6 +84,10 @@ bool Creature::canSee(const Position& pos) const
 
 bool Creature::canSeeCreature(const Creature* creature) const
 {
+	if (!canSeeGhostMode(creature) && creature->isInGhostMode()) {
+		return false;
+	}
+
 	if (!canSeeInvisibility() && creature->isInvisible()) {
 		return false;
 	}
@@ -207,11 +211,11 @@ void Creature::onWalk()
 				forceUpdateFollowPath = true;
 			}
 		} else {
+			stopEventWalk();
+
 			if (listWalkDir.empty()) {
 				onWalkComplete();
 			}
-
-			stopEventWalk();
 		}
 	}
 
@@ -377,9 +381,8 @@ int32_t Creature::getWalkCache(const Position& pos) const
 		if (std::abs(dy) <= maxWalkCacheHeight) {
 			if (localMapCache[maxWalkCacheHeight + dy][maxWalkCacheWidth + dx]) {
 				return 1;
-			} else {
-				return 0;
 			}
+			return 0;
 		}
 	}
 

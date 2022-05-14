@@ -19,8 +19,6 @@
 
 #include "otpch.h"
 
-#include <boost/range/adaptor/reversed.hpp>
-
 #include "tile.h"
 
 #include "creature.h"
@@ -232,11 +230,6 @@ Creature* Tile::getTopVisibleCreature(const Creature* creature) const
 {
 	if (const CreatureVector* creatures = getCreatures()) {
 		if (creature) {
-			const Player* player = creature->getPlayer();
-			if (player && player->isAccessPlayer()) {
-				return getTopCreature();
-			}
-
 			for (Creature* tileCreature : *creatures) {
 				if (creature->canSeeCreature(tileCreature)) {
 					return tileCreature;
@@ -260,11 +253,6 @@ const Creature* Tile::getBottomVisibleCreature(const Creature* creature) const
 {
 	if (const CreatureVector* creatures = getCreatures()) {
 		if (creature) {
-			const Player* player = creature->getPlayer();
-			if (player && player->isAccessPlayer()) {
-				return getBottomCreature();
-			}
-
 			for (auto it = creatures->rbegin(), end = creatures->rend(); it != end; ++it) {
 				if (creature->canSeeCreature(*it)) {
 					return *it;
@@ -569,8 +557,8 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 
 			const Tile* playerTile = player->getTile();
 			if (playerTile) {
-				uint32_t height = playerTile->getHeight();
-				if (player->getPosition().z == getPosition().z && height != 3 && height < getHeight() && height + 1 != getHeight()) {
+				int32_t playerTileHeight = playerTile->getHeight();
+				if (player->getPosition().z == getPosition().z && playerTileHeight < 3 && static_cast<int32_t>(getHeight()) - playerTileHeight >= 2) {
 					return RETURNVALUE_NOTPOSSIBLE;
 				}
 			}
@@ -1207,7 +1195,8 @@ int32_t Tile::getClientIndexOfCreature(const Player* player, const Creature* cre
 	}
 
 	if (const CreatureVector* creatures = getCreatures()) {
-		for (const Creature* c : boost::adaptors::reverse(*creatures)) {
+		for (auto it = creatures->rbegin(), end = creatures->rend(); it != end; ++it) {
+			const Creature* c = (*it);
 			if (c == creature) {
 				return n;
 			} else if (player->canSeeCreature(c)) {
@@ -1425,7 +1414,7 @@ void Tile::internalAddThing(uint32_t, Thing* thing)
 		}
 
 		CreatureVector* creatures = makeCreatures();
-		creatures->insert(creatures->begin(), creature);
+		creatures->insert(creatures->end(), creature);
 	} else {
 		Item* item = thing->getItem();
 		if (item == nullptr) {
@@ -1526,7 +1515,7 @@ void Tile::setTileFlags(const Item* item)
 		setFlag(TILESTATE_SUPPORTS_HANGABLE);
 	}
 
-	if (item->hasProperty(CONST_PROP_HASHEIGHT) && height < 3) {
+	if (item->hasProperty(CONST_PROP_HASHEIGHT)) {
 		height++;
 	}
 }

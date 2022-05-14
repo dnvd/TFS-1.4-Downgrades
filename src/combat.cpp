@@ -66,8 +66,10 @@ MatrixArea createArea(const std::vector<uint32_t>& vec, uint32_t rows)
 	return area;
 }
 
-std::vector<Tile*> getList(const MatrixArea& area, const Position& targetPos)
+std::vector<Tile*> getList(const MatrixArea& area, const Position& targetPos, const Direction dir)
 {
+	auto casterPos = getNextPosition(dir, targetPos);
+
 	std::vector<Tile*> vec;
 
 	auto center = area.getCenter();
@@ -76,7 +78,7 @@ std::vector<Tile*> getList(const MatrixArea& area, const Position& targetPos)
 	for (uint32_t row = 0; row < area.getRows(); ++row, ++tmpPos.y) {
 		for (uint32_t col = 0; col < area.getCols(); ++col, ++tmpPos.x) {
 			if (area(row, col)) {
-				if (g_game.isSightClear(targetPos, tmpPos, true)) {
+				if (g_game.isSightClear(casterPos, tmpPos, true)) {
 					Tile* tile = g_game.map.getTile(tmpPos);
 					if (!tile) {
 						tile = new StaticTile(tmpPos.x, tmpPos.y, tmpPos.z);
@@ -98,7 +100,7 @@ std::vector<Tile*> getCombatArea(const Position& centerPos, const Position& targ
 	}
 
 	if (area) {
-		return getList(area->getArea(centerPos, targetPos), targetPos);
+		return getList(area->getArea(centerPos, targetPos), targetPos, getDirectionTo(targetPos, centerPos));
 	}
 
 	Tile* tile = g_game.map.getTile(targetPos);
@@ -235,11 +237,11 @@ ReturnValue Combat::canTargetCreature(Player* attacker, Creature* target)
 	if (!attacker->hasFlag(PlayerFlag_IgnoreProtectionZone)) {
 		//pz-zone
 		if (attacker->getZone() == ZONE_PROTECTION) {
-			return RETURNVALUE_YOUMAYNOTATTACKAPERSONWHILEINPROTECTIONZONE;
+			return RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE;
 		}
 
 		if (target->getZone() == ZONE_PROTECTION) {
-			return RETURNVALUE_YOUMAYNOTATTACKAPERSONINPROTECTIONZONE;
+			return RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE;
 		}
 
 		//nopvp-zone
@@ -257,9 +259,8 @@ ReturnValue Combat::canTargetCreature(Player* attacker, Creature* target)
 	if (attacker->hasFlag(PlayerFlag_CannotUseCombat) || !target->isAttackable()) {
 		if (target->getPlayer()) {
 			return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
-		} else {
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE;
 		}
+		return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE;
 	}
 
 	if (target->getPlayer()) {
@@ -325,7 +326,7 @@ bool Combat::isProtected(const Player* attacker, const Player* target)
 		return true;
 	}
 
-	if (attacker->getVocationId() == VOCATION_NONE || target->getVocationId() == VOCATION_NONE) {
+	if (!attacker->getVocation()->allowsPvp() || !target->getVocation()->allowsPvp()) {
 		return true;
 	}
 
@@ -845,13 +846,13 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 
 	bool success = false;
 	if (damage.primary.type != COMBAT_MANADRAIN) {
-		if (g_game.combatBlockHit(damage, caster, target, params.blockedByShield, params.blockedByArmor, params.itemId != 0)) {
+		if (g_game.combatBlockHit(damage, caster, target, params.blockedByShield, params.blockedByArmor, params.itemId != 0, params.ignoreResistances)) {
 			return;
 		}
 
 		if (casterPlayer) {
 			Player* targetPlayer = target ? target->getPlayer() : nullptr;
-			if (targetPlayer && targetPlayer->getSkull() != SKULL_BLACK && damage.primary.type != COMBAT_HEALING) {
+			if (targetPlayer && casterPlayer != targetPlayer && targetPlayer->getSkull() != SKULL_BLACK && damage.primary.type != COMBAT_HEALING) {
 				damage.primary.value /= 2;
 				damage.secondary.value /= 2;
 			}
@@ -1017,12 +1018,10 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 		bool playerCombatReduced = false;
 		if ((damageCopy.primary.value < 0 || damageCopy.secondary.value < 0) && caster) {
 			Player* targetPlayer = creature->getPlayer();
-			if (casterPlayer) {
-				if (targetPlayer && targetPlayer->getSkull() != SKULL_BLACK) {
-					damageCopy.primary.value /= 2;
-					damageCopy.secondary.value /= 2;
-					playerCombatReduced = true;
-				}
+			if (casterPlayer && targetPlayer && casterPlayer != targetPlayer && targetPlayer->getSkull() != SKULL_BLACK) {
+				damageCopy.primary.value /= 2;
+				damageCopy.secondary.value /= 2;
+				playerCombatReduced = true;
 			}
 		}
 
@@ -1034,7 +1033,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 
 		bool success = false;
 		if (damageCopy.primary.type != COMBAT_MANADRAIN) {
-			if (g_game.combatBlockHit(damageCopy, caster, creature, params.blockedByShield, params.blockedByArmor, params.itemId != 0)) {
+			if (g_game.combatBlockHit(damageCopy, caster, creature, params.blockedByShield, params.blockedByArmor, params.itemId != 0, params.ignoreResistances)) {
 				continue;
 			}
 			success = g_game.combatChangeHealth(caster, creature, damageCopy);
@@ -1414,6 +1413,41 @@ void AreaCombat::setupArea(int32_t radius)
 			if (cell == 1) {
 				vec.push_back(3);
 			} else if (cell > 0 && cell <= radius) {
+				vec.push_back(1);
+			} else {
+				vec.push_back(0);
+			}
+		}
+	}
+
+	setupArea(vec, 13);
+}
+
+void AreaCombat::setupAreaRing(int32_t ring)
+{
+	int32_t area[13][13] = {
+		{0, 0, 0, 0, 0, 7, 7, 7, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 7, 6, 6, 6, 7, 0, 0, 0, 0},
+		{0, 0, 0, 7, 6, 5, 5, 5, 6, 7, 0, 0, 0},
+		{0, 0, 7, 6, 5, 4, 4, 4, 5, 6, 7, 0, 0},
+		{0, 7, 6, 5, 4, 3, 3, 3, 4, 5, 6, 7, 0},
+		{7, 6, 5, 4, 3, 2, 0, 2, 3, 4, 5, 6, 7},
+		{7, 6, 5, 4, 3, 0, 1, 0, 3, 4, 5, 6, 7},
+		{7, 6, 5, 4, 3, 2, 0, 2, 3, 4, 5, 6, 7},
+		{0, 7, 6, 5, 4, 3, 3, 3, 4, 5, 6, 7, 0},
+		{0, 0, 7, 6, 5, 4, 4, 4, 5, 6, 7, 0, 0},
+		{0, 0, 0, 7, 6, 5, 5, 5, 6, 7, 0, 0, 0},
+		{0, 0, 0, 0, 7, 6, 6, 6, 7, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 7, 7, 7, 0, 0, 0, 0, 0}
+	};
+
+	std::vector<uint32_t> vec;
+	vec.reserve(13 * 13);
+	for (auto& row : area) {
+		for (int cell : row) {
+			if (cell == 1) {
+				vec.push_back(3);
+			} else if (cell > 0 && cell == ring) {
 				vec.push_back(1);
 			} else {
 				vec.push_back(0);

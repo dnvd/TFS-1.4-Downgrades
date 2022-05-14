@@ -582,7 +582,8 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList, DBInsert& query_insert, PropWriteStream& propWriteStream)
 {
 	using ContainerBlock = std::pair<Container*, int32_t>;
-	std::list<ContainerBlock> queue;
+	std::vector<ContainerBlock> containers;
+	containers.reserve(32);
 
 	int32_t runningId = 100;
 
@@ -603,22 +604,21 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 		}
 
 		if (Container* container = item->getContainer()) {
-			queue.emplace_back(container, runningId);
+			containers.emplace_back(container, runningId);
 		}
 	}
 
-	while (!queue.empty()) {
-		const ContainerBlock& cb = queue.front();
+	for (size_t i = 0; i < containers.size(); i++) {
+		const ContainerBlock& cb = containers[i];
 		Container* container = cb.first;
 		int32_t parentId = cb.second;
-		queue.pop_front();
 
 		for (Item* item : container->getItemList()) {
 			++runningId;
 
 			Container* subContainer = item->getContainer();
 			if (subContainer) {
-				queue.emplace_back(subContainer, runningId);
+				containers.emplace_back(subContainer, runningId);
 			}
 
 			propWriteStream.clear();
@@ -632,6 +632,7 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 			}
 		}
 	}
+
 	return query_insert.execute();
 }
 
@@ -746,7 +747,7 @@ bool IOLoginData::savePlayer(Player* player)
 	if (!player->isOffline()) {
 		query << "`onlinetime` = `onlinetime` + " << (time(nullptr) - player->lastLoginSaved) << ',';
 	}
-	query << "`blessings` = " << static_cast<uint32_t>(player->blessings);
+	query << "`blessings` = " << player->blessings.to_ulong();
 	query << " WHERE `id` = " << player->getGUID();
 
 	DBTransaction transaction;
@@ -793,8 +794,17 @@ bool IOLoginData::savePlayer(Player* player)
 		return false;
 	}
 
-	if (player->lastDepotId != -1) {
-		//save depot locker items
+	//save depot locker items
+	bool needsSave = false;
+
+	for (const auto& it : player->depotLockerMap) {
+		if (it.second->needsSave()) {
+			needsSave = true;
+			break;
+		}
+	}
+
+	if (needsSave) {
 		if (!db.executeQuery(fmt::format("DELETE FROM `player_depotlockeritems` WHERE `player_id` = {:d}", player->getGUID()))) {
 			return false;
 		}
@@ -804,10 +814,9 @@ bool IOLoginData::savePlayer(Player* player)
 
 		for (const auto& it : player->depotLockerMap) {
 			for (Item* item : it.second->getItemList()) {
-				if (item->getID() == ITEM_DEPOT) {
-					continue;
+				if (item->getID() != ITEM_DEPOT) {
+					itemList.emplace_back(it.first, item);
 				}
-				itemList.emplace_back(it.first, item);
 			}
 		}
 
@@ -816,21 +825,23 @@ bool IOLoginData::savePlayer(Player* player)
 		}
 
 		//save depot items
-		if (!db.executeQuery(fmt::format("DELETE FROM `player_depotitems` WHERE `player_id` = {:d}", player->getGUID()))) {
-			return false;
-		}
-
-		DBInsert depotQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
-		itemList.clear();
-
-		for (const auto& it : player->depotChests) {
-			for (Item* item : it.second->getItemList()) {
-				itemList.emplace_back(it.first, item);
+		if (needsSave) {
+			if (!db.executeQuery(fmt::format("DELETE FROM `player_depotitems` WHERE `player_id` = {:d}", player->getGUID()))) {
+				return false;
 			}
-		}
 
-		if (!saveItems(player, itemList, depotQuery, propWriteStream)) {
-			return false;
+			DBInsert depotQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+			itemList.clear();
+
+			for (const auto& it : player->depotChests) {
+				for (Item* item : it.second->getItemList()) {
+					itemList.emplace_back(it.first, item);
+				}
+			}
+
+			if (!saveItems(player, itemList, depotQuery, propWriteStream)) {
+				return false;
+			}
 		}
 	}
 
