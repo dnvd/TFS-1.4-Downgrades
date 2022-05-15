@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+dofile('data/npc/scripts/lib/greeting.lua')
+
+>>>>>>> 26bbf090 (init)
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
