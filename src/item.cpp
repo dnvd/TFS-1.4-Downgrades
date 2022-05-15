@@ -1431,35 +1431,35 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	}
 
-	if (it.wieldInfo != 0) {
-		s << "\nIt can only be wielded properly by ";
+	// if (it.wieldInfo != 0) {
+	// 	s << "\nIt can only be wielded properly by ";
 
-		if (it.wieldInfo & WIELDINFO_PREMIUM) {
-			s << "premium ";
-		}
+	// 	if (it.wieldInfo & WIELDINFO_PREMIUM) {
+	// 		s << "premium ";
+	// 	}
 
-		if (!it.vocationString.empty()) {
-			s << it.vocationString;
-		} else {
-			s << "players";
-		}
+	// 	if (!it.vocationString.empty()) {
+	// 		s << it.vocationString;
+	// 	} else {
+	// 		s << "players";
+	// 	}
 
-		if (it.wieldInfo & WIELDINFO_LEVEL) {
-			s << " of level " << it.minReqLevel << " or higher";
-		}
+	// 	if (it.wieldInfo & WIELDINFO_LEVEL) {
+	// 		s << " of level " << it.minReqLevel << " or higher";
+	// 	}
 
-		if (it.wieldInfo & WIELDINFO_MAGLV) {
-			if (it.wieldInfo & WIELDINFO_LEVEL) {
-				s << " and";
-			} else {
-				s << " of";
-			}
+	// 	if (it.wieldInfo & WIELDINFO_MAGLV) {
+	// 		if (it.wieldInfo & WIELDINFO_LEVEL) {
+	// 			s << " and";
+	// 		} else {
+	// 			s << " of";
+	// 		}
 
-			s << " magic level " << it.minReqMagicLevel << " or higher";
-		}
+	// 		s << " magic level " << it.minReqMagicLevel << " or higher";
+	// 	}
 
-		s << '.';
-	}
+	// 	s << '.';
+	// }
 
 	if (lookDistance <= 1) {
 		if (item) {
