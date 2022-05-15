@@ -7,8 +7,12 @@ local area = createCombatArea(AREA_CIRCLE2X2)
 combat:setArea(area)
 
 function onGetFormulaValues(player, level, magicLevel)
-	local min = (level / 5) + (magicLevel * 1.8) + 12
-	local max = (level / 5) + (magicLevel * 3) + 17
+	local base = 20
+	local variation = 5
+
+	local min = math.max((base - variation), ((3 * magicLevel + 2 * level) * (base - variation) / 100))
+	local max = math.max((base + variation), ((3 * magicLevel + 2 * level) * (base + variation) / 100))
+
 	return -min, -max
 end
 
