@@ -34,6 +34,8 @@
 	<movevent event="StepIn" fromid="1746" toid="1749" script="walkback.lua" />
 
 	<!-- (Level & quest) doors -->
+	<movevent event="StepOut" itemid="1223" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="1223" script="quest_door.lua" />
 	<movevent event="StepOut" itemid="1224" script="closingdoor.lua" />
 	<movevent event="StepIn" itemid="1224" script="quest_door.lua" />
 	<movevent event="StepOut" itemid="1226" script="closingdoor.lua" />
@@ -1423,4 +1425,97 @@
 	<movevent event="DeEquip" itemid="25411" slot="shield" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="25414" slot="shield" level="200" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="25414" slot="shield" function="onDeEquipItem" />
+
+	<!-- .:: Rookgaard ::. -->
+	<movevent event="StepIn" actionid="11001" script="rookgaard/level_bridge.lua"/>
+	<movevent event="StepIn" actionid="11002" script="rookgaard/premium_bridge.lua"/>
+	<movevent event="StepIn" actionid="11003" script="rookgaard/sword_of_fury.lua"/>
+	<movevent event="StepIn" actionid="11004" script="rookgaard/sword_of_fury.lua"/>
+
+	<!-- .:: Tibia ::. -->
+	<movevent event="RemoveItem" actionid="25012" script="tibia/parchment.lua"/><!-- Parchment Room Quest -->
+	<movevent event="StepIn" actionid="25013" script="tibia/edrondemons_walls.lua" /><!-- Demon Helmet Quest -->
+	<movevent event="StepOut" actionid="25013" script="tibia/edrondemons_walls.lua" /><!-- Demon Helmet Quest -->
+
+	<!-- Draconia Quest by Nottinghster -->
+	<movevent event="StepIn" actionid="988" script="Draconia Quest/4 levers.lua"/>
+	<movevent event="StepIn" uniqueid="5678" script="Draconia Quest/piso_parede1.lua"/>
+	<movevent event="StepOut" uniqueid="5678" script="Draconia Quest/piso_parede1.lua"/>
+	<movevent event="StepIn" uniqueid="5679" script="Draconia Quest/piso_parede2.lua"/>
+	<movevent event="StepOut" uniqueid="5679" script="Draconia Quest/piso_parede2.lua"/>
+	<movevent event="StepIn" actionid="2112" script="Draconia Quest/fetish.lua"/>
+
+	<!-- The Queen of the Banshees Quest by Nottinghster -->
+	<movevent event="StepIn" actionid="888" script="The Queen of the Banshees Quest/banshee_tiles.lua"/>
+	<movevent event="StepIn" actionid="889" script="The Queen of the Banshees Quest/banshee_tiles.lua"/>
+	<movevent event="StepIn" actionid="890" script="The Queen of the Banshees Quest/banshee_tiles.lua"/>
+	<movevent event="StepIn" actionid="1337" script="The Queen of the Banshees Quest/blood_tile.lua"/>
+	<movevent event="StepIn" actionid="1335" script="The Queen of the Banshees Quest/white_black_pearl 1.lua"/>
+	<movevent event="StepIn" actionid="1336" script="The Queen of the Banshees Quest/white_black_pearl 2.lua"/>
+	<movevent event="StepIn" actionid="987" script="The Queen of the Banshees Quest/6 levers.lua"/>
+	<movevent event="StepIn" actionid="689" script="The Queen of the Banshees Quest/first_seal.lua"/>
+	<movevent event="StepIn" actionid="690" script="The Queen of the Banshees Quest/third_seal_summon.lua"/>
+	<movevent event="StepIn" actionid="691" script="The Queen of the Banshees Quest/third_seal_levers.lua"/>
+	<movevent event="StepIn" actionid="692" script="The Queen of the Banshees Quest/white_black_flame.lua"/>
+	<movevent event="AddItem" tileitem="1" actionid="693" script="The Queen of the Banshees Quest/blood_effect.lua"/>
+
+	<!-- Paradox Tower Quest by Nottinghster -->
+	<movevent event="StepIn" actionid="50006" script="Paradox Tower Quest/paradox_deadtree.lua"/>
+	<movevent event="StepIn" actionid="50014" script="Paradox Tower Quest/paradox_entrance.lua"/>
+	<movevent event="StepIn" actionid="50003" script="Paradox Tower Quest/paradox_lvl1.lua"/>
+	<movevent event="AddItem" tileitem="1" actionid="50004" script="Paradox Tower Quest/paradox_lvl3.lua"/>
+	<movevent event="RemoveItem" tileitem="1" actionid="50004" script="Paradox Tower Quest/paradox_lvl3.lua"/>
+	<movevent event="StepIn" actionid="50009" script="Paradox Tower Quest/paradox_questroom.lua"/>
+	<movevent event="StepIn" actionid="50010" script="Paradox Tower Quest/paradox_questroom.lua"/>
+	<movevent event="StepIn" actionid="50011" script="Paradox Tower Quest/paradox_questroom.lua"/>
+	<movevent event="StepIn" actionid="50012" script="Paradox Tower Quest/paradox_questroom.lua"/>
+	<movevent event="StepIn" actionid="50013" script="Paradox Tower Quest/paradox_exit.lua"/>
+
+	<!-- Pits of Inferno -->
+	<movevent event="AddItem" tileitem="1" uniqueid="10200" script="The Pits of Inferno Quest/GraveEntrance.lua"/>
+	<movevent event="StepIn" actionid="50001" script="The Pits of Inferno Quest/MagicWallEntrance.lua"/>
+	<movevent event="StepIn" uniqueid="10202" script="The Pits of Inferno Quest/MagicWallExit.lua"/>
+
+	<!-- The Postman Missions Quest -->
+	<movevent event="AddItem" tileitem="1" actionid="50015" script="The Postman Missions Quest/letter_mail.lua"/>
+
+	<!-- .:: The Ancients Tombs Quest by Nottinghster ::. -->
+	<movevent event="StepIn" tileitem="1" actionid="13002" script="The Ancient Tombs Quest/helmet.lua"/>
+
+	<!-- Omruc -->
+	<movevent event="StepIn" actionid="5999" script="The Ancient Tombs Quest/Omruc/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6000" script="The Ancient Tombs Quest/Omruc/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6001" script="The Ancient Tombs Quest/Omruc/magic_tiles.lua"/>
+
+	<!-- Thalas -->
+	<movevent event="StepIn" actionid="6003" script="The Ancient Tombs Quest/Thalas/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6004" script="The Ancient Tombs Quest/Thalas/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="13000" script="The Ancient Tombs Quest/Thalas/alavancas.lua"/>
+	<movevent event="StepIn" actionid="6015" script="The Ancient Tombs Quest/Thalas/poison.lua"/>
+
+	<!-- Dipthrah -->
+	<movevent event="StepIn" actionid="6005" script="The Ancient Tombs Quest/Dipthrah/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6006" script="The Ancient Tombs Quest/Dipthrah/coalbasin.lua"/>
+
+	<!-- Mahrdis -->
+	<movevent event="StepIn" actionid="6007" script="The Ancient Tombs Quest/Mahrdis/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6008" script="The Ancient Tombs Quest/Mahrdis/coalbasin.lua"/>
+
+	<!-- Ashmunrah-->
+	<movevent event="StepIn" actionid="13001" script="The Ancient Tombs Quest/Ashmunrah/alavancas.lua"/>
+	<movevent event="StepIn" actionid="6009" script="The Ancient Tombs Quest/Ashmunrah/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6018" script="The Ancient Tombs Quest/Ashmunrah/coalbasin.lua"/>
+
+	<!-- Rahemos-->
+	<movevent event="StepIn" actionid="6011" script="The Ancient Tombs Quest/Rahemos/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6012" script="The Ancient Tombs Quest/Rahemos/coalbasin.lua"/>
+
+	<!-- Vashresamun-->
+	<movevent event="StepIn" actionid="6013" script="The Ancient Tombs Quest/Vashresamun/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6014" script="The Ancient Tombs Quest/Vashresamun/coalbasin.lua"/>
+
+	<!-- Morguthis -->
+	<movevent event="StepIn" actionid="6016" script="The Ancient Tombs Quest/Morguthis/coalbasin.lua"/>
+	<movevent event="StepIn" actionid="6017" script="The Ancient Tombs Quest/Morguthis/coalbasin.lua"/>
+
 </movements>
