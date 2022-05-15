@@ -7,6 +7,10 @@
 	<talkaction words="/unban" separator=" " script="unban.lua" />
 	<talkaction words="/up" script="up.lua" />
 	<talkaction words="/down" script="down.lua" />
+	<talkaction words="/left" script="left.lua" />
+	<talkaction words="/right" script="right.lua" />
+	<talkaction words="/forward" script="forward.lua" />
+	<talkaction words="/backward" script="backward.lua" />
 	<talkaction words="/c" separator=" " script="teleport_creature_here.lua" />
 	<talkaction words="/goto" separator=" " script="teleport_to_creature.lua" />
 	<talkaction words="/owner" separator=" " script="owner.lua" />

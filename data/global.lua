@@ -225,3 +225,29 @@ function getPlayerDatabaseInfo(name_or_guid)
 	result.free(query)
 	return info
 end
+
+function doCopyItem(item, attributes)
+	local attributes = attributes or false
+
+	local ret = doCreateItemEx(item.itemid, item.type)
+	if(attributes) then
+		if(item.actionid > 0) then
+			doSetItemActionId(ret, item.actionid)
+		end
+	end
+
+	if item.text then
+		doSetItemText(ret, item.text)
+	end
+
+	if(isContainer(item.uid)) then
+		for i = (getContainerSize(item.uid) - 1), 0, -1 do
+			local tmp = getContainerItem(item.uid, i)
+			if(tmp.itemid > 0) then
+				doAddContainerItemEx(ret, doCopyItem(tmp, true).uid)
+			end
+		end
+	end
+
+	return getThing(ret)
+end
