@@ -599,9 +599,9 @@ bool Spell::playerSpellCheck(Player* player) const
 	if (player->hasCondition(CONDITION_SPELLGROUPCOOLDOWN, group) || player->hasCondition(CONDITION_SPELLCOOLDOWN, spellId) || (secondaryGroup != SPELLGROUP_NONE && player->hasCondition(CONDITION_SPELLGROUPCOOLDOWN, secondaryGroup))) {
 		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 
-		if (isInstant()) {
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-		}
+		// if (isInstant()) {
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		// }
 
 		return false;
 	}

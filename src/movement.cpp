@@ -708,17 +708,17 @@ ReturnValue MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* ite
 {
 	if (!player->hasFlag(PlayerFlag_IgnoreWeaponCheck) && moveEvent->getWieldInfo() != 0) {
 		const VocEquipMap& vocEquipMap = moveEvent->getVocEquipMap();
-		if (!vocEquipMap.empty() && vocEquipMap.find(player->getVocationId()) == vocEquipMap.end()) {
-			return RETURNVALUE_YOUDONTHAVEREQUIREDPROFESSION;
-		}
+		// if (!vocEquipMap.empty() && vocEquipMap.find(player->getVocationId()) == vocEquipMap.end()) {
+		// 	return RETURNVALUE_YOUDONTHAVEREQUIREDPROFESSION;
+		// }
 
-		if (player->getLevel() < moveEvent->getReqLevel()) {
-			return RETURNVALUE_NOTENOUGHLEVEL;
-		}
+		// if (player->getLevel() < moveEvent->getReqLevel()) {
+		// 	return RETURNVALUE_NOTENOUGHLEVEL;
+		// }
 
-		if (player->getMagicLevel() < moveEvent->getReqMagLv()) {
-			return RETURNVALUE_NOTENOUGHMAGICLEVEL;
-		}
+		// if (player->getMagicLevel() < moveEvent->getReqMagLv()) {
+		// 	return RETURNVALUE_NOTENOUGHMAGICLEVEL;
+		// }
 
 		if (moveEvent->isPremium() && !player->isPremium()) {
 			return RETURNVALUE_YOUNEEDPREMIUMACCOUNT;
