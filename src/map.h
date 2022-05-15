@@ -36,7 +36,7 @@ class Game;
 class Tile;
 class Map;
 
-static constexpr int32_t MAP_MAX_LAYERS = 16;
+static constexpr int32_t MAP_MAX_LAYERS = 100;
 
 struct FindPathParams;
 struct AStarNode {
