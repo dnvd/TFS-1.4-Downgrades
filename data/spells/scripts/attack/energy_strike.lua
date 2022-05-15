@@ -1,13 +1,15 @@
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ENERGYHIT)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_TELEPORT)
 
 function onGetFormulaValues(player, level, magicLevel)
 	local base = 45
 	local variation = 10
 
-	local min = math.max((base - variation), ((3 * magicLevel + 2 * level) * (base - variation) / 100))
-	local max = math.max((base + variation), ((3 * magicLevel + 2 * level) * (base + variation) / 100))
+	local formula = 3 * magicLevel + (2 * level)
+
+	local min = (formula * (base - variation)) / 100
+	local max = (formula * (base + variation)) / 100
 
 	return -min, -max
 end
