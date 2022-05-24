@@ -66,3 +66,7 @@ end
 function Game.setStorageValue(key, value)
 	globalStorageTable[key] = value
 end
+
+function titleCase(str)
+	return (str:gsub("^%l", string.upper))
+end

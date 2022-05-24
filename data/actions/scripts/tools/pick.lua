@@ -1,4 +1,5 @@
 local groundIds = {354, 355}
+local MUD_HOLE = 392
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if target.itemid == 11227 then -- shiny stone refining
@@ -27,14 +28,13 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	if (ground.uid > 65535 or ground.actionid == 0) and not table.contains(groundIds, ground.itemid) then
-		return false
+	if (ground.actionid == actionIds.pickHole and table.contains(groundIds, ground.itemid)) then
+		ground:transform(MUD_HOLE)
+		ground:decay()
+
+		toPosition.z = toPosition.z + 1
+		tile:relocateTo(toPosition)
+		return true
 	end
-
-	ground:transform(392)
-	ground:decay()
-
-	toPosition.z = toPosition.z + 1
-	tile:relocateTo(toPosition)
-	return true
+	return false
 end
