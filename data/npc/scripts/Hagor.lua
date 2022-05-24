@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -37,35 +37,35 @@ keywordHandler:addKeyword({'library'}, StdModule.say, {npcHandler = npcHandler, 
 keywordHandler:addKeyword({'roll'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Oh, yes, I love them!"})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'morrin') or msgcontains(msg, 'Morrin') then
-	npcHandler:say("Ah, I remember that man. We made a deal, guess about what.", 1)
+	npcHandler:say("Ah, I remember that man. We made a deal, guess about what.", cid)
 	talk_state = 1
 
 elseif talk_state == 1 and msgcontains(msg, 'key') or talk_state == 1 and  msgcontains(msg, 'Key') then
-	npcHandler:say("Right! We can make the same deal if you give a fresh delicious roll. Do you have any?", 1)
-	talk_state = 2	
+	npcHandler:say("Right! We can make the same deal if you give a fresh delicious roll. Do you have any?", cid)
+	talk_state = 2
 
 elseif talk_state == 2 and msgcontains(msg, 'yes') or talk_state == 1 and  msgcontains(msg, 'Yes') then
 	if doPlayerRemoveItem(cid, 2690, 1) == true then
-	npcHandler:say("Oh, fine! Here you are.", 1)
+	npcHandler:say("Oh, fine! Here you are.", cid)
 	KEY = doPlayerAddItem(cid, 2088, 1)
 	doSetItemActionId(KEY, 2010)
 	doSetItemSpecialDescription(KEY, "(Key: 4022)")
 	else
-	npcHandler:say("Hey, you do not have one!", 1)
+	npcHandler:say("Hey, you do not have one!", cid)
 	end
-	talk_state = 0	
-	
-	
-elseif talk_state == 2 and msgcontains(msg, '') then
-	npcHandler:say("Maybe next time.", 1)
 	talk_state = 0
 
-end		
+
+elseif talk_state == 2 and msgcontains(msg, '') then
+	npcHandler:say("Maybe next time.", cid)
+	talk_state = 0
+
+end
     return true
 end
 

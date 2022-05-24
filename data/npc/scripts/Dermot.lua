@@ -25,56 +25,56 @@ keywordHandler:addKeyword({'dungeon','sewer','monster'}, StdModule.say, {npcHand
 keywordHandler:addKeyword({'entrance'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'The entrance is near here.'})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	-- The Postman Missions Quest
 	if msgcontains(msg, 'present') and getPlayerStorageValue(cid, 231) == 0 then
-	npcHandler:say('I don\'t understand what you are talking about.')
+	npcHandler:say('I don\'t understand what you are talking about.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'present') and getPlayerStorageValue(cid, 231) == 1 then
-	npcHandler:say('You have a present for me?? Really?')
+	npcHandler:say('You have a present for me?? Really?', cid)
 	topic = 2
-	
+
 	elseif msgcontains(msg, 'yes') and getPlayerItemCount(cid, 2331) >= 1 and topic == 2 then
 	doPlayerRemoveItem(cid,2331,1)
 	setPlayerStorageValue(cid,231,2)
-	npcHandler:say('Thank you very much!')
+	npcHandler:say('Thank you very much!', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'yes') and topic == 2 then
-	npcHandler:say('What? There is no present, at least none for me! Stop this foolish jokes!')
+	npcHandler:say('What? There is no present, at least none for me! Stop this foolish jokes!', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, '') and topic == 2 then
-	npcHandler:say('Hmm, maybe next time.')
+	npcHandler:say('Hmm, maybe next time.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'key') then
-	npcHandler:say('Do you want to buy the dungeon key for 2000 gold?')
+	npcHandler:say('Do you want to buy the dungeon key for 2000 gold?', cid)
 	topic = 1
-	
+
 	elseif msgcontains(msg, 'yes') and getPlayerMoney(cid) >= 2000 and topic == 1 then
-	npcHandler:say('Now you own the key to the dungeon.')
+	npcHandler:say('Now you own the key to the dungeon.', cid)
 	doPlayerRemoveMoney(cid, 2000)
 	key = doPlayerAddItem(cid, 2089,1)
 	doSetItemActionId(key,3940)
 	doSetItemSpecialDescription(key, "(Key: 3940)")
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'yes') and getPlayerMoney(cid) < 2000 and topic == 1 then
-	npcHandler:say('You\'ve not enough money to buy the key.')
+	npcHandler:say('You\'ve not enough money to buy the key.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, '') and topic == 2 then
-	npcHandler:say('Hmm, maybe next time.')
+	npcHandler:say('Hmm, maybe next time.', cid)
 	topic = 0
 	end
-	
+
 return true
-end	
+end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

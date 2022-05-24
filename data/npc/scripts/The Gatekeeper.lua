@@ -25,9 +25,9 @@ function oracle(cid, message, keywords, parameters, node)
 	
 	if(destination ~= nil and voc ~= nil and townid ~= nil) then
 		if(getPlayerLevel(cid) < parameters.level) then
-			npcHandler:say('CHILD! COME BACK WHEN YOU HAVE GROWN UP!')
+			npcHandler:say('CHILD! COME BACK WHEN YOU HAVE GROWN UP!', cid)
 		else
-			npcHandler:say('SO BE IT!')
+			npcHandler:say('SO BE IT!', cid)
             doPlayerSetVocation(cid,voc)
 			doPlayerSetTown(cid,townid)
         	doTeleportThing(cid,destination)
@@ -43,7 +43,7 @@ end
 
 function greetCallback(cid)
 	if(getPlayerLevel(cid) < LEVEL) then
-		npcHandler:say('CHILD! COME BACK WHEN YOU HAVE GROWN UP!')
+		npcHandler:say('CHILD! COME BACK WHEN YOU HAVE GROWN UP!', cid)
 		return false
 	else
 		return true

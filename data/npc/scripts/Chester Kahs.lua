@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -73,58 +73,58 @@ keywordHandler:addKeyword({'berfasmur is ferumbras'}, StdModule.say, {npcHandler
 keywordHandler:addKeyword({'berfasmur'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Strange name, isn't it? Play around with the letters and you are in for a surprise."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'gamel rebel') or msgcontains(msg, 'gamel is rebel') or msgcontains(msg, 'gamel is a rebel') then
-	npcHandler:say('Are you saying that Gamel is a member of the rebellion?')
+	npcHandler:say('Are you saying that Gamel is a member of the rebellion?', cid)
 	talk_state = 1
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 1 then
-	npcHandler:say('Do you know what his plans are about?')
+	npcHandler:say('Do you know what his plans are about?', cid)
 	talk_state = 2
 	elseif msgcontains(msg, 'no') and talk_state == 1 then
-	npcHandler:say('Then don\'t bother me with that. I am a busy man.')
+	npcHandler:say('Then don\'t bother me with that. I am a busy man.', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'magic crystal lugri deathcurse') and talk_state == 2 then
-	npcHandler:say('That is terrible! Will you give me the crystal?')
+	npcHandler:say('That is terrible! Will you give me the crystal?', cid)
 	talk_state = 3
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 3 and getPlayerItemCount(cid,2177) >= 1 then
-	npcHandler:say('Thank you! Take this ring. If you ever need a healing, come, bring the scroll, and ask me to \'heal\'.')
+	npcHandler:say('Thank you! Take this ring. If you ever need a healing, come, bring the scroll, and ask me to \'heal\'.', cid)
 	doPlayerRemoveItem(cid,2177,1)
 	doPlayerAddItem(cid,2168,1)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 3 and getPlayerItemCount(cid,2177) == 0 then
-	npcHandler:say('Sorry, you have none.')
-	
+	npcHandler:say('Sorry, you have none.', cid)
+
 	elseif msgcontains(msg, 'no') and talk_state == 3 then
-	npcHandler:say('Traitor!')
+	npcHandler:say('Traitor!', cid)
 	doAddCondition(cid, fire)
 	talk_state = 0
 	end
 
 	if msgcontains(msg, 'heal') then
-	npcHandler:say("Do you need the healing now?", 1)
+	npcHandler:say("Do you need the healing now?", cid)
 	talk_state = 4
-	
+
 	elseif talk_state == 4 and msgcontains(msg, 'yes') then
 	if doPlayerRemoveItem(cid, 2168, 1) == true then
 	doSendMagicEffect(getPlayerPosition(cid), 12)
 	doCreatureAddHealth(cid, -getCreatureHealth(cid)+1000)
-	npcHandler:say("So be healed!", 1)
+	npcHandler:say("So be healed!", cid)
 	else
-	npcHandler:say("Sorry, you are not worthy!", 1)
+	npcHandler:say("Sorry, you are not worthy!", cid)
 	end
-	
+
 	elseif msgcontains(msg, 'lugri') then
-	npcHandler:say("At least you KNOW that you have to expect only evilness from this guy and that's the best one can say about him.", 1)	
-	talk_state = 0	
+	npcHandler:say("At least you KNOW that you have to expect only evilness from this guy and that's the best one can say about him.", cid)
+	talk_state = 0
 	end
-	
+
 	return true
 	end
 

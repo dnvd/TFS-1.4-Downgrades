@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -18,7 +18,7 @@ npcHandler:addModule(shopModule)
 shopModule:addSellableItem({'rat', 'dead rat'}, 2813, 2)
 shopModule:addSellableItem({'rabbit', 'dead rabbit'}, 2992, 2)
 shopModule:addSellableItem({'wolf', 'dead wolf'}, 2826, 5)
- 
+
 keywordHandler:addKeyword({'how are you'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Much to do, these days."})
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I'm the local tanner. I buy fresh animal corpses, tan them, and convert them into fine leather clothes ...","I'm only selling to major customers. But I'm buying fresh corpses of rats, rabbits and wolves from you."})
 keywordHandler:addKeyword({'name'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "My name is Tom the tanner."})
@@ -38,73 +38,73 @@ keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, onl
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'rat') then
-	npcHandler:say("I'll give you 2 gold for per dead rat. Do you accept?", 1)
+	npcHandler:say("I'll give you 2 gold for per dead rat. Do you accept?", cid)
 	talk_state = 2
-	
+
 elseif talk_state == 2 and msgcontains(msg, 'yes') then
 AMOUNTRAT = getPlayerItemCount(cid,2813)
 if AMOUNTRAT >= 1 then
 	if doPlayerRemoveItem(cid, 2813, AMOUNTRAT) == true then
 	doPlayerAddMoney(cid, AMOUNTRAT*2)
-	npcHandler:say("Deal. By the way: If you'd like to hunt something bigger, check the cellar of the stables to the north. Some adventurer used to store his loot under a loose board beneath a barrel. He might have forgotten something when he left the isle.", 1)
+	npcHandler:say("Deal. By the way: If you'd like to hunt something bigger, check the cellar of the stables to the north. Some adventurer used to store his loot under a loose board beneath a barrel. He might have forgotten something when he left the isle.", cid)
 	end
 else
-npcHandler:say("Sorry, you do not have any fresh one.", 1)
+npcHandler:say("Sorry, you do not have any fresh one.", cid)
 end
 talk_state = 0
 
 elseif talk_state == 2 and msgcontains(msg, '') then
-npcHandler:say("Maybe another time.", 1)
+npcHandler:say("Maybe another time.", cid)
 talk_state = 0
 
 
 elseif msgcontains(msg, 'rabbit') then
-	npcHandler:say("I'll give you 2 gold for per dead rabbit. Do you accept?", 1)
+	npcHandler:say("I'll give you 2 gold for per dead rabbit. Do you accept?", cid)
 	talk_state = 3
-	
+
 elseif talk_state == 3 and msgcontains(msg, 'yes') then
 AMOUNTRABBIT = getPlayerItemCount(cid,2992)
 if AMOUNTRABBIT >= 1 then
 	if doPlayerRemoveItem(cid, 2992, AMOUNTRABBIT) == true then
 	doPlayerAddMoney(cid, AMOUNTRABBIT*2)
-	npcHandler:say("Deal. By the way: If you'd like to hunt something bigger, check the cellar of the stables to the north. Some adventurer used to store his loot under a loose board beneath a barrel. He might have forgotten something when he left the isle.", 1)
+	npcHandler:say("Deal. By the way: If you'd like to hunt something bigger, check the cellar of the stables to the north. Some adventurer used to store his loot under a loose board beneath a barrel. He might have forgotten something when he left the isle.", cid)
 	end
 else
-npcHandler:say("Sorry, you do not have any fresh one.", 1)
+npcHandler:say("Sorry, you do not have any fresh one.", cid)
 end
 talk_state = 0
 
 elseif talk_state == 3 and msgcontains(msg, '') then
-npcHandler:say("Maybe another time.", 1)
+npcHandler:say("Maybe another time.", cid)
 talk_state = 0
 
 
 elseif msgcontains(msg, 'wolf') or msgcontains(msg, 'wolves') then
-	npcHandler:say("I'll give you 5 gold for per dead worlf. Do you accept?", 1)
+	npcHandler:say("I'll give you 5 gold for per dead worlf. Do you accept?", cid)
 	talk_state = 4
-	
+
 elseif talk_state == 4 and msgcontains(msg, 'yes') then
 AMOUNTWOLF = getPlayerItemCount(cid,2826)
 if AMOUNTWOLF >= 1 then
 	if doPlayerRemoveItem(cid, 2826, AMOUNTWOLF) == true then
 	doPlayerAddMoney(cid, AMOUNTWOLF*5)
-	npcHandler:say("Deal. By the way: If you'd like to hunt something bigger, check the cellar of the stables to the north. Some adventurer used to store his loot under a loose board beneath a barrel. He might have forgotten something when he left the isle.", 1)
+	npcHandler:say("Deal. By the way: If you'd like to hunt something bigger, check the cellar of the stables to the north. Some adventurer used to store his loot under a loose board beneath a barrel. He might have forgotten something when he left the isle.", cid)
 	end
 else
-npcHandler:say("Sorry, you do not have any fresh one.", 1)
+npcHandler:say("Sorry, you do not have any fresh one.", cid)
 end
 talk_state = 0
 
 elseif talk_state == 4 and msgcontains(msg, '') then
-npcHandler:say("Maybe another time.", 1)
+npcHandler:say("Maybe another time.", cid)
 talk_state = 0
 
-end		
+end
     return true
 end
 

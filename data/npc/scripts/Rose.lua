@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -34,13 +34,13 @@ keywordHandler:addKeyword({'equipment'}, StdModule.say, {npcHandler = npcHandler
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'name') or msgcontains(msg, 'Name') then
-	npcHandler:say("My name is Rose, nice to meet you, ".. getPlayerName(cid) ..".", 1)
+	npcHandler:say("My name is Rose, nice to meet you, ".. getPlayerName(cid) ..".", cid)
 	talk_state = 0
-end		
+end
     return true
 end
 

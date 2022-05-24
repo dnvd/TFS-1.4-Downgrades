@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -52,26 +52,26 @@ keywordHandler:addKeyword({'have'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'food'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Are you looking for food? I have cheese, cherries, pumpkins and melons."})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'lynda') or msgcontains(msg, 'Lynda') then
-	npcHandler:say("She is sooo charming. I can't believe she is not married yet! Have you met her?", 1)
+	npcHandler:say("She is sooo charming. I can't believe she is not married yet! Have you met her?", cid)
 	talk_state = 2
-			
+
 elseif talk_state == 2 and msgcontains(msg, 'yes') or talk_state == 2 and msgcontains(msg, 'Yes') then
 	if getPlayerSex(cid) == 1 then
-	npcHandler:say("She really should find a husband with ease! You should ask her for a date.", 1)
+	npcHandler:say("She really should find a husband with ease! You should ask her for a date.", cid)
 	else
-	npcHandler:say("She really should find a husband with ease! If you know a bachelor, introduce him to her.", 1)
+	npcHandler:say("She really should find a husband with ease! If you know a bachelor, introduce him to her.", cid)
 	end
 	talk_state = 0
 elseif talk_state == 2 and msgcontains(msg, '') then
-	npcHandler:say("Oh, if you say so.", 1)
+	npcHandler:say("Oh, if you say so.", cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'sell') and msgcontains(msg, 'bread') or msgcontains(msg, 'Sell') and msgcontains(msg, 'bread') then
-	npcHandler:say("I will pay 2 gold for every bread, is that ok?", 1)
+	npcHandler:say("I will pay 2 gold for every bread, is that ok?", cid)
 	talk_state = 3
 
 elseif talk_state == 3 and msgcontains(msg, 'yes') then
@@ -79,22 +79,22 @@ AMOUNTBREAD = getPlayerItemCount(cid, 2689)
 if AMOUNTBREAD >= 1 then
 	if doPlayerRemoveItem(cid, 2689, AMOUNTBREAD) == true then
 	doPlayerAddMoney(cid, AMOUNTBREAD*2)
-	npcHandler:say("Here you are ... ".. AMOUNTBREAD*2 .." gold.", 1)
+	npcHandler:say("Here you are ... ".. AMOUNTBREAD*2 .." gold.", cid)
 	end
 else
-npcHandler:say("Sorry, you don't have any bread.", 1)
+npcHandler:say("Sorry, you don't have any bread.", cid)
 end
 talk_state = 0
 
 elseif talk_state == 3 and msgcontains(msg, '') then
-npcHandler:say("Maybe another time.", 1)
+npcHandler:say("Maybe another time.", cid)
 talk_state = 0
 
 elseif msgcontains(msg, 'sell') or msgcontains(msg, 'Sell') then
-npcHandler:say("I can offer you cheese, cherries, and melons.", 1)
+npcHandler:say("I can offer you cheese, cherries, and melons.", cid)
 talk_state = 0
-	
-end		
+
+end
     return true
 end
 

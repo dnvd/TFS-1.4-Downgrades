@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -69,27 +69,29 @@ keywordHandler:addKeyword({'you buy'}, StdModule.say, {npcHandler = npcHandler, 
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It's |TIME| now."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'sam') or msgcontains(msg, 'sen') and getPlayerStorageValue(cid, 289) == 1 then
-	npcHandler:say('Oh, so its you, he wrote me about? Sadly I have no dwarven armor in stock. But I give you the permission to retrive one from the mines.', 1)
-	npcHandler:say('The problem is, some giant spiders made the tunnels where the storage is their new home. Good luck.', 5)
+	npcHandler:say({
+		'Oh, so its you, he wrote me about? Sadly I have no dwarven armor in stock. But I give you the permission to retrive one from the mines.',
+		'The problem is, some giant spiders made the tunnels where the storage is their new home. Good luck.'},
+		cid)
 	setPlayerStorageValue(cid, 290, 1)
-	
+
 	-- The Postman Missions Quest
 	elseif msgcontains(msg, 'measurements') and getPlayerStorageValue(cid,235) > 0 and getPlayerStorageValue(cid,237) < 1 then
-	npcHandler:say('Hm, well I guess its ok to tell you ... <tells you about Lokurs measurements>')
+	npcHandler:say('Hm, well I guess its ok to tell you ... <tells you about Lokurs measurements>', cid)
 	setPlayerStorageValue(cid,237,1)
 	setPlayerStorageValue(cid,234,getPlayerStorageValue(cid,234)+1)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'measurements') then
-	npcHandler:say('UH? No clue what you are talking about, jawoll.')
+	npcHandler:say('UH? No clue what you are talking about, jawoll.', cid)
 	topic = 0
 	end
-	
+
 	return true
 end
 

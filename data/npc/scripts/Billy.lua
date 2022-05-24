@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -23,7 +23,7 @@ shopModule:addBuyableItem({'bread'}, 2689, 3)
 shopModule:addBuyableItem({'cheese'}, 2696, 5)
 shopModule:addBuyableItem({'meat'}, 2666, 5)
 shopModule:addBuyableItem({'ham'}, 2671, 8)
- 
+
 keywordHandler:addKeyword({'how are you'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I think, I'm fine."})
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I am a farmer and a cook."})
 keywordHandler:addKeyword({'cook'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I am the best cook around. You can sell me most types of food."})
@@ -52,28 +52,28 @@ keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I buy food of most kind. Since I am a great cook I need much of it."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'pan') then
-	npcHandler:say('Have you found a pan for me?')
+	npcHandler:say('Have you found a pan for me?', cid)
 	talk_state = 1
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerItemCount(cid, 2563) >= 1 then
-	npcHandler:say('A pan! At last! Take this in case you eat something my cousin has cooked.')
+	npcHandler:say('A pan! At last! Take this in case you eat something my cousin has cooked.', cid)
 	doPlayerRemoveItem(cid, 2563, 1)
 	doPlayerAddItem(cid, 2266, 1)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerItemCount(cid, 2563) == 0 then
-	npcHandler:say('Hey! You don\'t have it!')
+	npcHandler:say('Hey! You don\'t have it!', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'no') and talk_state == 1 then
-	npcHandler:say('$&*@!')
+	npcHandler:say('$&*@!', cid)
 	talk_state = 0
-	
+
 end
 return true
 end

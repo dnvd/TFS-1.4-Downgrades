@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -38,36 +38,36 @@ keywordHandler:addKeyword({'help'}, StdModule.say, {npcHandler = npcHandler, onl
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'rebellion') or msgcontains(msg, 'Rebellion') then
-	npcHandler:say("Uhm... who sent you?", 1)
+	npcHandler:say("Uhm... who sent you?", cid)
 	talk_state = 3
 
 elseif talk_state == 3 and msgcontains(msg, 'berfasmur') or talk_state == 3 and msgcontains(msg, 'Berfasmur') then
-	npcHandler:say("So, you are a new recruit in the ranks of the rebellion! To proof your worthyness, go and get us a magic crystal.", 1)
-	talk_state = 0	
+	npcHandler:say("So, you are a new recruit in the ranks of the rebellion! To proof your worthyness, go and get us a magic crystal.", cid)
+	talk_state = 0
 
 elseif msgcontains(msg, 'magic') and msgcontains(msg, 'crystal') or msgcontains(msg, 'Magic') and msgcontains(msg, 'crystal') then
-	npcHandler:say("Did you bring me a magic crystal?", 1)
+	npcHandler:say("Did you bring me a magic crystal?", cid)
 	talk_state = 4
 
 elseif talk_state == 4 and msgcontains(msg, 'yes') then
 	if getPlayerItemCount(cid, 2177) >= 1 then
-	npcHandler:say("Brilliant! Bring it to the priest Lugri so that he can cast a deathcurse on the king. The password is 'death to noodles'.", 1)
+	npcHandler:say("Brilliant! Bring it to the priest Lugri so that he can cast a deathcurse on the king. The password is 'death to noodles'.", cid)
 	else
-	npcHandler:say("Idiot! You don't have the crystal!", 1)
+	npcHandler:say("Idiot! You don't have the crystal!", cid)
 	doSendMagicEffect(getCreaturePosition(getNpcCid(  )), 13)
 	doSendMagicEffect(getPlayerPosition(cid), 8)
 	doAddCondition(cid, poison)
 	end
-	
+
 
 elseif msgcontains(msg, 'berfasmur') or msgcontains(msg, 'Berfasmur') then
-	npcHandler:say("Never heard that name!", 1)
-	talk_state = 0	
-end		
+	npcHandler:say("Never heard that name!", cid)
+	talk_state = 0
+end
     return true
 end
 

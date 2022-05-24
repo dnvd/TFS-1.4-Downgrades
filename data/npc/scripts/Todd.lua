@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -25,28 +25,28 @@ keywordHandler:addKeyword({'money'}, StdModule.say, {npcHandler = npcHandler, on
 keywordHandler:addKeyword({'todd'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Uh .. I... I met a Todd on the road. He told me he was traveling to Venore, look there for your Todd."})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'karl') or msgcontains(msg, 'Karl') then
-	npcHandler:say("Uhm, never heared about him... and you can't proof otherwise.", 1)
+	npcHandler:say("Uhm, never heared about him... and you can't proof otherwise.", cid)
 	talk_state = 0
 	npcHandler:releaseFocus()
 	npcHandler:resetNpc()
 
 elseif msgcontains(msg, 'smuggler') or msgcontains(msg, 'Smuggler') then
-	npcHandler:say("I am a honest person and don't like to be insulted!", 1)
+	npcHandler:say("I am a honest person and don't like to be insulted!", cid)
 	talk_state = 0
 	npcHandler:releaseFocus()
 	npcHandler:resetNpc()
 
 elseif msgcontains(msg, 'carlin') or msgcontains(msg, 'Carlin') then
-	npcHandler:say("I never was there. Now leave me alone.", 1)
+	npcHandler:say("I never was there. Now leave me alone.", cid)
 	talk_state = 0
 	npcHandler:releaseFocus()
-	npcHandler:resetNpc()	
-	
-end		
+	npcHandler:resetNpc()
+
+end
     return true
 end
 

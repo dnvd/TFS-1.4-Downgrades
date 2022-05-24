@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -47,36 +47,36 @@ keywordHandler:addKeyword({'shoes'}, StdModule.say, {npcHandler = npcHandler, on
 keywordHandler:addKeyword({'trouser'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "We offer leather legs and studded legs."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'soft boots') or msgcontains(msg, 'worn soft boots') or msgcontains(msg, 'soft boot') or msgcontains(msg, 'worn soft boot') then
-npcHandler:say('Do you want to repair your soft boots for 10000 gold coins?')
+npcHandler:say('Do you want to repair your soft boots for 10000 gold coins?', cid)
 talk_state = 1
 
 elseif msgcontains(msg, 'yes') and talk_state == 1 then
 	if getPlayerMoney(cid) >= 10000 then
 		if getPlayerItemCount(cid,2641) >= 1 then
-				doPlayerAddItem(cid,2358,1) 
+				doPlayerAddItem(cid,2358,1)
 				doPlayerRemoveMoney(cid,10000)
 				doPlayerRemoveItem(cid,2641,1)
 				talk_state = 0
-		else	
-			npcHandler:say('You do not have that item.')
+		else
+			npcHandler:say('You do not have that item.', cid)
 			talk_state = 0
 		end
-	else	
-		npcHandler:say('You do not have enough money.')
+	else
+		npcHandler:say('You do not have enough money.', cid)
 		talk_state = 0
-	end	
+	end
 else
-	npcHandler:say('Ok then.')
+	npcHandler:say('Ok then.', cid)
 	talk_state = 0
 end
 
 return true
 end
-	
+
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -66,13 +66,13 @@ keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onl
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 if msgcontains(msg, 'heal') then
 	if getCreatureHealth(cid) <= 39 then
-	npcHandler:say("You are looking really bad. Let me heal your wounds.", 1)
+	npcHandler:say("You are looking really bad. Let me heal your wounds.", cid)
 	doCreatureAddHealth(cid, -getCreatureHealth(cid)+40)
 	doSendMagicEffect(getPlayerPosition(cid), 12)
 	talk_state = 0
 	return true
 	else
-	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", 1)
+	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", cid)
 	return true
 	end
 	talk_state = 0	

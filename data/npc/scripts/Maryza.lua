@@ -1,11 +1,7 @@
-dofile('data/npc/scripts/lib/greeting.lua')
-
-
+dofile('data/npc/lib/greeting.lua')
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
-
-
 
 -- OTServ event handling functions
 function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
@@ -23,14 +19,14 @@ function onThink()				npcHandler:onThink()					end
 			obj.callback = FOCUS_GREETSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
-		
+
 		for i, word in pairs(FOCUS_FAREWELLSWORDS) do
 			local obj = {}
 			table.insert(obj, word)
 			obj.callback = FOCUS_FAREWELLSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
-		
+
 		return true
 	end
 
@@ -70,12 +66,27 @@ keywordHandler:addKeyword({'food'}, StdModule.say, {npcHandler = npcHandler, onl
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-if  msgcontains(msg, 'jimbin') or msgcontains(msg, 'jimbin') then
-
-elseif msgcontains(msg, 'hi') or msgcontains(msg, 'Hi') or msgcontains(msg, 'hello') or msgcontains(msg, 'Hello') or msgcontains(msg, 'Hiho') or msgcontains(msg, 'hiho') then
-	npcHandler:say("Talking to me?", 1)
-	talk_state = 0			
-        end	
+	if not npcHandler:isFocused(cid) then
+		return false
+	end
+	if  talk_state == 0 and msgcontains(msg, 'book') or msgcontains(msg, 'cookbook') then
+		npcHandler:say("The cookbook of the famous dwarfish kitchen. You're lucky. I have a few copies on sale. Do you like one for 150 gold?", cid)
+		talk_state = 1
+	elseif talk_state == 1 and msgcontains(msg, 'yes') and getPlayerMoney(cid) >= 150 then
+		npcHandler:say("Here it is.", cid)
+		doPlayerRemoveMoney(cid, 150)
+		doPlayerAddItem(cid, 2347, 1)
+		talk_state = 0
+	elseif talk_state == 1 and msgcontains(msg, 'yes') and getPlayerMoney(cid) < 150 then
+		npcHandler:say("No gold, no sale, that's it.", cid)
+		talk_state = 0
+	elseif talk_state == 1 and msgcontains(msg, 'no') then
+		npcHandler:say("Then not.", cid)
+		talk_state = 0
+	elseif msgcontains(msg, 'hi') or msgcontains(msg, 'Hi') or msgcontains(msg, 'hello') or msgcontains(msg, 'Hello') or msgcontains(msg, 'Hiho') or msgcontains(msg, 'hiho') then
+		npcHandler:say("Talking to me?", cid)
+		talk_state = 0
+        end
     return true
 end
 

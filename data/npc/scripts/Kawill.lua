@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -23,7 +23,7 @@ if getCreatureHealth(cid) <= 39 then
 	npcHandler:setMessage(MESSAGE_GREET, "Welcome ".. getPlayerName(cid) .."! May earth protect you!")
 	return true
 	end
-end	
+end
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
 
@@ -82,65 +82,65 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 
 if msgcontains(msg, 'heal') then
 if getCreatureHealth(cid) <= 64 then
-	npcHandler:say("You are looking really bad. Let me heal your wounds.", 1)
+	npcHandler:say("You are looking really bad. Let me heal your wounds.", cid)
 	doCreatureAddHealth(cid, -getCreatureHealth(cid)+65)
 	doSendMagicEffect(getPlayerPosition(cid), 12)
 	talk_state = 0
 	return true
 	else
-	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", 1)
+	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", cid)
 	return true
 	end
 	talk_state = 0
-end		
-	if(npcHandler.focus ~= cid) then
+end
+	if not npcHandler:isFocused(cid) then
 		return false
-	end	
-	
+	end
+
 if msgcontains(msg, 'bless') then
-	npcHandler:say("There are five different blessings available in five sacred places. These blessings are: the spiritual shielding, the spark of the phoenix, the embrace of tibia, the fire of the suns and the wisdom of solitude.", 1)
+	npcHandler:say("There are five different blessings available in five sacred places. These blessings are: the spiritual shielding, the spark of the phoenix, the embrace of tibia, the fire of the suns and the wisdom of solitude.", cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'spark') or msgcontains(msg, 'phoenix') then
-	npcHandler:say("The spark of the phoenix is given by me and by the great pyromancer in the nearby firetemple. Do you wish to receive my part of the blessing of the phoenix?", 1)
+	npcHandler:say("The spark of the phoenix is given by me and by the great pyromancer in the nearby firetemple. Do you wish to receive my part of the blessing of the phoenix?", cid)
 	talk_state = 1394
 
 
 elseif talk_state == 1394 and msgcontains(msg, 'yes') then
 	if getPlayerStorageValue(cid, 1339) <= 0 then
 	setPlayerStorageValue(cid, 1339, 1)
-	npcHandler:say("So receive the blessing of the live-giving earth, pilgrim.", 1)
+	npcHandler:say("So receive the blessing of the live-giving earth, pilgrim.", cid)
 	doSendMagicEffect(getPlayerPosition(cid), 13)
-	talk_state = 0		
+	talk_state = 0
 	else
-	npcHandler:say("You already possess my blessing.", 1)
-	talk_state = 0			
+	npcHandler:say("You already possess my blessing.", cid)
+	talk_state = 0
 	end
-	
+
 elseif talk_state == 1394 and msgcontains(msg, '') then
-	npcHandler:say("Ok. If you don't want it ... .", 1)
-	talk_state = 0	
-	
+	npcHandler:say("Ok. If you don't want it ... .", cid)
+	talk_state = 0
+
 elseif msgcontains(msg, 'phoenix') then
-	npcHandler:say("The spark of the phoenix is given by the dwarven priests of earth and fire in Kazordoon.", 1)
+	npcHandler:say("The spark of the phoenix is given by the dwarven priests of earth and fire in Kazordoon.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'embrace') then
-	npcHandler:say("The druids north of Carlin will provide you with the embrace of tibia.", 1)
+	npcHandler:say("The druids north of Carlin will provide you with the embrace of tibia.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'suns') then
-	npcHandler:say("You can ask for the blessing of the two suns in the suntower near Ab'Dendriel.", 1)
+	npcHandler:say("You can ask for the blessing of the two suns in the suntower near Ab'Dendriel.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'wisdom') then
-	npcHandler:say("Talk to the hermit Eremo on the isle of Cormaya about this blessing.", 1)
+	npcHandler:say("Talk to the hermit Eremo on the isle of Cormaya about this blessing.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'spiritual') then
-	npcHandler:say("You can ask for the blessing of spiritual shielding the whiteflower temple south of Thais.", 1)
+	npcHandler:say("You can ask for the blessing of spiritual shielding the whiteflower temple south of Thais.", cid)
 	talk_state = 0
-end	
+end
 end
 
 

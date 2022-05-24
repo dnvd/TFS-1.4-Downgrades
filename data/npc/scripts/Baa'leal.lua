@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -20,14 +20,14 @@ function onThink()				npcHandler:onThink()					end
 			obj.callback = FOCUS_GREETSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
-		
+
 		for i, word in pairs(FOCUS_FAREWELLSWORDS) do
 			local obj = {}
 			table.insert(obj, word)
 			obj.callback = FOCUS_FAREWELLSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
-		
+
 		return true
 	end
 
@@ -36,7 +36,7 @@ keywordHandler:addKeyword({'general'}, StdModule.say, {npcHandler = npcHandler, 
 keywordHandler:addKeyword({"baa'leal" }, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "That is GENERAL Baa'leal for you, human."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
@@ -44,7 +44,7 @@ if msgcontains(msg, 'job') or msgcontains(msg, 'Job') then
 	selfSay("I am commander-in-chief of the armed forces of the UDLA, all branches of service. ...")
 	talk_state = 0
 	addEvent(message11, 5000, pos)
-	
+
 elseif msgcontains(msg, 'udla') or msgcontains(msg, 'Udla') then
 	selfSay("Yes. The United Djinn Liberation Army. ...")
 	talk_state = 0
@@ -57,14 +57,14 @@ elseif msgcontains(msg, 'ubaid') and getPlayerStorageValue(cid,8130) <= 0 or msg
 elseif msgcontains(msg, 'operation') and getPlayerStorageValue(cid,8130) <= 0 then
 	selfSay("Each mission and operation is a crucial step towards our victory! ...")
 	talk_state = 1
-	addEvent(message31, 5000, pos)	
-	
+	addEvent(message31, 5000, pos)
+
 elseif talk_state == 1 and msgcontains(msg, 'yes') then
 	selfSay("Well ... All right. You may only be a human, but you do seem to have the right spirit. ...")
 	talk_state = 0
 	addEvent(message41, 5000, pos)
 	setPlayerStorageValue(cid,8130,1)
-	
+
 elseif msgcontains(msg, 'operation') or msgcontains(msg, 'mission') or msgcontains(msg, 'work') or msgcontains(msg, 'thief') then
 	if getPlayerStorageValue(cid,8130) >= 1 and getPlayerStorageValue(cid,8130) <= 2 then
 	selfSay("Did you find the thief of our supplies?")
@@ -81,53 +81,53 @@ elseif talk_state == 3 and msgcontains(msg, 'partos') and getPlayerStorageValue(
 	talk_state = 0
 	addEvent(message51, 5000, pos)
 
-end		
+end
     return true
 end
 
 function message11(cid, type, msg)
-npcHandler:say("Hence I'm responsible for all operations in the enemy's territory.")
+npcHandler:say("Hence I'm responsible for all operations in the enemy's territory.", cid)
 end
 function message21(cid, type, msg)
-npcHandler:say("The title has been given to our valiant armed forces in order to stress both the revolutionary focus of our agenda and the universalist nature of our political approach. ...")
+npcHandler:say("The title has been given to our valiant armed forces in order to stress both the revolutionary focus of our agenda and the universalist nature of our political approach. ...", cid)
 addEvent(message22, 5000, pos)
 end
 function message22(cid, type, msg)
-npcHandler:say("Don't ask me what that means. Wasn't my idea.")
+npcHandler:say("Don't ask me what that means. Wasn't my idea.", cid)
 end
 function message31(cid, type, msg)
-npcHandler:say("Now that we speak of it ...")
+npcHandler:say("Now that we speak of it ...", cid)
 addEvent(message32, 5000, pos)
 end
 function message32(cid, type, msg)
-npcHandler:say("Since you are no djinn, there is something you could help us with. Are you interested, human?")
+npcHandler:say("Since you are no djinn, there is something you could help us with. Are you interested, human?", cid)
 end
 
 function message41(cid, type, msg)
-npcHandler:say("Listen! Since our base of operations is set in this isolated spot we depend on supplies from outside. These supplies are crucial for us to win the war. ...")
+npcHandler:say("Listen! Since our base of operations is set in this isolated spot we depend on supplies from outside. These supplies are crucial for us to win the war. ...", cid)
 addEvent(message42, 5000, pos)
 end
 function message42(cid, type, msg)
-npcHandler:say("Unfortunately, it has happened that some of our supplies have disappeared on their way to this fortress. At first we thought it was the Marid, but intelligence reports suggest a different explanation. ...")
+npcHandler:say("Unfortunately, it has happened that some of our supplies have disappeared on their way to this fortress. At first we thought it was the Marid, but intelligence reports suggest a different explanation. ...", cid)
 addEvent(message43, 5000, pos)
 end
 function message43(cid, type, msg)
-npcHandler:say("We now believe that a human was behind the theft! ...")
+npcHandler:say("We now believe that a human was behind the theft! ...", cid)
 addEvent(message44, 5000, pos)
 end
 function message44(cid, type, msg)
-npcHandler:say("His identity is still unknown but we have been told that the thief fled to the human settlement called Carlin. I want you to find him and report back to me. Nobody messes with the Efreet and lives to tell the tale! ...")
+npcHandler:say("His identity is still unknown but we have been told that the thief fled to the human settlement called Carlin. I want you to find him and report back to me. Nobody messes with the Efreet and lives to tell the tale! ...", cid)
 addEvent(message45, 5000, pos)
 end
 function message45(cid, type, msg)
-npcHandler:say("Now go! Travel to the northern city Carlin! Keep your eyes open and look around for something that might give you a clue!")
+npcHandler:say("Now go! Travel to the northern city Carlin! Keep your eyes open and look around for something that might give you a clue!", cid)
 end
 function message51(cid, type, msg)
-npcHandler:say("Since you have proven to be a capable soldier, we have another mission for you. ...")
+npcHandler:say("Since you have proven to be a capable soldier, we have another mission for you. ...", cid)
 addEvent(message52, 5000, pos)
 end
 function message52(cid, type, msg)
-npcHandler:say("If you are interested go to Alesar and ask him about it.")
+npcHandler:say("If you are interested go to Alesar and ask him about it.", cid)
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -14,7 +14,7 @@ npcHandler:setMessage(MESSAGE_PLACEDINQUEUE, 'Grrr! Woof!')
 npcHandler:setMessage(MESSAGE_WALKAWAY, 'Woof?? <sniff> <sniff>')
 npcHandler:setMessage(MESSAGE_FAREWELL, 'Woof! <wiggle>')
 
-keywordHandler:addKeyword({'cat','queen','eloise'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'GRRRRRRR! WOOOOOOF! WOOOOOF! WOOOOOF!'})	
+keywordHandler:addKeyword({'cat','queen','eloise'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'GRRRRRRR! WOOOOOOF! WOOOOOF! WOOOOOF!'})
 keywordHandler:addKeyword({'ferumbras'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Meeep! Meeep!'})
 --keywordHandler:addKeyword({'th'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = '<sniff>'})
 keywordHandler:addKeyword({'ar'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Woof!'})
@@ -24,71 +24,71 @@ keywordHandler:addKeyword({'go'}, StdModule.say, {npcHandler = npcHandler, onlyF
 keywordHandler:addKeyword({'how are you','king','tibianus'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Wooooof! <wiggle> <wiggle> <wiggle>'})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	-- The Postman Missions Quest
 	if msgcontains(msg, 'sniff banana') and getPlayerStorageValue(cid,233) == 0 then
-	npcHandler:say('Woof!')
+	npcHandler:say('Woof!', cid)
 	selfGotoIdle()
-	
+
 	elseif msgcontains(msg, 'sniff banana') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 1 and getPlayerItemCount(cid,2219) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 2
-	
+
 	elseif msgcontains(msg, 'sniff fur') and getPlayerStorageValue(cid,233) == 0 then
-	npcHandler:say('Woof!')
+	npcHandler:say('Woof!', cid)
 	selfGotoIdle()
-	
+
 	elseif msgcontains(msg, 'sniff fur') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 1 and getPlayerItemCount(cid,2220) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 2
 
 	elseif msgcontains(msg, 'sniff cheese') and getPlayerStorageValue(cid,233) == 0 then
-	npcHandler:say('Woof!')
+	npcHandler:say('Woof!', cid)
 	selfGotoIdle()
-	
+
 	elseif msgcontains(msg, 'sniff cheese') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 1 and getPlayerItemCount(cid,2235) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 3
-	
+
 	elseif msgcontains(msg, 'sniff banana') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 2 and getPlayerItemCount(cid,2219) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 2
 
 	elseif msgcontains(msg, 'sniff fur') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 2 and getPlayerItemCount(cid,2220) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 3
-	
+
 	elseif msgcontains(msg, 'sniff cheese') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 2 and getPlayerItemCount(cid,2235) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 2
-		
+
 	elseif msgcontains(msg, 'sniff banana') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 3 and getPlayerItemCount(cid,2219) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 3
 
 	elseif msgcontains(msg, 'sniff fur') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 3 and getPlayerItemCount(cid,2220) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 2
-	
+
 	elseif msgcontains(msg, 'sniff cheese') and getPlayerStorageValue(cid,233) == 7 and getPlayerStorageValue(cid,251) == 3 and getPlayerItemCount(cid,2235) >= 1 then
-	npcHandler:say('<sniff> <sniff>')
+	npcHandler:say('<sniff> <sniff>', cid)
 	topic = 2
-	
+
 	elseif topic == 2 and msgcontains(msg, 'like that') then
-	npcHandler:say('Woof!')
+	npcHandler:say('Woof!', cid)
 	topic = 0
-	
+
 	elseif topic == 3 and msgcontains(msg, 'like that') then
-	npcHandler:say('Meeep! Grrrrr! <spits>')
+	npcHandler:say('Meeep! Grrrrr! <spits>', cid)
 	setPlayerStorageValue(cid,233,8)
 	topic = 0
 	end
 
 	return true
-end	
-	
+end
+
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

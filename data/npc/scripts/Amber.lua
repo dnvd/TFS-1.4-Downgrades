@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -14,53 +14,53 @@ local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'book') or msgcontains(msg, 'notebook') then
-	npcHandler:say('Do you bring me my notebook?')
+	npcHandler:say('Do you bring me my notebook?', cid)
 	talk_state = 1
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerItemCount(cid,1955) >= 1 then
-	npcHandler:say('Excellent. Here, take this short sword, that might serve you well.')
+	npcHandler:say('Excellent. Here, take this short sword, that might serve you well.', cid)
 	doPlayerAddItem(cid, 2406)
 	doPlayerRemoveItem(cid,1955, 1)
 	talk_state = 0
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerItemCount(cid,1955) == 0 then
-	npcHandler:say('Hm, you don\'t have it.')
+	npcHandler:say('Hm, you don\'t have it.', cid)
 	talk_state = 0
 	elseif msgcontains(msg, 'no') and talk_state == 1 then
-	npcHandler:say('Too bad.')
+	npcHandler:say('Too bad.', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'orcish') or msgcontains(msg, 'language') or msgcontains(msg, 'prisoner') then
-	npcHandler:say('I speak some orcish words, not much though, just \'yes\' and \'no\' and such basic.')
+	npcHandler:say('I speak some orcish words, not much though, just \'yes\' and \'no\' and such basic.', cid)
 	talk_state = 2
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 2 then
-	npcHandler:say('It\'s \'mok\' in orcish. I help you more about that if you have some food.')
+	npcHandler:say('It\'s \'mok\' in orcish. I help you more about that if you have some food.', cid)
 	elseif msgcontains(msg, 'no') and talk_state == 2 then
-	npcHandler:say('In orcish that\'s \'burp\'. I help you more about that if you have some food.')
-	
+	npcHandler:say('In orcish that\'s \'burp\'. I help you more about that if you have some food.', cid)
+
 	elseif msgcontains(msg, 'food') then
-	npcHandler:say('My favorite dish is salmon. Oh please, bring me some of it.')
-	
+	npcHandler:say('My favorite dish is salmon. Oh please, bring me some of it.', cid)
+
 	elseif msgcontains(msg, 'salmon') then
-	npcHandler:say('Yeah! If you give me some salmon I will tell you more about the orcish language.')
+	npcHandler:say('Yeah! If you give me some salmon I will tell you more about the orcish language.', cid)
 	talk_state = 3
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 3 and getPlayerItemCount(cid,2668) >= 1 then
-	npcHandler:say('Thank you. Orcs call arrows \'pixo\'.')
+	npcHandler:say('Thank you. Orcs call arrows \'pixo\'.', cid)
 	doPlayerRemoveItem(cid,2668,1)
 	elseif msgcontains(msg, 'yes') and talk_state == 3 and getPlayerItemCount(cid,2668) == 0 then
-	npcHandler:say('You don\'t have one!')
+	npcHandler:say('You don\'t have one!', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'bye') and (talk_state >= 1 and talk_state <= 3) then
-	npcHandler:say('See you later.')
+	npcHandler:say('See you later.', cid)
 	talk_state = 0
-	
+
 	end
 
 	return true

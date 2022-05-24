@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -13,7 +13,7 @@ function onThink()				npcHandler:onThink()					end
 
 function greetCallback(cid)
 	if getPlayerStorageValue(cid,10051) == -1 then
-		npcHandler:say('Begone! Hissssss! You bear not the mark of the cobra!')
+		npcHandler:say('Begone! Hissssss! You bear not the mark of the cobra!', cid)
 		return false
 	else
 		doTeleportThing(cid, {x=33397,y=32836,z=14})

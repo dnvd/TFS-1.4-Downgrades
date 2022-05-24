@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -39,51 +39,55 @@ keywordHandler:addKeyword({'waterpipe'}, StdModule.say, {npcHandler = npcHandler
 keywordHandler:addKeyword({'excalibug'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Excalibug? No way that I tell you something about it!"})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'job') or msgcontains(msg, 'Job') then
-	npcHandler:say("Guess it! I give you a hint: I am not in this cell to clean it up! ...", 1)
-	npcHandler:say("I wished, I would have never left Ankrahmun.", 1)
+	npcHandler:say("Guess it! I give you a hint: I am not in this cell to clean it up! ...", cid)
+	npcHandler:say("I wished, I would have never left Ankrahmun.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'ankrahmun') or msgcontains(msg, 'Ankrahmun') then
-	npcHandler:say("Yes, I've lived in Ankrahmun for quite some time. Ahh, good old times! ...", 1)
-	npcHandler:say("Unfortunately I had to relocate. <sigh> ...", 5)
-	npcHandler:say("Business reasons - you know.", 9)
+	npcHandler:say({
+		"Yes, I've lived in Ankrahmun for quite some time. Ahh, good old times! ...",
+		"Unfortunately I had to relocate. <sigh> ...",
+		"Business reasons - you know."},
+		cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'djinn') and getPlayerStorageValue(cid,8130) == 1 or msgcontains(msg, "baa'leal") and getPlayerStorageValue(cid,8130) == 1 or msgcontains(msg, 'supplies') and getPlayerStorageValue(cid,8130) == 1 or msgcontains(msg, "mal'ouquah") and getPlayerStorageValue(cid,8130) == 1 then
-	npcHandler:say("What!? I bet, Baa'leal sent you! ...", 1)
-	npcHandler:say("I won't tell you anything! Shove off!", 5)
+	npcHandler:say({
+		"What!? I bet, Baa'leal sent you! ...",
+		"I won't tell you anything! Shove off!"},
+		cid)
 	talk_state = 0
 	setPlayerStorageValue(cid,8130,2)
-	addEvent(message31, 5000, pos)	
+	addEvent(message31, 5000, pos)
 
 elseif msgcontains(msg, 'djinn') or msgcontains(msg, "baa'leal") or msgcontains(msg, 'supplies') or msgcontains(msg, "mal'ouquah") then
-	npcHandler:say("I won't talk about that.", 1)
+	npcHandler:say("I won't talk about that.", cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'grape') then
-	npcHandler:say("Do you have any grapes with you?", 1)
-	talk_state = 1	
+	npcHandler:say("Do you have any grapes with you?", cid)
+	talk_state = 1
 elseif talk_state == 1 and msgcontains(msg, 'yes') then
 	if doPlayerRemoveItem(cid, 2681, 1) == true then
-	npcHandler:say("What do you want for that ...ohhh... tasty ...uhm... sweet ...drool... delicous ...hmm... grapes?", 1)
+	npcHandler:say("What do you want for that ...ohhh... tasty ...uhm... sweet ...drool... delicous ...hmm... grapes?", cid)
 	talk_state = 2
 	else
-	npcHandler:say("Go away, if you don't have any grapes.", 1)
+	npcHandler:say("Go away, if you don't have any grapes.", cid)
 	talk_state = 0
 	end
-	
+
 elseif talk_state == 2 and msgcontains(msg, 'excalibug') then
-	npcHandler:say("My late mentor once told me he found a wallcarving about this sword in a cave beneath the castle.", 1)
-	talk_state = 2	
+	npcHandler:say("My late mentor once told me he found a wallcarving about this sword in a cave beneath the castle.", cid)
+	talk_state = 2
 elseif talk_state == 2 and msgcontains(msg, 'wallcarving') then
-	npcHandler:say("That part of the dungeon was recently blocked by a cave-in. It was unsecure before, and only a fool would have entered there. I stayed out and alive.", 1)
-	talk_state = 0	
-	
-end		
+	npcHandler:say("That part of the dungeon was recently blocked by a cave-in. It was unsecure before, and only a fool would have entered there. I stayed out and alive.", cid)
+	talk_state = 0
+
+end
     return true
 end
 

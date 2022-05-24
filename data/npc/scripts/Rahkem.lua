@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -19,8 +19,8 @@ function greetCallback(cid)
 	else
 	npcHandler:setMessage(MESSAGE_GREET, "Welcome to our humble guild, wanderer. May I be of any assistance to you?")
 	return true
-	end	
-end	
+	end
+end
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
 
@@ -81,13 +81,13 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		NPCSay("You aren't looking really bad. Sorry, I can't help you.", 1)
 		return true
 		end
-		talk_state = 0	
+		talk_state = 0
 		return true
 	end
 
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
-	end	
+	end
 
 	--name the spell--
 	if msgcontains(msg, 'find person') or msgcontains(msg, 'Find person') then
@@ -114,8 +114,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'energy wave') or msgcontains(msg, 'Energy wave') then
 		spellprice = 2500
 		spellvoc = {1, 5}
@@ -127,8 +127,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'great energy beam') or msgcontains(msg, 'Great energy beam') then
 		spellprice = 1800
 		spellvoc = {1, 5}
@@ -140,8 +140,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'energy beam') or msgcontains(msg, 'Energy beam') then
 		spellprice = 1000
 		spellvoc = {1, 5}
@@ -153,8 +153,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'fire wave') or msgcontains(msg, 'Fire wave') then
 		spellprice = 850
 		spellvoc = {1, 5}
@@ -166,8 +166,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'energy wall') or msgcontains(msg, 'Energy wall') then
 		spellprice = 2500
 		spellvoc = {1, 2, 5, 6}
@@ -179,8 +179,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'summon creature') or msgcontains(msg, 'Summon creature') then
 		spellprice = 2000
 		spellvoc = {1, 2, 5, 6}
@@ -192,8 +192,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'invisible') or msgcontains(msg, 'Invisible') then
 		spellprice = 1000
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -205,8 +205,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'fire wall') or msgcontains(msg, 'fire wall') then
 		spellprice = 2000
 		spellvoc = {1, 2, 5, 6}
@@ -218,8 +218,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'explosion') or msgcontains(msg, 'Explosion') then
 		spellprice = 1800
 		spellvoc = {1, 2, 5, 6}
@@ -231,8 +231,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'poison wall') or msgcontains(msg, 'poison wall') then
 		spellprice = 1600
 		spellvoc = {1, 2, 5, 6}
@@ -244,8 +244,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end	
-			
+		end
+
 	elseif msgcontains(msg, 'chameleon') or msgcontains(msg, 'Chameleon') then
 		spellprice = 1300
 		spellvoc = {2, 6}
@@ -257,8 +257,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'ultimate healing rune') or msgcontains(msg, 'Ultimate healing rune') then
 		spellprice = 1500
 		spellvoc = {2, 6}
@@ -270,8 +270,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'convince creature') or msgcontains(msg, 'convince creature') then
 		spellprice = 1500
 		spellvoc = {2, 6}
@@ -283,8 +283,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'creature illusion') or msgcontains(msg, 'Creature illusion') then
 		spellprice = 1000
 		spellvoc = {1, 2, 5, 6}
@@ -296,8 +296,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'firebomb') or msgcontains(msg, 'Firebomb') then
 		spellprice = 1500
 		spellvoc = {1, 2, 5, 6}
@@ -309,8 +309,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'great fireball') or msgcontains(msg, 'Great fireball') then
 		spellprice = 1200
 		spellvoc = {1, 2, 5, 6}
@@ -322,8 +322,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'ultimate healing') or msgcontains(msg, 'Ultimate healing') then
 		spellprice = 1000
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -335,8 +335,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'destroy field') or msgcontains(msg, 'Destroy field') then
 		spellprice = 350
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -348,8 +348,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'energy field') or msgcontains(msg, 'Energy field') then
 		spellprice = 700
 		spellvoc = {1, 2, 5, 6}
@@ -361,8 +361,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'fireball') or msgcontains(msg, 'fireball') then
 		spellprice = 800
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -374,8 +374,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'antidote rune') or msgcontains(msg, 'Antidote rune') then
 		spellprice = 600
 		spellvoc = {2, 6}
@@ -387,8 +387,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'intense healing rune') or msgcontains(msg, 'intense healing rune') then
 		spellprice = 600
 		spellvoc = {2, 6}
@@ -400,8 +400,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'magic shield') or msgcontains(msg, 'magic shield') then
 		spellprice = 450
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -413,8 +413,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'heavy magic missile') or msgcontains(msg, 'Heavy magic missile') then
 		spellprice = 600
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -426,8 +426,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'fire field') or msgcontains(msg, 'Fire field') then
 		spellprice = 500
 		spellvoc = {1, 2, 5, 6}
@@ -439,8 +439,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'great light') or msgcontains(msg, 'Great light') then
 		spellprice = 500
 		spellvoc = {1, 2, 3, 4, 5, 6, 7, 8}
@@ -452,8 +452,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for all vocations.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'poison field') or msgcontains(msg, 'Poison field') then
 		spellprice = 300
 		spellvoc = {1, 2, 5, 6}
@@ -465,8 +465,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers and druids.", 1)
 			talk_state = 0
-		end			
-			
+		end
+
 	elseif msgcontains(msg, 'intense healing') or msgcontains(msg, 'Intense healing') then
 		spellprice = 350
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -478,8 +478,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'antidote') or msgcontains(msg, 'Antidote') then
 		spellprice = 150
 		spellvoc = {1, 2, 3, 4, 5, 6, 7, 8}
@@ -491,8 +491,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for all vocations.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'light magic missile') or msgcontains(msg, 'Light magic missile') then
 		spellprice = 200
 		spellvoc = {1, 2, 3, 5, 6, 7}
@@ -504,8 +504,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
 			talk_state = 0
-		end		
-			
+		end
+
 	elseif msgcontains(msg, 'light healing') or msgcontains(msg, 'Light healing') then
 		spellprice = 170
 		spellvoc = {1, 2, 3, 4, 5, 6, 7, 8}
@@ -517,8 +517,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for all vocations.", 1)
 			talk_state = 0
-		end			
-			
+		end
+
 	elseif msgcontains(msg, 'create food') or msgcontains(msg, 'Create food') then
 		spellprice = 150
 		spellvoc = {2, 3, 6, 7}
@@ -530,8 +530,8 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 		else
 			NPCSay("I am sorry but this spell is only for druids and paladins.", 1)
 			talk_state = 0
-		end	
-			
+		end
+
 	elseif msgcontains(msg, 'light') or msgcontains(msg, 'Light') then
 		spellprice = 100
 		spellvoc = {1, 2, 3, 4, 5, 6, 7, 8}
@@ -545,7 +545,7 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 			talk_state = 0
 		end
 	--End of Give spell--
-		
+
 	--System that does the job after confirm spell--
 	elseif talk_state == 8754 and msgcontains(msg, 'yes') then
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
@@ -558,11 +558,11 @@ function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
 					talk_state = 0
 					else
 					NPCSay("Oh. You do not have enough money.", 1)
-					talk_state = 0			
+					talk_state = 0
 					end
 				else
 				NPCSay("You already know how to cast this spell.", 1)
-				talk_state = 0	
+				talk_state = 0
 				end
 			else
 			NPCSay("You must have magic level ".. spellmagiclevel .." or better to learn this spell!", 1)

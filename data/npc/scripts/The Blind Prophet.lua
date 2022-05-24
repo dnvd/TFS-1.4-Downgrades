@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -26,26 +26,26 @@ keywordHandler:addKeyword({'hair'}, StdModule.say, {npcHandler = npcHandler, onl
 
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'transport') then
-	npcHandler:say('You want me to transport you to forbidden land?')
+	npcHandler:say('You want me to transport you to forbidden land?', cid)
 	topic = 1
-	
+
 	elseif msgcontains(msg, 'yes') and topic == 1 then
-	npcHandler:say('Take care!')
+	npcHandler:say('Take care!', cid)
 	doTeleportThing(cid, {x=33026, y=32580,z=6})
 	doSendMagicEffect(getCreaturePosition(cid), 10)
 	topic = 0
 	elseif msgcontains(msg, 'no') and topic == 1 then
-	npcHandler:say('Wise decision maybe.')
-	topic = 0	
-	elseif hasCondition(cid, CONDITION_INFIGHT) ~= 1 and topic == 1 then
-	npcHandler:say('Anger of battle is burning in you! First calm down.')
+	npcHandler:say('Wise decision maybe.', cid)
 	topic = 0
-	
+	elseif hasCondition(cid, CONDITION_INFIGHT) ~= 1 and topic == 1 then
+	npcHandler:say('Anger of battle is burning in you! First calm down.', cid)
+	topic = 0
+
 	end
 	return true
 end

@@ -18,14 +18,14 @@ function onThink()				npcHandler:onThink()					end
 			obj.callback = FOCUS_GREETSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
-		
+
 		for i, word in pairs(FOCUS_FAREWELLSWORDS) do
 			local obj = {}
 			table.insert(obj, word)
 			obj.callback = FOCUS_FAREWELLSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
-		
+
 		return true
 	end
 
@@ -36,8 +36,8 @@ function greetCallback(cid)
 	else
 	npcHandler:setMessage(MESSAGE_GREET, "Hmmm, well, hello ".. getPlayerName(cid) .."!")
 	return true
-	end	
-end	
+	end
+end
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
 local shopModule = ShopModule:new()
@@ -71,104 +71,104 @@ keywordHandler:addKeyword({'food'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'bread'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "If you want to sell bread, talk to my wife, Sherry."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'bye') or msgcontains(msg, 'farewell') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("May Crunor bless you, Druid ".. getPlayerName(cid) .."!", 1)
+	npcHandler:say("May Crunor bless you, Druid ".. getPlayerName(cid) .."!", cid)
 	else
-	npcHandler:say("Yes, bye!", 1)
+	npcHandler:say("Yes, bye!", cid)
 	end
 	talk_state = 0
 	npcHandler:releaseFocus()
 	npcHandler:resetNpc()
-			
+
 elseif msgcontains(msg, 'job') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("My wife and I run this farm as good as we can.", 1)
+	npcHandler:say("My wife and I run this farm as good as we can.", cid)
 	else
-	npcHandler:say("I run a farm, what else?!", 1)
+	npcHandler:say("I run a farm, what else?!", cid)
 	end
 
 elseif msgcontains(msg, 'wife') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("Sherry is my beloved wife.", 1)
+	npcHandler:say("Sherry is my beloved wife.", cid)
 	else
-	npcHandler:say("Sherry is my wife.", 1)
+	npcHandler:say("Sherry is my wife.", cid)
 	end
 
 elseif msgcontains(msg, 'donald') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("I was named Donald, like my grandfather.", 1)
+	npcHandler:say("I was named Donald, like my grandfather.", cid)
 	else
-	npcHandler:say("I am Donald.", 1)
+	npcHandler:say("I am Donald.", cid)
 	end
 
 elseif msgcontains(msg, 'farm') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("It's a hard but rewarding task to run this farm.", 1)
+	npcHandler:say("It's a hard but rewarding task to run this farm.", cid)
 	else
-	npcHandler:say("It is my farm, yes.", 1)
+	npcHandler:say("It is my farm, yes.", cid)
 	end
 
 elseif msgcontains(msg, 'time') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("My name is Donald McRonald, noble druid.", 1)
+	npcHandler:say("My name is Donald McRonald, noble druid.", cid)
 	else
-	npcHandler:say("Donald McRonald.", 1)
+	npcHandler:say("Donald McRonald.", cid)
 	end
 
 elseif msgcontains(msg, 'time') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("Unfortunately I can't help you with that, noble druid.", 1)
+	npcHandler:say("Unfortunately I can't help you with that, noble druid.", cid)
 	else
-	npcHandler:say("Who cares?", 1)
+	npcHandler:say("Who cares?", cid)
 	end
-	
+
 elseif msgcontains(msg, 'muriel') then
 	if getPlayerVocation(cid) == 1 or getPlayerVocation(cid) == 5 then
-	npcHandler:say("I dont trust sorcerers like you.", 1)
+	npcHandler:say("I dont trust sorcerers like you.", cid)
 	else
-	npcHandler:say("I dont trust sorcerers.", 1)
-	end	
-	
+	npcHandler:say("I dont trust sorcerers.", cid)
+	end
+
 elseif msgcontains(msg, 'gregor') then
 	if getPlayerVocation(cid) == 4 or getPlayerVocation(cid) == 8 then
-	npcHandler:say("Knights like you always feel superior to us farmers.", 1)
+	npcHandler:say("Knights like you always feel superior to us farmers.", cid)
 	else
-	npcHandler:say("Knights always feel superior to us farmers.", 1)
-	end	
-	
+	npcHandler:say("Knights always feel superior to us farmers.", cid)
+	end
+
 elseif msgcontains(msg, 'marvik') then
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-	npcHandler:say("Druids like you are a great help for us, they know much about nature.", 1)
+	npcHandler:say("Druids like you are a great help for us, they know much about nature.", cid)
 	else
-	npcHandler:say("Druids are a great help for us, they know much about nature.", 1)
-	end	
+	npcHandler:say("Druids are a great help for us, they know much about nature.", cid)
+	end
 
 elseif msgcontains(msg, 'spider') then
-	npcHandler:say("I will give you 2 gold for every spider you bring me. But not a rotten spider that was already dead for some time. Do you have any with you?", 1)
+	npcHandler:say("I will give you 2 gold for every spider you bring me. But not a rotten spider that was already dead for some time. Do you have any with you?", cid)
 	talk_state = 2
-	
+
 elseif talk_state == 2 and msgcontains(msg, 'yes') then
 AMOUNTSPIDER = getPlayerItemCount(cid,2807)
 if AMOUNTSPIDER >= 1 then
 	if doPlayerRemoveItem(cid, 2807, AMOUNTSPIDER) == true then
 	doPlayerAddMoney(cid, AMOUNTSPIDER*2)
-	npcHandler:say("Here you are.", 1)
+	npcHandler:say("Here you are.", cid)
 	end
 else
-npcHandler:say("You have no spider that died recently.", 1)
+npcHandler:say("You have no spider that died recently.", cid)
 end
 talk_state = 0
-	
+
 elseif talk_state == 2 and msgcontains(msg, '') then
-npcHandler:say("Hmpf.", 1)
+npcHandler:say("Hmpf.", cid)
 talk_state = 0
 
-end		
+end
     return true
 end
 

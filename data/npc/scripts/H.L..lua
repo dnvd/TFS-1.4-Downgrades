@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -17,7 +17,7 @@ function greetCallback(cid)
 	else
 	npcHandler:setMessage(MESSAGE_GREET, "I don't serve brats. Sod off!")
 	return false
-	end	
+	end
 end
 
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
@@ -190,21 +190,21 @@ keywordHandler:addKeyword({'stuff'}, StdModule.say, {npcHandler = npcHandler, on
 keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I buy nearly everything. Just ask."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, '') and getPlayerSex(cid) == 0 then
-	npcHandler:say("I don't serve brats. Sod off!", 1)
+	npcHandler:say("I don't serve brats. Sod off!", cid)
 	npcHandler:releaseFocus()
 	npcHandler:resetNpc()
-			
+
 elseif msgcontains(msg, 'talk') then
-	npcHandler:say("I said, I do not want to talk about it", 1)
+	npcHandler:say("I said, I do not want to talk about it", cid)
 	talk_state = 1
 
 elseif talk_state == 1 and msgcontains(msg, 'talk') then
-	npcHandler:say("Ok. Get lost!", 1)
+	npcHandler:say("Ok. Get lost!", cid)
 	talk_state = 0
 	npcHandler:releaseFocus()
 	npcHandler:resetNpc()
@@ -214,44 +214,44 @@ KEYID = {2086, 2087, 2088, 2089, 2090, 2091, 2092}
 INUSE = getPlayerItemCount(cid, KEYID)
 	if isInArray(INUSE, KEYID) == 1 then
 		if INUSE.actionid >= 1 then
-		npcHandler:say("Oh. that's a new key. Hmmm. Must be for the new hideout.", 1)
+		npcHandler:say("Oh. that's a new key. Hmmm. Must be for the new hideout.", cid)
 		else
-		npcHandler:say("What key? Show me!", 1)
-		talk_state = 0	
+		npcHandler:say("What key? Show me!", cid)
+		talk_state = 0
 		end
 	else
-	npcHandler:say("What key? Show me!", 1)
-	talk_state = 0	
+	npcHandler:say("What key? Show me!", cid)
+	talk_state = 0
 	end
 
 elseif msgcontains(msg, 'building') or msgcontains(msg, 'Building') then
-	npcHandler:say("You mean our old building in the southwest?", 1)
+	npcHandler:say("You mean our old building in the southwest?", cid)
 	talk_state = 2
 
 elseif talk_state == 2 and msgcontains(msg, 'yes') then
-	npcHandler:say("That's the old hideout. It's interesting down there. Lots of security mechanics and traps. But it collapsed partly.", 1)
+	npcHandler:say("That's the old hideout. It's interesting down there. Lots of security mechanics and traps. But it collapsed partly.", cid)
 	talk_state = 0
 elseif talk_state == 2 and msgcontains(msg, '') then
-	npcHandler:say("Sorry.", 1)
+	npcHandler:say("Sorry.", cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'mechanics') or msgcontains(msg, 'Mechanics') or msgcontains(msg, 'machines') or msgcontains(msg, 'Machines') then
-	npcHandler:say("Yes. Security doors driven by POWERFUL machines. But I have no idea how it works.", 1)
+	npcHandler:say("Yes. Security doors driven by POWERFUL machines. But I have no idea how it works.", cid)
 	talk_state = 7
 
 elseif talk_state == 7 and msgcontains(msg, 'broken') or talk_state == 7 and msgcontains(msg, 'Broken') then
-	npcHandler:say("Hmmm. Let me think. I think, you need something big. And steel reinforced. A barrel, maybe.", 1)
+	npcHandler:say("Hmmm. Let me think. I think, you need something big. And steel reinforced. A barrel, maybe.", cid)
 	talk_state = 0
 
 elseif talk_state == 7 and msgcontains(msg, 'damaged') or talk_state == 7 and msgcontains(msg, 'Damaged') then
-	npcHandler:say("Hmmm. Let me think. I think, you need something big. And steel reinforced. A barrel, maybe.", 1)
+	npcHandler:say("Hmmm. Let me think. I think, you need something big. And steel reinforced. A barrel, maybe.", cid)
 	talk_state = 0
 
 elseif talk_state == 7 and msgcontains(msg, 'repair') or talk_state == 7 and msgcontains(msg, 'Repair') then
-	npcHandler:say("Hmmm. Let me think. I think, you need something big. And steel reinforced. A barrel, maybe.", 1)
-	talk_state = 0	
-	
-end		
+	npcHandler:say("Hmmm. Let me think. I think, you need something big. And steel reinforced. A barrel, maybe.", cid)
+	talk_state = 0
+
+end
     return true
 end
 

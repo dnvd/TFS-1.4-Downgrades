@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -42,16 +42,16 @@ keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, only
 keywordHandler:addKeyword({'food'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Are you looking for food? I have bread, cheese, ham, and meat."})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'time') or msgcontains(msg, 'Time') then
-	npcHandler:say("Oh, now that you mention it: I have much left to do, please excuse me.", 1)
+	npcHandler:say("Oh, now that you mention it: I have much left to do, please excuse me.", cid)
 	talk_state = 0
 	npcHandler:releaseFocus()
 	npcHandler:resetNpc()
 
-end		
+end
     return true
 end
 

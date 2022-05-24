@@ -18,14 +18,14 @@ function onThink()				npcHandler:onThink()					end
 			obj.callback = FOCUS_GREETSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
-		
+
 		for i, word in pairs(FOCUS_FAREWELLSWORDS) do
 			local obj = {}
 			table.insert(obj, word)
 			obj.callback = FOCUS_FAREWELLSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
-		
+
 		return true
 	end
 
@@ -68,26 +68,26 @@ keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, on
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I think it's about |TIME|. If you'd bought a watch you'd know for sure."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 	if msgcontains(msg, 'vial') or msgcontains(msg, 'deposit') or msgcontains(msg, 'flask') then
-		npcHandler:say("I will pay you 5 gold for every empty vial. Ok?", 1)
+		npcHandler:say("I will pay you 5 gold for every empty vial. Ok?", cid)
 		talk_state = 857
 	elseif talk_state == 857 and msgcontains(msg, 'yes') then
 		if sellPlayerEmptyVials(cid) == true then
-			npcHandler:say("Here's your money!", 1)
+			npcHandler:say("Here's your money!", cid)
 			talk_state = 0
 		else
-			npcHandler:say("You don't have any empty vials!", 1)
+			npcHandler:say("You don't have any empty vials!", cid)
 			talk_state = 0
 		end
-	end	
+	end
 
 	if  msgcontains(msg, 'nezil') or msgcontains(msg, 'Nezil') then
 	elseif msgcontains(msg, 'hi') or msgcontains(msg, 'Hi') or msgcontains(msg, 'hello') or msgcontains(msg, 'Hello') or msgcontains(msg, 'Hiho') or msgcontains(msg, 'hiho') then
-		npcHandler:say("Are you talking to me, ".. getPlayerName(cid) .."?", 1)
+		npcHandler:say("Are you talking to me, ".. getPlayerName(cid) .."?", cid)
 		talk_state = 0
 	end
 

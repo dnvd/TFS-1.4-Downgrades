@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -57,20 +57,20 @@ keywordHandler:addKeyword({'necromant nectar'}, StdModule.say, {npcHandler = npc
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'monster') or msgcontains(msg, 'Monster') then
-npcHandler:say("AHHHH!!! WHERE??? WHERE???", 1)
+npcHandler:say("AHHHH!!! WHERE??? WHERE???", cid)
 npcHandler:releaseFocus()
 npcHandler:resetNpc()
 
 elseif msgcontains(msg, 'rumo') or msgcontains(msg, 'Rumo') or msgcontains(msg, 'gossip') or msgcontains(msg, 'new') then
-npcHandler:say("You know a rumour? TELL ME! TELL ME! TELL ME!", 1)
+npcHandler:say("You know a rumour? TELL ME! TELL ME! TELL ME!", cid)
 talk_state = 3
 
 elseif talk_state == 3 and msgcontains(msg, '') then
-npcHandler:say("Fascinating! Absolutely fascinating!", 1)	
+npcHandler:say("Fascinating! Absolutely fascinating!", cid)
 talk_state = 0
 end
     return true

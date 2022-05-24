@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -36,36 +36,36 @@ keywordHandler:addKeyword({'bles'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'magic'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I can heal you or even teach you some spells of healing."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 if msg == "heal" then
 	if getCreatureHealth(cid) <= 39 then
-	npcHandler:say("You are looking really bad. Let me heal your wounds.", 1)
+	npcHandler:say("You are looking really bad. Let me heal your wounds.", cid)
 	doCreatureAddHealth(cid, -getCreatureHealth(cid)+40)
 	doSendMagicEffect(getPlayerPosition(cid), 12)
 	talk_state = 0
 	return true
 	else
-	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", 1)
+	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", cid)
 	return true
 	end
-	talk_state = 0	
+	talk_state = 0
     return true
 end
 
 if(npcHandler.focus ~= cid) then
 	return false
-end	
+end
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 3 or getPlayerVocation(cid) == 6 or getPlayerVocation(cid) == 7 then
 	else
 		if msgcontains(msg, '') then
-		npcHandler:say("Sorry, I only teach paladins and druids!", 1)
+		npcHandler:say("Sorry, I only teach paladins and druids!", cid)
 		return false
 		end
 	end
-	
+
 --name the spell--
 if msgcontains(msg, 'light healing') or msgcontains(msg, 'Light healing') then
 	spellprice = 170
@@ -73,12 +73,12 @@ if msgcontains(msg, 'light healing') or msgcontains(msg, 'Light healing') then
 	spellname = "light healing"
 	spellmagiclevel = 1
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
-		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", 1)
+		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", cid)
 		talk_state = 8754
 		else
-		npcHandler:say("I am sorry but this spell is only for all vocations.", 1)
+		npcHandler:say("I am sorry but this spell is only for all vocations.", cid)
 		talk_state = 0
-		end	
+		end
 
 elseif msgcontains(msg, 'ultimate healing rune') or msgcontains(msg, 'Ultimate healing rune') then
 	spellprice = 1500
@@ -86,12 +86,12 @@ elseif msgcontains(msg, 'ultimate healing rune') or msgcontains(msg, 'Ultimate h
 	spellname = "ultimate healing rune"
 	spellmagiclevel = 11
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
-		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", 1)
+		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", cid)
 		talk_state = 8754
 		else
-		npcHandler:say("I am sorry but this spell is only for druids.", 1)
+		npcHandler:say("I am sorry but this spell is only for druids.", cid)
 		talk_state = 0
-		end		
+		end
 
 elseif msgcontains(msg, 'ultimate healing') or msgcontains(msg, 'Ultimate healing') then
 	spellprice = 1000
@@ -99,66 +99,66 @@ elseif msgcontains(msg, 'ultimate healing') or msgcontains(msg, 'Ultimate healin
 	spellname = "ultimate healing"
 	spellmagiclevel = 8
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
-		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", 1)
+		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", cid)
 		talk_state = 8754
 		else
-		npcHandler:say("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
+		npcHandler:say("I am sorry but this spell is only for sorcerers, druids and paladins.", cid)
 		talk_state = 0
 		end
-		
+
 elseif msgcontains(msg, 'antidote rune') or msgcontains(msg, 'Antidote rune') then
 	spellprice = 600
 	spellvoc = {2, 6}
 	spellname = "antidote rune"
 	spellmagiclevel = 5
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
-		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", 1)
+		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", cid)
 		talk_state = 8754
 		else
-		npcHandler:say("I am sorry but this spell is only for druids.", 1)
+		npcHandler:say("I am sorry but this spell is only for druids.", cid)
 		talk_state = 0
-		end		
-		
+		end
+
 elseif msgcontains(msg, 'intense healing rune') or msgcontains(msg, 'intense healing rune') then
 	spellprice = 600
 	spellvoc = {2, 6}
 	spellname = "intense healing rune"
 	spellmagiclevel = 4
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
-		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", 1)
+		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", cid)
 		talk_state = 8754
 		else
-		npcHandler:say("I am sorry but this spell is only for druids.", 1)
+		npcHandler:say("I am sorry but this spell is only for druids.", cid)
 		talk_state = 0
-		end		
-		
+		end
+
 elseif msgcontains(msg, 'intense healing') or msgcontains(msg, 'Intense healing') then
 	spellprice = 350
 	spellvoc = {1, 2, 3, 5, 6, 7}
 	spellname = "intense healing"
 	spellmagiclevel = 2
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
-		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", 1)
+		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", cid)
 		talk_state = 8754
 		else
-		npcHandler:say("I am sorry but this spell is only for sorcerers, druids and paladins.", 1)
+		npcHandler:say("I am sorry but this spell is only for sorcerers, druids and paladins.", cid)
 		talk_state = 0
-		end		
-		
+		end
+
 elseif msgcontains(msg, 'antidote') or msgcontains(msg, 'Antidote') then
 	spellprice = 150
 	spellvoc = {1, 2, 3, 4, 5, 6, 7, 8}
 	spellname = "antidote"
 	spellmagiclevel = 2
 		if isInArray(spellvoc, getPlayerVocation(cid)) then
-		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", 1)
+		npcHandler:say("Do you want to learn the spell '".. spellname .."' for ".. spellprice .." gold?", cid)
 		talk_state = 8754
 		else
-		npcHandler:say("I am sorry but this spell is only for all vocations.", 1)
+		npcHandler:say("I am sorry but this spell is only for all vocations.", cid)
 		talk_state = 0
 		end
 --End of Give spell--
-	
+
 --System that does the job after confirm spell--
 elseif talk_state == 8754 and msgcontains(msg, 'yes') then
 	if isInArray(spellvoc, getPlayerVocation(cid)) then
@@ -167,27 +167,27 @@ elseif talk_state == 8754 and msgcontains(msg, 'yes') then
 				if doPlayerRemoveMoney(cid, spellprice) == true then
 				playerLearnInstantSpell(cid, spellname)
 				doSendMagicEffect(getPlayerPosition(cid), 14)
-				npcHandler:say("Here you are. Look in your spellbook for the pronounciation of this spell.", 1)
+				npcHandler:say("Here you are. Look in your spellbook for the pronounciation of this spell.", cid)
 				talk_state = 0
 				else
-				npcHandler:say("Oh. You do not have enough money.", 1)
-				talk_state = 0			
+				npcHandler:say("Oh. You do not have enough money.", cid)
+				talk_state = 0
 				end
 			else
-			npcHandler:say("You already know how to cast this spell.", 1)
-			talk_state = 0	
+			npcHandler:say("You already know how to cast this spell.", cid)
+			talk_state = 0
 			end
 		else
-		npcHandler:say("You must have magic level ".. spellmagiclevel .." or better to learn this spell!", 1)
+		npcHandler:say("You must have magic level ".. spellmagiclevel .." or better to learn this spell!", cid)
 		talk_state = 0
 		end
 	end
 elseif talk_state == 8754 and msgcontains(msg, '') then
-npcHandler:say("Maybe next time.", 1)
+npcHandler:say("Maybe next time.", cid)
 talk_state = 0
 --End of the System that does the job after confirm spell--
-	
-end		
+
+end
     return true
 end
 
