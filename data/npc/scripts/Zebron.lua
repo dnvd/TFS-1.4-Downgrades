@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -14,7 +14,7 @@ function greetCallback(cid)
 	npcHandler:setMessage(MESSAGE_GREET, "Greetings, high roller. So you care for a game, ".. getPlayerName(cid) .."?")
 	talk_state = 1
 	return true
-end	
+end
 
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
@@ -38,19 +38,19 @@ keywordHandler:addKeyword({'amazon'}, StdModule.say, {npcHandler = npcHandler, o
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is exactly |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 local CHANCE = math.random(1,6)
 if msgcontains(msg, 'gambl') or msgcontains(msg, 'Gambl') or msgcontains(msg, 'game') or msgcontains(msg, 'Game') or msgcontains(msg, 'dice') or msgcontains(msg, 'Dice') then
-	npcHandler:say("So you care for a civilized game of dice?", 1)
+	npcHandler:say("So you care for a civilized game of dice?", cid)
 	talk_state = 1
-			
+
 elseif talk_state == 1 and msgcontains(msg, 'yes') or talk_state == 1 and msgcontains(msg, 'Yes') then
-	npcHandler:say("I will roll a dice. If it shows 6, you will get five times your bet. How much do you want to bet?", 1)
+	npcHandler:say("I will roll a dice. If it shows 6, you will get five times your bet. How much do you want to bet?", cid)
 	talk_state = 2
-	
+
 elseif talk_state == 2 then
 TEXTMSG = msg
 local amount = getCount(msg)
@@ -58,22 +58,22 @@ if amount >= 1 and amount <= 99 then
 	if doPlayerRemoveMoney(cid, amount) == true then
 		if CHANCE == 6 then
 		doPlayerAddMoney(cid, amount*5)
-		npcHandler:say("Ok, here we go ... 6! You have won ".. amount*5 ..", congratulations. One more game?", 1)
+		npcHandler:say("Ok, here we go ... 6! You have won ".. amount*5 ..", congratulations. One more game?", cid)
 		talk_state = 1
 		else
-		npcHandler:say("Ok, here we go ... ".. CHANCE .."! You have lost. Bad luck. One more game?", 1)
-		talk_state = 1		
+		npcHandler:say("Ok, here we go ... ".. CHANCE .."! You have lost. Bad luck. One more game?", cid)
+		talk_state = 1
 		end
 	else
-	npcHandler:say("I am sorry, but you don't have so much money. How much do you want to bet?", 1)
+	npcHandler:say("I am sorry, but you don't have so much money. How much do you want to bet?", cid)
 	talk_state = 2
-	end	
-else	
-npcHandler:say("I am sorry, but I accept only bets between 1 and 99 gold. I don't want to ruin you after all. How much do you want to bet?", 1)	
+	end
+else
+npcHandler:say("I am sorry, but I accept only bets between 1 and 99 gold. I don't want to ruin you after all. How much do you want to bet?", cid)
 talk_state = 2
 end
 
-end		
+end
     return true
 end
 

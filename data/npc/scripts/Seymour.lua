@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -55,86 +55,86 @@ keywordHandler:addKeyword({'smuggler'}, StdModule.say, {npcHandler = npcHandler,
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is |TIME|, so you are late. Hurry!"})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'dungeon') and getPlayerLevel(cid) < 3 then
-	npcHandler:say('There are some dungeons on this isle, but almost all of them are too dangerous for you at the moment.')
-	
+	npcHandler:say('There are some dungeons on this isle, but almost all of them are too dangerous for you at the moment.', cid)
+
 	elseif msgcontains(msg, 'dungeon') and getPlayerLevel(cid) > 2 then
-	npcHandler:say('There are some dungeons on this isle. You should be strong enough to explore them now, but make sure to take a rope with you.')
+	npcHandler:say('There are some dungeons on this isle. You should be strong enough to explore them now, but make sure to take a rope with you.', cid)
 
 	elseif msgcontains(msg, 'mission') and getPlayerLevel(cid) < 4 or msgcontains(msg, 'quest') and getPlayerLevel(cid) < 4 then
-	npcHandler:say('You are pretty inexperienced. I think killing rats is a suitable challenge for you. For each fresh rat I will give you two shiny coins of gold.')
-	
+	npcHandler:say('You are pretty inexperienced. I think killing rats is a suitable challenge for you. For each fresh rat I will give you two shiny coins of gold.', cid)
+
 	elseif msgcontains(msg, 'mission') and getPlayerLevel(cid) > 3 or msgcontains(msg, 'quest') and getPlayerLevel(cid) > 3 then
-	npcHandler:say('Well I would like to send our king a little present, but I do not have a suitable box. If you find a nice box, please bring it to me.')
-	
+	npcHandler:say('Well I would like to send our king a little present, but I do not have a suitable box. If you find a nice box, please bring it to me.', cid)
+
 	elseif msgcontains(msg, 'key') then
-	npcHandler:say('Do you want to buy the Key to Adventure for 5 gold coins?')
+	npcHandler:say('Do you want to buy the Key to Adventure for 5 gold coins?', cid)
 	talk_state = 1
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerMoney(cid) >= 5 then
-	npcHandler:say('Here you are.')
+	npcHandler:say('Here you are.', cid)
 	doPlayerRemoveMoney(cid, 5)
 	key = doPlayerAddItem(cid, 2088,1)
 	doSetItemActionId(key,4600)
 	doSetItemSpecialDescription(key, "(key: 4600)")
 	talk_state = 0
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerMoney(cid) < 5 then
-	npcHandler:say('You don\'t have enough money.')
+	npcHandler:say('You don\'t have enough money.', cid)
 	elseif msgcontains(msg, 'no') and talk_state == 1 then
-	npcHandler:say('As you wish.')
+	npcHandler:say('As you wish.', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'box') then
-	npcHandler:say('Do you have a suitable present box for me?')
+	npcHandler:say('Do you have a suitable present box for me?', cid)
 	talk_state = 2
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 2 and getPlayerItemCount(cid,1990) >= 1 then
-	npcHandler:say('THANK YOU! Here is a helmet that will serve you well.')
+	npcHandler:say('THANK YOU! Here is a helmet that will serve you well.', cid)
 	doPlayerRemoveItem(cid, 1990, 1)
 	doPlayerAddItem(cid, 2480, 1)
 	talk_state = 0
 	elseif msgcontains(msg, 'yes') and talk_state == 2 and getPlayerItemCount(cid,1990) == 0 then
-	npcHandler:say('HEY! You don\'t have one! Stop playing tricks on fooling me or I will give you some extra work!')
+	npcHandler:say('HEY! You don\'t have one! Stop playing tricks on fooling me or I will give you some extra work!', cid)
 	talk_state = 0
 	elseif msgcontains(msg, '') and talk_state == 2 then
-	npcHandler:say('HEY! You don\'t have one! Stop playing tricks on fooling me or I will give you some extra work!')
+	npcHandler:say('HEY! You don\'t have one! Stop playing tricks on fooling me or I will give you some extra work!', cid)
 	talk_state = 0
 
 	elseif msgcontains(msg, 'fuck') then
 	if getPlayerSex(cid) == 0 then
-	npcHandler:say("For this remark I will wash your mouth with soap, young lady!", 1)
+	npcHandler:say("For this remark I will wash your mouth with soap, young lady!", cid)
 	doSendMagicEffect(getPlayerPosition(cid), 7)
 	elseif getPlayerSex(cid) == 1 then
-	npcHandler:say("For this remark I will wash your mouth with soap, young man!", 1)
-	doSendMagicEffect(getPlayerPosition(cid), 7)	
+	npcHandler:say("For this remark I will wash your mouth with soap, young man!", cid)
+	doSendMagicEffect(getPlayerPosition(cid), 7)
 	end
 
 	elseif msgcontains(msg, 'rat') then
-	npcHandler:say("Have you brought dead rats to me to pick up your reward?", 1)
+	npcHandler:say("Have you brought dead rats to me to pick up your reward?", cid)
 	talk_state = 3
-	
+
 	elseif talk_state == 3 and msgcontains(msg, 'yes') then
 	AMOUNTRAT = getPlayerItemCount(cid,2813)
 	if AMOUNTRAT >= 1 then
 	if doPlayerRemoveItem(cid, 2813, AMOUNTRAT) == true then
 	doPlayerAddMoney(cid, AMOUNTRAT*2)
-	npcHandler:say("Thank you! Here is your reward.", 1)
+	npcHandler:say("Thank you! Here is your reward.", cid)
 	talk_state = 0
 	end
 	else
-	npcHandler:say("HEY! You don't have one! Stop playing tricks on fooling me or I will give you some extra work!", 1)
+	npcHandler:say("HEY! You don't have one! Stop playing tricks on fooling me or I will give you some extra work!", cid)
 	talk_state = 0
 	end
 
 	elseif talk_state == 3 and msgcontains(msg, '') then
-	npcHandler:say("Go and find some rats to kill!", 1)
+	npcHandler:say("Go and find some rats to kill!", cid)
 	talk_state = 0
 
-end		
+end
     return true
 end
 

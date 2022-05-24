@@ -1,4 +1,5 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
+dofile('data/npc/lib/tibia.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -13,13 +14,13 @@ function onThink()				npcHandler:onThink()					end
 function greetCallback(cid)
 	npcHandler:setMessage(MESSAGE_GREET, "Ahoi.")
 	return true
-end	
+end
 
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
 local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
- 
+
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I am the captain of the Poodle, the proudest ship on all oceans."})
 keywordHandler:addKeyword({'name'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It's Charles."})
 keywordHandler:addKeyword({'king'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "His majesty himself was present at the day the Poodle was launched."})
@@ -40,37 +41,37 @@ keywordHandler:addKeyword({'dworcs'}, StdModule.say, {npcHandler = npcHandler, o
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is precisely |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 	if msgcontains(msg, 'major') and npcHandler.focus == cid or msgcontains(msg, 'harbour') and npcHandler.focus == cid then
-		npcHandler:say("Well the harbours of thais, venore, carlin, edron, darashia and ankrahmun. Do you have any questions about one of those harbours?", 1)
+		npcHandler:say("Well the harbours of thais, venore, carlin, edron, darashia and ankrahmun. Do you have any questions about one of those harbours?", cid)
 		talk_state = 921
 	elseif talk_state == 921 and msgcontains(msg, 'venore') and npcHandler.focus == cid and npcHandler.focus == cid then
-		npcHandler:say("The Venorans build fine ships. Enough said about them.", 1)
-		talk_state = 0		
+		npcHandler:say("The Venorans build fine ships. Enough said about them.", cid)
+		talk_state = 0
 	elseif talk_state == 921 and msgcontains(msg, 'thais') and npcHandler.focus == cid and npcHandler.focus == cid then
-		npcHandler:say("Thais is the proud capital of the largest kingdom in the known world.", 1)
+		npcHandler:say("Thais is the proud capital of the largest kingdom in the known world.", cid)
 		talk_state = 0
 	elseif talk_state == 921 and msgcontains(msg, 'carlin') and npcHandler.focus == cid and npcHandler.focus == cid then
-		npcHandler:say("Rebellious women might be amusing for a while, but it is time for them to stop this nonsense and return to the kingdom.", 1)
+		npcHandler:say("Rebellious women might be amusing for a while, but it is time for them to stop this nonsense and return to the kingdom.", cid)
 		talk_state = 0
 	elseif talk_state == 921 and msgcontains(msg, 'edron') and npcHandler.focus == cid and npcHandler.focus == cid then
-		npcHandler:say("The coastline of Edron is treacherous and it takes some skills to sail a ship safely into the harbour.", 1)
+		npcHandler:say("The coastline of Edron is treacherous and it takes some skills to sail a ship safely into the harbour.", cid)
 		talk_state = 0
 	elseif talk_state == 921 and msgcontains(msg, 'darashia') and npcHandler.focus == cid and npcHandler.focus == cid then
-		npcHandler:say("An unremarkable little town with a small harbour and quiet people.", 1)
+		npcHandler:say("An unremarkable little town with a small harbour and quiet people.", cid)
 		talk_state = 0
 	elseif talk_state == 921 and msgcontains(msg, 'ankrahmun') and npcHandler.focus == cid and npcHandler.focus == cid then
-		npcHandler:say("The city is surely worth a look although its inhabitants are somewhat strange and their customs oddish.", 1)
-		talk_state = 0		
+		npcHandler:say("The city is surely worth a look although its inhabitants are somewhat strange and their customs oddish.", cid)
+		talk_state = 0
 	end
-	
+
 	return true
 end
 
-	
+
 local function addTravelKeyword(keyword, cost, destination, action)
 	local travelKeyword = keywordHandler:addKeyword({keyword}, StdModule.say, {npcHandler = npcHandler, text = 'Do you seek a passage to ' .. titleCase(keyword) .. ' for |TRAVELCOST|?', cost = cost, discount = 'postman'})
 		travelKeyword:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = cost, discount = 'postman', destination = destination })

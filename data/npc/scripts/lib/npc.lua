@@ -1,8 +1,6 @@
 -- Include external classes.
 dofile(getDataDir() .. 'npc/scripts/lib/npcsystem/npcsystem.lua')
 
-dofile(getDataDir() .. 'npc/scripts/lib/custom modules.lua')
-
 -- Callback for isPremium(cid) so Jiddo's npcsystem works
 function isPlayerPremiumCallback(cid)
 	if EVERYONE_PREMIUM_FOR_NPCS then

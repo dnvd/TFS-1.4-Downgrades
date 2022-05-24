@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -20,14 +20,14 @@ function onThink()				npcHandler:onThink()					end
 			obj.callback = FOCUS_GREETSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
-		
+
 		for i, word in pairs(FOCUS_FAREWELLSWORDS) do
 			local obj = {}
 			table.insert(obj, word)
 			obj.callback = FOCUS_FAREWELLSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
-		
+
 		return true
 	end
 
@@ -35,132 +35,132 @@ local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 if msgcontains(msg, 'goshak charcha') then
-	npcHandler:say("Maruk goshak ta?", 1)
+	npcHandler:say("Maruk goshak ta?", cid)
 	talk_state = 101
 elseif msgcontains(msg, 'goshak burka bata') then
-npcHandler:say("Maruk goshak ta?", 1)
+npcHandler:say("Maruk goshak ta?", cid)
 talk_state = 103
 elseif msgcontains(msg, 'goshak burka') then
-	npcHandler:say("Maruk goshak ta?", 1)
-	talk_state = 102						
+	npcHandler:say("Maruk goshak ta?", cid)
+	talk_state = 102
 elseif msgcontains(msg, 'goshak hakhak') then
-	npcHandler:say("Maruk goshak ta?", 1)
+	npcHandler:say("Maruk goshak ta?", cid)
 	talk_state = 104
 elseif msgcontains(msg, 'goshak bora') then
-	npcHandler:say("Maruk goshak ta?", 1)
+	npcHandler:say("Maruk goshak ta?", cid)
 	talk_state = 105
 elseif msgcontains(msg, 'goshak tulak bora') then
-	npcHandler:say("Maruk goshak ta?", 1)
+	npcHandler:say("Maruk goshak ta?", cid)
 	talk_state = 106
 elseif msgcontains(msg, 'goshak grofa') then
-	npcHandler:say("Maruk goshak ta?", 1)
+	npcHandler:say("Maruk goshak ta?", cid)
 	talk_state = 107
 elseif msgcontains(msg, 'goshak donga') then
-	npcHandler:say("Maruk goshak ta?", 1)
-	talk_state = 108	
+	npcHandler:say("Maruk goshak ta?", cid)
+	talk_state = 108
 elseif msgcontains(msg, 'goshak batuk') then
-	npcHandler:say("Ahhhh, maruk goshak batuk?", 1)
+	npcHandler:say("Ahhhh, maruk goshak batuk?", cid)
 	talk_state = 109
 elseif msgcontains(msg, 'goshak pixo') then
-	npcHandler:say("Maruk goshak tefar pixo ul batuk?", 1)
+	npcHandler:say("Maruk goshak tefar pixo ul batuk?", cid)
 	talk_state = 110
 elseif talk_state == 101 and msgcontains(msg, 'mok') == true then
 	if doPlayerRemoveMoney(cid, 25) then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2385)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
 	end
 elseif talk_state == 102 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 30) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2406)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
 	end
 elseif talk_state == 103 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 85) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2376)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
 	end
 elseif talk_state == 104 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 85) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2388)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
 	end
 elseif talk_state == 105 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 25) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2467)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
-	end	
+	end
 elseif talk_state == 106 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 90) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2484)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
-	end	
+	end
 elseif talk_state == 107 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 60) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2482)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
-	end	
+	end
 elseif talk_state == 108 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 65) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2511)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
-	end	
+	end
 elseif talk_state == 109 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 400) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2456)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
-	end	
+	end
 elseif talk_state == 110 and msgcontains(msg, 'mok') then
 	if doPlayerRemoveMoney(cid, 30) == true then
-	npcHandler:say("Maruk rambo zambo!", 1)
+	npcHandler:say("Maruk rambo zambo!", cid)
 	doPlayerAddItem(cid, 2544, 10)
 	talk_state = 806
 	else
-	npcHandler:say("Maruk nixda!", 1)
+	npcHandler:say("Maruk nixda!", cid)
 	talk_state = 806
 	end
-	
-end		
+
+end
     return true
 end
 

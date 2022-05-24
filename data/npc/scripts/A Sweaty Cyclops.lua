@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -38,46 +38,46 @@ keywordHandler:addKeyword({'cyclops'}, StdModule.say, {npcHandler = npcHandler, 
 keywordHandler:addKeyword({'excalibug'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Me wish I could make weapon like it."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'fire sword') then
-	npcHandler:say("Do lil' one want to trade a fire sword?", 1)
+	npcHandler:say("Do lil' one want to trade a fire sword?", cid)
 	talk_state = 1
-			
+
 elseif msgcontains(msg, 'bright sword') then
-	npcHandler:say("Do lil' one want to trade a bright sword?", 1)
+	npcHandler:say("Do lil' one want to trade a bright sword?", cid)
 	talk_state = 1
 
 elseif msgcontains(msg, 'warlord sword') then
-	npcHandler:say("Do lil' one want to trade a warlord sword?", 1)
+	npcHandler:say("Do lil' one want to trade a warlord sword?", cid)
 	talk_state = 1
 
 elseif msgcontains(msg, 'sword of valor') then
-	npcHandler:say("Do lil' one want to trade a sword of valor?", 1)
+	npcHandler:say("Do lil' one want to trade a sword of valor?", cid)
 	talk_state = 1
 
 elseif msgcontains(msg, 'serpent sword') then
-	npcHandler:say("Do lil' one want to trade a serpent sword?", 1)
+	npcHandler:say("Do lil' one want to trade a serpent sword?", cid)
 	talk_state = 1
 
 elseif msgcontains(msg, 'enchanted plate') then
-	npcHandler:say("Do lil' one want to trade an enchanted plate armor?", 1)
+	npcHandler:say("Do lil' one want to trade an enchanted plate armor?", cid)
 	talk_state = 1
-	
+
 elseif msgcontains(msg, 'dragon shield') then
-	npcHandler:say("Do lil' one want to trade a dragon shield?", 1)
+	npcHandler:say("Do lil' one want to trade a dragon shield?", cid)
 	talk_state = 1
 
 elseif talk_state == 1 and msgcontains(msg, 'yes') then
-	npcHandler:say("You not have stuff me want for.", 1)
+	npcHandler:say("You not have stuff me want for.", cid)
 	talk_state = 1
 elseif talk_state == 1 and msgcontains(msg, '') then
-	npcHandler:say("Silly lil' one you are.", 1)
+	npcHandler:say("Silly lil' one you are.", cid)
 	talk_state = 1
-	
-end		
+
+end
     return true
 end
 

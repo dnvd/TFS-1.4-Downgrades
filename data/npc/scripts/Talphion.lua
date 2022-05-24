@@ -58,55 +58,55 @@ keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'colossus'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'NICE PIECE OF WORK. WOULD BE MORE FUN IF IT COULD MOVE AROUND... WE HAVE PLANS...'})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	-- The Postman Missions Quest
 	if msgcontains(msg, 'dress pattern') and topic == 6 then
-	npcHandler:say('A PRESS LANTERN? NEVER HEARD ABOUT IT!')
+	npcHandler:say('A PRESS LANTERN? NEVER HEARD ABOUT IT!', cid)
 	topic = 7
-	
+
 	elseif msgcontains(msg, 'dress pattern') and topic == 7 then
-	npcHandler:say('CHESS? I DONT PLAY CHESS!')
+	npcHandler:say('CHESS? I DONT PLAY CHESS!', cid)
 	topic = 8
-	
+
 	elseif msgcontains(msg, 'dress pattern') and topic == 8 then
-	npcHandler:say('A PATTERN IN THIS MESS?? HEY DON\'T INSULT MY MACHINEHALL!')
+	npcHandler:say('A PATTERN IN THIS MESS?? HEY DON\'T INSULT MY MACHINEHALL!', cid)
 	topic = 9
-	
+
 	elseif topic == 9 and msgcontains(msg, 'uniform') or msgcontains(msg, 'dress pattern') then
-	npcHandler:say('AH YES! I WORKED ON THE DRESS PATTERN FOR THOSE UNIFORMS. STAINLESS TROUSERS, STEAM DRIVEN BOOTS! ANOTHER MARVEL TO BEHOLD! I\'LL SEND A COPY TO KEVIN IMEDIATELY!')
+	npcHandler:say('AH YES! I WORKED ON THE DRESS PATTERN FOR THOSE UNIFORMS. STAINLESS TROUSERS, STEAM DRIVEN BOOTS! ANOTHER MARVEL TO BEHOLD! I\'LL SEND A COPY TO KEVIN IMEDIATELY!', cid)
 	setPlayerStorageValue(cid, 233, 4)
-	
+
 	elseif msgcontains(msg, 'dress pattern') and getPlayerStorageValue(cid,233) == 3 then
-	npcHandler:say('DRESS FLATTEN? WHO WANTS ME TO FLATTEN A DRESS?')
+	npcHandler:say('DRESS FLATTEN? WHO WANTS ME TO FLATTEN A DRESS?', cid)
 	topic = 6
-	
+
 	elseif msgcontains(msg, 'dress pattern') and getPlayerStorageValue(cid,233) ~= 3 then
-	npcHandler:say('DRESS FLATTEN? WHO WANTS ME TO FLATTEN A DRESS?')
+	npcHandler:say('DRESS FLATTEN? WHO WANTS ME TO FLATTEN A DRESS?', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'uniform') then
-	npcHandler:say('NO, HERE IS NO UNICORN!')
+	npcHandler:say('NO, HERE IS NO UNICORN!', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'heal') then
-	npcHandler:say('I AM AN ENGINEER, NOT A DOCTOR!')
-	
+	npcHandler:say('I AM AN ENGINEER, NOT A DOCTOR!', cid)
+
 	elseif msgcontains(msg, 'heal') and hasCondition(cid, CONDITION_FIRE) == true then
-	npcHandler:say('YOU ARE BURNING! THAT\'S FUN, HOW DO YOU DO THAT?')
+	npcHandler:say('YOU ARE BURNING! THAT\'S FUN, HOW DO YOU DO THAT?', cid)
 	doRemoveCondition(cid, CONDITION_FIRE)
     doSendMagicEffect(getCreaturePosition(cid), 14)
-	
+
 	elseif msgcontains(msg, 'heal') and hasCondition(cid, CONDITION_POISON) == true then
-	npcHandler:say('YOU ARE POISONED! HAVE YOU DRUNK THE STUFF IN A GREEN BOTTLE? THAT\'S SUPERGLUE, NOT SUPPER-GLUE, STUPID!')
+	npcHandler:say('YOU ARE POISONED! HAVE YOU DRUNK THE STUFF IN A GREEN BOTTLE? THAT\'S SUPERGLUE, NOT SUPPER-GLUE, STUPID!', cid)
 	doRemoveCondition(cid, CONDITION_POISON)
 	doSendMagicEffect(getCreaturePosition(cid), 13)
 	end
 
 return true
-end	
-	
+end
+
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

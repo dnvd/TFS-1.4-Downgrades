@@ -18,26 +18,26 @@ function onThink()				npcHandler:onThink()					end
 			obj.callback = FOCUS_GREETSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
-		
+
 		for i, word in pairs(FOCUS_FAREWELLSWORDS) do
 			local obj = {}
 			table.insert(obj, word)
 			obj.callback = FOCUS_FAREWELLSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
-		
+
 		return true
 	end
-	
+
 function greetCallback(cid)
 	npcHandler:setMessage(MESSAGE_GREET, "G...greetings <hicks>.")
 	return true
-end	
+end
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
 local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
- 
+
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I am a priest. <hicks> The worldly representative of the gods so to speak. <hicks> Not that I would say such a thing of course. <hicks> This would be vanity after all."})
 keywordHandler:addKeyword({'name'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I am ... ah, yes, Brewster. That's me, my name I mean <hicks>."})
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Uhm ... Uh ... No idea, sorry."})
@@ -74,22 +74,22 @@ function creatureSayCallback(cid, type, msg)
 
 	if msgcontains(msg, 'heal') then
 		if hasCondition(cid, CONDITION_FIRE) == true then
-			npcHandler:say('You are burning. I will help you.')
+			npcHandler:say('You are burning. I will help you.', cid)
 			doRemoveCondition(cid, CONDITION_FIRE)
 			doSendMagicEffect(getCreaturePosition(cid), 14)
 		elseif hasCondition(cid, CONDITION_POISON) == true then
-			npcHandler:say('You are poisoned. I will help you.')
+			npcHandler:say('You are poisoned. I will help you.', cid)
 			doRemoveCondition(cid, CONDITION_POISON)
 			doSendMagicEffect(getCreaturePosition(cid), 13)
 		elseif getCreatureHealth(cid) < 40 then
-			npcHandler:say('You are looking really bad. Let me heal your wounds.')
+			npcHandler:say('You are looking really bad. Let me heal your wounds.', cid)
 			doCreatureAddHealth(cid, 40 - getCreatureHealth(cid))
 			doSendMagicEffect(getCreaturePosition(cid), 12)
 		else
-			npcHandler:say('You aren\'t looking that bad. Sorry, I can\'t help you. But if you are looking for additional protection you should go on the pilgrimage of ashes.')
+			npcHandler:say('You aren\'t looking that bad. Sorry, I can\'t help you. But if you are looking for additional protection you should go on the pilgrimage of ashes.', cid)
 		end
 	end
-	
+
 	return true
 end
 

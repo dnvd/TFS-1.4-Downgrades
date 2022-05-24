@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -45,27 +45,27 @@ keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, on
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is exactly |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 	local queststate = getPlayerStorageValue(cid,6666)
-	
+
 	if msgcontains(msg, 'crunor\'s cottage') and queststate == 1 then
-		npcHandler:say('Ah yes, I remember my grandfather talking about that name. This house used to be an inn a long time ago. My family bought it from some of these flower')
+		npcHandler:say('Ah yes, I remember my grandfather talking about that name. This house used to be an inn a long time ago. My family bought it from some of these flower', cid)
 		talk_state = 1
 	elseif msgcontains(msg, 'flower guys') and talk_state == 1 then
-        npcHandler:say('Oh, I mean druids of course. They sold the cottage to my family after some of them died in an accident or something like that.')
+        npcHandler:say('Oh, I mean druids of course. They sold the cottage to my family after some of them died in an accident or something like that.', cid)
         talk_state = 2
 	elseif msgcontains(msg, 'accident') and talk_state == 2 then
-        npcHandler:say('As far as I can remember the story, a pet escaped its stable behind the inn. It got somehow involved with powerfull magic at a ritual and was transformed in some way.')
+        npcHandler:say('As far as I can remember the story, a pet escaped its stable behind the inn. It got somehow involved with powerfull magic at a ritual and was transformed in some way.', cid)
         talk_state = 3
 	elseif msgcontains(msg, 'stable') and talk_state == 3 then
-        npcHandler:say('My grandpa told me, in the old days there were some behind this cottage. Nothing big though, just small ones, for chicken or rabbits.')
+        npcHandler:say('My grandpa told me, in the old days there were some behind this cottage. Nothing big though, just small ones, for chicken or rabbits.', cid)
         setPlayerStorageValue(cid,6667,1)
 		talk_state = 0
 	end
-	
+
 	return true
 end
 

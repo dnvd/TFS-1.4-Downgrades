@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -64,19 +64,19 @@ function creatureSayCallback(cid, type, msg)
 
 	if msgcontains(msg, 'heal') then
 		if hasCondition(cid, CONDITION_FIRE) == true then
-			npcHandler:say('You are burning. I will help you.')
+			npcHandler:say('You are burning. I will help you.', cid)
 			doRemoveCondition(cid, CONDITION_FIRE)
 			doSendMagicEffect(getCreaturePosition(cid), 14)
 		elseif hasCondition(cid, CONDITION_POISON) == true then
-			npcHandler:say('You are poisoned. I will help you.')
+			npcHandler:say('You are poisoned. I will help you.', cid)
 			doRemoveCondition(cid, CONDITION_POISON)
 			doSendMagicEffect(getCreaturePosition(cid), 13)
 		elseif getCreatureHealth(cid) < 40 then
-			npcHandler:say('You are looking really bad. Let me heal your wounds.')
+			npcHandler:say('You are looking really bad. Let me heal your wounds.', cid)
 			doCreatureAddHealth(cid, 40 - getCreatureHealth(cid))
 			doSendMagicEffect(getCreaturePosition(cid), 12)
 		else
-			npcHandler:say('You aren\'t looking that bad. Sorry, I can\'t help you. If you are looking for additional protection, you should go on the pilgrimageof ashes.')
+			npcHandler:say('You aren\'t looking that bad. Sorry, I can\'t help you. If you are looking for additional protection, you should go on the pilgrimageof ashes.', cid)
 		end
 		return true
 	end

@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -48,19 +48,19 @@ keywordHandler:addKeyword({'drink'}, StdModule.say, {npcHandler = npcHandler, on
 
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'time') then
 	if getPlayerSex(cid) == 1 then
-	npcHandler:say("No clue, boy.", 1)	
+	npcHandler:say("No clue, boy.", cid)
 	else
-	npcHandler:say("No clue, girl.", 1)	
+	npcHandler:say("No clue, girl.", cid)
 	end
 	talk_state = 0
 
-end		
+end
     return true
 end
 

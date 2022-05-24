@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -38,50 +38,50 @@ keywordHandler:addKeyword({'blind'}, StdModule.say, {npcHandler = npcHandler, on
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'potion') and msgcontains(msg, 'regain') and msgcontains(msg, 'vision') or msgcontains(msg, 'Potion') and msgcontains(msg, 'Regain') and msgcontains(msg, 'Vision') then
-	npcHandler:say("I heard of a potion of regained vision ... but I can't remember how to make it! Maybe you can help me. Do you know something about it?", 1)
+	npcHandler:say("I heard of a potion of regained vision ... but I can't remember how to make it! Maybe you can help me. Do you know something about it?", cid)
 	talk_state = 2
-			
+
 elseif talk_state == 2 and msgcontains(msg, 'yes') or talk_state == 2 and msgcontains(msg, 'Yes') then
-	npcHandler:say("So, did you bring the ingredients with you, stranger?", 1)
+	npcHandler:say("So, did you bring the ingredients with you, stranger?", cid)
 	talk_state = 3
 elseif talk_state == 2 and msgcontains(msg, '') then
-	npcHandler:say("Oh. Maybe someone else could do it, then.", 1)
+	npcHandler:say("Oh. Maybe someone else could do it, then.", cid)
 	talk_state = 0
-	
+
 elseif talk_state == 3 and msgcontains(msg, 'yes') or talk_state == 3 and msgcontains(msg, 'Yes') then
 	if doPlayerRemoveItem(cid, 2690, 1) == true and doPlayerRemoveItem(cid, 2692, 1) == true and doPlayerRemoveItem(cid, 2744, 1) == true and doPlayerRemoveItem(cid, 2693, 1) == true and doPlayerRemoveItem(cid, 2679, 1) == true then
-	npcHandler:say("You seem to have them with you. Can you tell me, how many minutes I have to cook them?", 1)
+	npcHandler:say("You seem to have them with you. Can you tell me, how many minutes I have to cook them?", cid)
 	else
-	npcHandler:say("It doesn't seem to me as if you have the correct ingredients with you, stranger!", 1)
+	npcHandler:say("It doesn't seem to me as if you have the correct ingredients with you, stranger!", cid)
 	end
-	talk_state = 4	
+	talk_state = 4
 
 elseif talk_state == 3 and msgcontains(msg, '') then
-	npcHandler:say("Maybe you can find them!", 1)
-	talk_state = 0	
+	npcHandler:say("Maybe you can find them!", cid)
+	talk_state = 0
 
 elseif talk_state == 4 and msgcontains(msg, '31') then
-	npcHandler:say("Ah. It seems to work. But what are the words I have to speak?", 1)
-	talk_state = 5	
+	npcHandler:say("Ah. It seems to work. But what are the words I have to speak?", cid)
+	talk_state = 5
 elseif talk_state == 4 and msgcontains(msg, '') then
-	npcHandler:say("Oh no, I don't think this is right.", 1)
+	npcHandler:say("Oh no, I don't think this is right.", cid)
 	talk_state = 0
-	
+
 elseif talk_state == 5 and msgcontains(msg, 'nalus murtu') or talk_state == 5 and msgcontains(msg, 'Nalus Murtu') then
-	npcHandler:say("Thank you! NALUS MURTUUU! ... I can see again! To show you, how grateful I am, I'll give you a key. Be wise when using it. I can't tell you, where it matches, but ... take good care, it is useless without mental powers!", 1)
+	npcHandler:say("Thank you! NALUS MURTUUU! ... I can see again! To show you, how grateful I am, I'll give you a key. Be wise when using it. I can't tell you, where it matches, but ... take good care, it is useless without mental powers!", cid)
 		DESERTDEEPKEY = doPlayerAddItem(cid, 2088, 1)
 		doSetItemActionId(DESERTDEEPKEY, 2012)
 		doSetItemSpecialDescription(DESERTDEEPKEY, "(Key: 4037)")
-	talk_state = 0	
+	talk_state = 0
 elseif talk_state == 5 and msgcontains(msg, '') then
-	npcHandler:say("Oh no, I don't think these are the right words.", 1)
-	talk_state = 0	
-	
-end		
+	npcHandler:say("Oh no, I don't think these are the right words.", cid)
+	talk_state = 0
+
+end
     return true
 end
 

@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -68,51 +68,51 @@ keywordHandler:addKeyword({'goshnar'}, StdModule.say, {npcHandler = npcHandler, 
 keywordHandler:addKeyword({'necromant nectar'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "That's none of your business!"})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'god') or msgcontains(msg, 'God') then
-	npcHandler:say("The gods of darkness give us the chance to reach our whole potentials, the gods of good want to capture us in eternal stasis!", 1)
+	npcHandler:say("The gods of darkness give us the chance to reach our whole potentials, the gods of good want to capture us in eternal stasis!", cid)
 	talk_state = 2
 
 elseif talk_state == 2 and msgcontains(msg, 'good') or talk_state == 2 and msgcontains(msg, 'light') then
-	npcHandler:say("The so called gods of good are Fardos, Uman, the elements, Suon, Crunor, Nornur, Bastesh, Kirok, Toth, and Banor.", 1)
-	talk_state = 0	
-elseif talk_state == 2 and msgcontains(msg, 'tibia') or talk_state == 2 and msgcontains(msg, 'Tibia') then
-	npcHandler:say("Tibia is just the mindless elemental power of earth.", 1)
-	talk_state = 0	
-elseif talk_state == 2 and msgcontains(msg, 'evil') or talk_state == 2 and msgcontains(msg, 'darkness') then
-	npcHandler:say("The glorious gods of darkness are Zathroth, Fafnar, Brog, Urgith, and the Archdemons.", 1)
+	npcHandler:say("The so called gods of good are Fardos, Uman, the elements, Suon, Crunor, Nornur, Bastesh, Kirok, Toth, and Banor.", cid)
 	talk_state = 0
-	
-elseif msgcontains(msg, 'gold') or msgcontains(msg, 'money') or msgcontains(msg, 'donation') then	
-	npcHandler:say("Do you want to make a donation?", 1)
-	talk_state = 1	
-	
+elseif talk_state == 2 and msgcontains(msg, 'tibia') or talk_state == 2 and msgcontains(msg, 'Tibia') then
+	npcHandler:say("Tibia is just the mindless elemental power of earth.", cid)
+	talk_state = 0
+elseif talk_state == 2 and msgcontains(msg, 'evil') or talk_state == 2 and msgcontains(msg, 'darkness') then
+	npcHandler:say("The glorious gods of darkness are Zathroth, Fafnar, Brog, Urgith, and the Archdemons.", cid)
+	talk_state = 0
+
+elseif msgcontains(msg, 'gold') or msgcontains(msg, 'money') or msgcontains(msg, 'donation') then
+	npcHandler:say("Do you want to make a donation?", cid)
+	talk_state = 1
+
 elseif talk_state == 1 and msgcontains(msg, 'yes') then
 	if doPlayerRemoveMoney(cid, 10) == true then
 	doSendMagicEffect(getPlayerPosition(cid), 13)
-	npcHandler:say("May the gods bless you!", 1)
+	npcHandler:say("May the gods bless you!", cid)
 	else
-	npcHandler:say("Don't be ashamed but you lack the gold.", 1)
+	npcHandler:say("Don't be ashamed but you lack the gold.", cid)
 	end
 	talk_state = 0
 elseif talk_state == 1 and msgcontains(msg, '') then
-	npcHandler:say("As you wish.", 1)
+	npcHandler:say("As you wish.", cid)
 	talk_state = 0
 elseif msgcontains(msg, 'death to noodles') then
-	npcHandler:say("So, I guess you bring me a magic crystal?", 1)
+	npcHandler:say("So, I guess you bring me a magic crystal?", cid)
 	talk_state = 3
 elseif talk_state == 3 and msgcontains(msg, 'yes') then
 	if doPlayerRemoveItem(cid, 2177, 1) == true then
 	end
-	npcHandler:say("Fine. Now you get what you deserve, you fool! DIE IN AGONY!", 1)
+	npcHandler:say("Fine. Now you get what you deserve, you fool! DIE IN AGONY!", cid)
 	doSendMagicEffect(getCreaturePosition(getNpcCid(  )), 13)
 	doSendMagicEffect(getPlayerPosition(cid), 15)
 	doAddCondition(cid, fire)
 	talk_state = 0
-	
-end		
+
+end
     return true
 end
 

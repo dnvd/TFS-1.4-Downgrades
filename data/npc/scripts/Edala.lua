@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -24,77 +24,77 @@ keywordHandler:addKeyword({'excalibug'}, StdModule.say, {npcHandler = npcHandler
 keywordHandler:addKeyword({'new'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "News? I don't care about news."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 if msgcontains(msg, 'heal') then
 if getCreatureHealth(cid) <= 39 then
-	npcHandler:say("You are looking really bad. Let me heal your wounds.", 1)
+	npcHandler:say("You are looking really bad. Let me heal your wounds.", cid)
 	doCreatureAddHealth(cid, -getCreatureHealth(cid)+40)
 	doSendMagicEffect(getPlayerPosition(cid), 12)
 	talk_state = 0
 	return true
 	else
-	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", 1)
+	npcHandler:say("You aren't looking really bad. Sorry, I can't help you.", cid)
 	return true
 	end
 	talk_state = 0
-end		
-	if(npcHandler.focus ~= cid) then
+end
+	if not npcHandler:isFocused(cid) then
 		return false
-	end	
-	
+	end
+
 if msgcontains(msg, 'bless') then
-	npcHandler:say("There are five different blessings available in five sacred places. These blessings are: the spiritual shielding, the spark of the phoenix, the embrace of tibia, the fire of the suns and the wisdom of solitude.", 1)
+	npcHandler:say("There are five different blessings available in five sacred places. These blessings are: the spiritual shielding, the spark of the phoenix, the embrace of tibia, the fire of the suns and the wisdom of solitude.", cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'fire') or msgcontains(msg, 'sun') then
-	npcHandler:say("Do you wish to receive the blessing of the two suns? It will cost you 10.000 gold, pilgrim.", 1)
+	npcHandler:say("Do you wish to receive the blessing of the two suns? It will cost you 10.000 gold, pilgrim.", cid)
 	talk_state = 1394
 
 
 elseif talk_state == 1394 and msgcontains(msg, 'yes') then
 	if doPlayerRemoveMoney(cid, 10000) == true then
 		if doPlayerAddBless(cid, 3) == true then
-		npcHandler:say("Kneel down and receive the warmth of sunfire, pilgrim.", 1)
+		npcHandler:say("Kneel down and receive the warmth of sunfire, pilgrim.", cid)
 		doSendMagicEffect(getPlayerPosition(cid), 13)
 		setPlayerStorageValue(cid, 30006, 1)
-		talk_state = 0		
+		talk_state = 0
 		else
 		doPlayerAddMoney(cid, 10000)
-		npcHandler:say("You already possess this blessing.", 1)
-		talk_state = 0			
+		npcHandler:say("You already possess this blessing.", cid)
+		talk_state = 0
 		end
 	else
-	npcHandler:say("Oh. You do not have enough money.", 1)
-	talk_state = 0	
+	npcHandler:say("Oh. You do not have enough money.", cid)
+	talk_state = 0
 	end
-	
+
 elseif talk_state == 1394 and msgcontains(msg, '') then
-	npcHandler:say("Ok. Suits me.", 1)
-	talk_state = 0	
-	
+	npcHandler:say("Ok. Suits me.", cid)
+	talk_state = 0
+
 elseif msgcontains(msg, 'phoenix') then
-	npcHandler:say("The spark of the phoenix is given by the dwarven priests of earth and fire in Kazordoon.", 1)
+	npcHandler:say("The spark of the phoenix is given by the dwarven priests of earth and fire in Kazordoon.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'embrace') then
-	npcHandler:say("The druids north of Carlin will provide you with the embrace of tibia.", 1)
+	npcHandler:say("The druids north of Carlin will provide you with the embrace of tibia.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'suns') then
-	npcHandler:say("You can ask for the blessing of the two suns in the suntower near Ab'Dendriel.", 1)
+	npcHandler:say("You can ask for the blessing of the two suns in the suntower near Ab'Dendriel.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'wisdom') then
-	npcHandler:say("Talk to the hermit Eremo on the isle of Cormaya about this blessing.", 1)
+	npcHandler:say("Talk to the hermit Eremo on the isle of Cormaya about this blessing.", cid)
 	talk_state = 0
-	
+
 elseif msgcontains(msg, 'spiritual') then
-	npcHandler:say("You can ask for the blessing of spiritual shielding the whiteflower temple south of Thais.", 1)
+	npcHandler:say("You can ask for the blessing of spiritual shielding the whiteflower temple south of Thais.", cid)
 	talk_state = 0
-end	
+end
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

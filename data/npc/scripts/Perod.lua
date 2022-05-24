@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -81,19 +81,21 @@ keywordHandler:addKeyword({'ammo'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'ammunition'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Do you need arrows for a bow, or bolts for a crossbow?"})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'name') or msgcontains(msg, 'Name') then
-	npcHandler:say("I am Perod, how could you forget that, ".. getPlayerName(cid) .."? We fought back-to-back in those troll caves on Rookgard a long time ago.", 1)
-	talk_state = 0
-			
-elseif msgcontains(msg, 'jungle') or msgcontains(msg, 'Jungle') then
-	npcHandler:say("The jungle is full of adventures and secrets that wait to be explored. Some years ago I would have surely enjoyed that. ...", 1)
-	npcHandler:say("But now that I setteled down here, I don't feel excited anymore by the thought of exploring an inhospitable forest full of animals that want to kill me.", 5)
+	npcHandler:say("I am Perod, how could you forget that, ".. getPlayerName(cid) .."? We fought back-to-back in those troll caves on Rookgard a long time ago.", cid)
 	talk_state = 0
 
-end		
+elseif msgcontains(msg, 'jungle') or msgcontains(msg, 'Jungle') then
+	npcHandler:say({
+		"The jungle is full of adventures and secrets that wait to be explored. Some years ago I would have surely enjoyed that. ...",
+		"But now that I setteled down here, I don't feel excited anymore by the thought of exploring an inhospitable forest full of animals that want to kill me."},
+		cid)
+	talk_state = 0
+
+end
     return true
 end
 

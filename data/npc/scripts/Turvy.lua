@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -111,17 +111,17 @@ keywordHandler:addKeyword({'legs'}, StdModule.say, {npcHandler = npcHandler, onl
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'rumour') or msgcontains(msg, 'Rumour') or msgcontains(msg, 'gossip') or msgcontains(msg, 'Gossip') or msgcontains(msg, 'new') or msgcontains(msg, 'New') then
-	npcHandler:say("You know a rumour? Well then - don't keep it to yourself.", 1)
+	npcHandler:say("You know a rumour? Well then - don't keep it to yourself.", cid)
 	talk_state = 1
-			
+
 elseif talk_state == 3 and msgcontains(msg, '') then
-	npcHandler:say("Go on! I can't wait to hear more!", 1)
+	npcHandler:say("Go on! I can't wait to hear more!", cid)
 	talk_state = 0
-end		
+end
     return true
 end
 

@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -12,22 +12,22 @@ function onThink()				npcHandler:onThink()					end
 
 function greetCallback(cid)
 	if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
-		if getPlayerItemCount(cid, 2182) or getPlayerItemCount(cid, 2186) or getPlayerItemCount(cid, 2185) or getPlayerItemCount(cid, 2181) or getPlayerItemCount(cid, 2183) then 
+		if getPlayerItemCount(cid, 2182) or getPlayerItemCount(cid, 2186) or getPlayerItemCount(cid, 2185) or getPlayerItemCount(cid, 2181) or getPlayerItemCount(cid, 2183) then
 		npcHandler:setMessage(MESSAGE_GREET, "Welcome back, ".. getPlayerName(cid) ..". Hey, nice wand you have there!")
 		else
 		npcHandler:setMessage(MESSAGE_GREET, "Welcome to my hut, ".. getPlayerName(cid) .."! It's always nice to see a druid here.")
 		end
 		return true
-		
+
 	elseif getPlayerVocation(cid) == 1 or getPlayerVocation(cid) == 5 then
 	npcHandler:setMessage(MESSAGE_GREET, "What do you want, ".. getPlayerName(cid) .."?")
 	return true
-	
+
 	else
 	npcHandler:setMessage(MESSAGE_GREET, "Good day, ".. getPlayerName(cid) ..".")
 	return true
-	end	
-end	
+	end
+end
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I am a witch. Didn't you notice?"})
@@ -102,57 +102,57 @@ keywordHandler:addKeyword({'men'}, StdModule.say, {npcHandler = npcHandler, only
 keywordHandler:addKeyword({'man'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "There are only female witches."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 if msgcontains(msg, 'become') and msgcontains(msg, 'witch') or msgcontains(msg, 'Become') and msgcontains(msg, 'witch') then
 	if getPlayerSex(cid) == 1 then
-	npcHandler:say("You're a MAN!", 1)
+	npcHandler:say("You're a MAN!", cid)
 	else
-	npcHandler:say("You can't just become a witch. Either you are or you aren't - and YOU obviously aren't!", 1)
+	npcHandler:say("You can't just become a witch. Either you are or you aren't - and YOU obviously aren't!", cid)
 	end
 	talk_state = 0
 
-elseif msgcontains(msg, 'quest') or msgcontains(msg, 'Quest') then	
-	npcHandler:say("A quest? Well, if you're so keen on doing me a favour... Why don't you try to find a blood herb?", 1)
+elseif msgcontains(msg, 'quest') or msgcontains(msg, 'Quest') then
+	npcHandler:say("A quest? Well, if you're so keen on doing me a favour... Why don't you try to find a blood herb?", cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'blood herb') or msgcontains(msg, 'Blood herb') then
 	if getPlayerItemCount(cid, 2798) >= 1 then
-	npcHandler:say("Do you have a blood herb for me?", 1)
-	talk_state = 1	
+	npcHandler:say("Do you have a blood herb for me?", cid)
+	talk_state = 1
 	else
-	npcHandler:say("The blood herb is very rare. This plant would be very useful for me, but I don't know any accessible places to find it.", 1)
-	talk_state = 0		
+	npcHandler:say("The blood herb is very rare. This plant would be very useful for me, but I don't know any accessible places to find it.", cid)
+	talk_state = 0
 	end
-	
+
 elseif talk_state == 1 and msgcontains(msg, 'yes') or talk_state == 1 and msgcontains(msg, 'yes') then
 	if doPlayerRemoveItem(cid, 2798, 1) == true then
 		if getPlayerVocation(cid) == 1 or getPlayerVocation(cid) == 5 then
 		doPlayerAddMoney(cid, 400)
-		npcHandler:say("Hmm, thanks. Take this.", 1)
+		npcHandler:say("Hmm, thanks. Take this.", cid)
 		elseif getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 6 then
 		doPlayerAddItem(cid, 2324, 1)
-		npcHandler:say("Thank you so much! Here, let me give you a reward...", 1)
+		npcHandler:say("Thank you so much! Here, let me give you a reward...", cid)
 		else
 		doPlayerAddMoney(cid, 300)
-		npcHandler:say("Thank you! Here are some coins for your help.", 1)
+		npcHandler:say("Thank you! Here are some coins for your help.", cid)
 		end
-		talk_state = 0	
+		talk_state = 0
 	else
-	npcHandler:say("Well, do you own one or not?", 1)
-	talk_state = 0		
+	npcHandler:say("Well, do you own one or not?", cid)
+	talk_state = 0
 	end
-	
-elseif msgcontains(msg, 'herbs') or msgcontains(msg, 'Herbs') then	
-	npcHandler:say("The swamp is home to a wide variety of herbs, but the most famous is the blood herb.", 1)
+
+elseif msgcontains(msg, 'herbs') or msgcontains(msg, 'Herbs') then
+	npcHandler:say("The swamp is home to a wide variety of herbs, but the most famous is the blood herb.", cid)
 	talk_state = 0
 
-elseif msgcontains(msg, 'witch') or msgcontains(msg, 'witch') then	
-	npcHandler:say("Aye, I am a witch.", 1)
-	talk_state = 0	
-end		
+elseif msgcontains(msg, 'witch') or msgcontains(msg, 'witch') then
+	npcHandler:say("Aye, I am a witch.", cid)
+	talk_state = 0
+end
     return true
 end
 

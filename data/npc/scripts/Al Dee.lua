@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -93,24 +93,24 @@ keywordHandler:addKeyword({'club'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is about |TIME|. I am so sorry, I have no watches to sell. Do you want to buy something else?"})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'pick') then
-	npcHandler:say('Picks are hard to come by. I trade them only for high quality small axes. Do you want to trade?')
+	npcHandler:say('Picks are hard to come by. I trade them only for high quality small axes. Do you want to trade?', cid)
 	talk_state = 1
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerItemCount(cid,2559) >= 1 then
-	npcHandler:say('Splendid! Here take your pickaxe.')
+	npcHandler:say('Splendid! Here take your pickaxe.', cid)
 	doPlayerRemoveItem(cid,2559,1)
 	doPlayerAddItem(cid,2553,1)
 	talk_state = 0
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerItemCount(cid,2559) == 0 then
-	npcHandler:say('Sorry, I am looking for a SMALL axe.')
+	npcHandler:say('Sorry, I am looking for a SMALL axe.', cid)
 	talk_state = 0
 	elseif msgcontains(msg, 'no') and talk_state == 1 then
-	npcHandler:say('Well, then not.')
+	npcHandler:say('Well, then not.', cid)
 	talk_state = 0
 	end
 

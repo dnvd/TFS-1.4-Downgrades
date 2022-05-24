@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -20,8 +20,8 @@ function greetCallback(cid)
 	else
 	npcHandler:setMessage(MESSAGE_GREET, "Hello, famous ".. getPlayerName(cid) ..". It should be you teaching me!")
 	return true
-	end	
-end	
+	end
+end
 
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
@@ -51,18 +51,18 @@ keywordHandler:addKeyword({'excalibug'}, StdModule.say, {npcHandler = npcHandler
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'sewer') or msgcontains(msg, 'Sewer') then
 	if getPlayerSex(cid) == 1 then
-	npcHandler:say("An interesting place you should consider to visit.", 1)
+	npcHandler:say("An interesting place you should consider to visit.", cid)
 	else
-	npcHandler:say("The sewers of Carlin are a disgusting place. Better never crawl around in these stinking tunnels.", 1)
+	npcHandler:say("The sewers of Carlin are a disgusting place. Better never crawl around in these stinking tunnels.", cid)
 	end
 	talk_state = 0
 
-end		
+end
     return true
 end
 

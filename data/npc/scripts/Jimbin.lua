@@ -22,14 +22,14 @@ function onThink()				npcHandler:onThink()					end
 			obj.callback = FOCUS_GREETSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
-		
+
 		for i, word in pairs(FOCUS_FAREWELLSWORDS) do
 			local obj = {}
 			table.insert(obj, word)
 			obj.callback = FOCUS_FAREWELLSWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
-		
+
 		return true
 	end
 
@@ -60,22 +60,22 @@ keywordHandler:addKeyword({'food'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is about |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
-if msgcontains(msg, 'hi maryza') and npcHandler.focus == cid or msgcontains(msg, 'hello maryza') and npcHandler.focus == cid then
-npcHandler:say("Come back if you enjoyed my tavern, if not ... well, get eaten by a dragon, jawoll.", 1)
-npcHandler:releaseFocus()
-npcHandler:resetNpc()
+	if msgcontains(msg, 'hi maryza') and npcHandler.focus == cid or msgcontains(msg, 'hello maryza') and npcHandler.focus == cid then
+	npcHandler:say("Come back if you enjoyed my tavern, if not ... well, get eaten by a dragon, jawoll.", cid)
+	npcHandler:releaseFocus()
+	npcHandler:resetNpc()
 
-elseif msgcontains(msg, 'maryza') and npcHandler.focus == cid then
-npcHandler:say("She's a fine cook; likes it bloddy, though. Humans call her Bloody Mary, but don't mention that to her if you're smart.", 1)
+	elseif msgcontains(msg, 'maryza') and npcHandler.focus == cid then
+	npcHandler:say("She's a fine cook; likes it bloddy, though. Humans call her Bloody Mary, but don't mention that to her if you're smart.", cid)
 
-elseif msgcontains(msg, 'hi') or msgcontains(msg, 'Hi') or msgcontains(msg, 'hello') or msgcontains(msg, 'Hello') then
-	npcHandler:say("Talking to me, ".. getPlayerName(cid) .."?", 1)
-end		
-    return true
+	elseif msgcontains(msg, 'hi') or msgcontains(msg, 'Hi') or msgcontains(msg, 'hello') or msgcontains(msg, 'Hello') then
+		npcHandler:say("Talking to me, ".. getPlayerName(cid) .."?", cid)
+	end
+	return true
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

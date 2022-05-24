@@ -8,113 +8,113 @@ function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg) 
 function onThink()	npcHandler:onThink() end
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'heal') or msgcontains(msg, 'help') then
 		if hasCondition(cid, CONDITION_FIRE) == true then
-			npcHandler:say('You are burning. I will help you.')
+			npcHandler:say('You are burning. I will help you.', cid)
 			doRemoveCondition(cid, CONDITION_FIRE)
 			doSendMagicEffect(getCreaturePosition(cid), 14)
 		elseif hasCondition(cid, CONDITION_POISON) == true then
-			npcHandler:say('You are poisoned. I will help you.')
+			npcHandler:say('You are poisoned. I will help you.', cid)
 			doRemoveCondition(cid, CONDITION_POISON)
 			doSendMagicEffect(getCreaturePosition(cid), 13)
 		elseif getCreatureHealth(cid) < 40 then
-			npcHandler:say('You are looking really bad. Let me heal your wounds.')
+			npcHandler:say('You are looking really bad. Let me heal your wounds.', cid)
 			doCreatureAddHealth(cid, 40 - getCreatureHealth(cid))
 			doSendMagicEffect(getCreaturePosition(cid), 12)
 		else
-			npcHandler:say('You aren\'t looking that bad. Sorry, I can\'t help you. But if you are looking for additional protection you should go on the pilgrimage of ashes.')
+			npcHandler:say('You aren\'t looking that bad. Sorry, I can\'t help you. But if you are looking for additional protection you should go on the pilgrimage of ashes.', cid)
 		end
-	end	
-	
+	end
+
 	if msgcontains(msg, 'my heart belongs to') and getPlayerSex(cid) == PLAYER_MALE then
-	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', wille you honor your bride and stay at her side even in the darkest hours life could bring upon you?')
+	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', wille you honor your bride and stay at her side even in the darkest hours life could bring upon you?', cid)
 	topic = 9
-	
+
 	elseif msgcontains(msg, 'my heart belongs to') and getPlayerSex(cid) == PLAYER_FEMALE then
-	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', will you honor your groom and stay at his side even in the darkest hours life could bring upon you?",')
-	topic = 9	
-	
+	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', will you honor your groom and stay at his side even in the darkest hours life could bring upon you?",', cid)
+	topic = 9
+
 	elseif msgcontains(msg, 'gold') or msgcontains(msg, 'money') or msgcontains(msg, 'donation') then
-	npcHandler:say('Do you want to make a donation?')
+	npcHandler:say('Do you want to make a donation?', cid)
 	topic = 1
-	
+
 	elseif msgcontains(msg, 'sin') or msgcontains(msg, 'sins') then
-	npcHandler:say('Do you whish to confess your sins?')
+	npcHandler:say('Do you whish to confess your sins?', cid)
 	topic = 3
-	
+
 	elseif msgcontains(msg, 'yes') and topic == 3 then
-	npcHandler:say('So tell me what shadows your soul, my child')
+	npcHandler:say('So tell me what shadows your soul, my child', cid)
 	topic = 4
-	
+
 	elseif msgcontains(msg, '') and topic == 3 then
-	npcHandler:say('As you wish.')
+	npcHandler:say('As you wish.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, '') and topic == 4 then
-	npcHandler:say('Meditate on that and pray for your soul.')
-	topic = 0	
-	
+	npcHandler:say('Meditate on that and pray for your soul.', cid)
+	topic = 0
+
 	elseif msgcontains(msg, 'yes') and getPlayerMoney(cid) >= 15 and topic == 1 then
 	doPlayerRemoveMoney(cid, 15)
-	npcHandler:say('May the gods bless you!')
+	npcHandler:say('May the gods bless you!', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'yes') and getPlayerMoney(cid) < 15 and topic == 1 then
-	npcHandler:say('Dont be ashamed, but you lack the gold.')
+	npcHandler:say('Dont be ashamed, but you lack the gold.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'no') and topic == 1 then
-	npcHandler:say('As you wish.')
+	npcHandler:say('As you wish.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'marriage') or msgcontains(msg, 'ceremony') then
-	npcHandler:say('You want me to initiate a marriage ceremony?')
+	npcHandler:say('You want me to initiate a marriage ceremony?', cid)
 	topic = 5
-	
+
 	elseif msgcontains(msg, 'yes') and topic == 5 or msgcontains(msg, 'I will') and topic == 5 then
-	npcHandler:say('In the Name of the Gods of good, I ask thee, if both of you are prepared and ready!')
+	npcHandler:say('In the Name of the Gods of good, I ask thee, if both of you are prepared and ready!', cid)
 	topic = 6
-	
+
 	elseif msgcontains(msg, '') and topic == 5 then
-	npcHandler:say('Perhaps another time. Marriage isn\'t a step one should consider without love in the heart.')
+	npcHandler:say('Perhaps another time. Marriage isn\'t a step one should consider without love in the heart.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'yes') and topic == 6 or msgcontains(msg, 'I will') and topic == 6 then
-	npcHandler:say('Silence please! I hereby invoke the attention of the eternal powers looking over our souls and lives. May the gods bless us!')
+	npcHandler:say('Silence please! I hereby invoke the attention of the eternal powers looking over our souls and lives. May the gods bless us!', cid)
 	topic = 7
 	doSendMagicEffect(getCreaturePosition(cid), CONST_ME_MAGIC_BLUE)
-	
+
 	elseif msgcontains(msg, 'may god bless us') and getPlayerSex(cid) == PLAYER_MALE and topic == 7 then
-	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', will you honor your bride and stay at her side even in the darkest hours life could bring upon you?')
+	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', will you honor your bride and stay at her side even in the darkest hours life could bring upon you?', cid)
 	topic = 8
-	
+
 	elseif msgcontains(msg, 'may god bless us') and getPlayerSex(cid) == PLAYER_FEMALE and topic == 7 then
-	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', will you honor your groom and stay at his side even in the darkest hours life could bring upon you?')
+	npcHandler:say('I ask thee, '.. getPlayerName(cid) ..', will you honor your groom and stay at his side even in the darkest hours life could bring upon you?', cid)
 	topic = 8
-	
+
 	elseif topic == 8 and getPlayerSex(cid) == PLAYER_MALE and msgcontains(msg, 'yes') or msgcontains(msg, 'I will') then
-	npcHandler:say('So by the powers of the gods your soul is now bound to your bride. Bride, step forward and tell me to whom your heart belongs!')
+	npcHandler:say('So by the powers of the gods your soul is now bound to your bride. Bride, step forward and tell me to whom your heart belongs!', cid)
 	doSendMagicEffect(getCreaturePosition(cid), CONST_ME_MAGIC_RED)
 	topic = 0
- 	
+
 	elseif topic == 8  and getPlayerSex(cid) == PLAYER_FEMALE and msgcontains(msg, 'yes') or msgcontains(msg, 'I will') then
-	npcHandler:say('So by the powers of the gods your soul is now bound to your groom. Groom, step forward and tell me to whom your heart belongs!')
+	npcHandler:say('So by the powers of the gods your soul is now bound to your groom. Groom, step forward and tell me to whom your heart belongs!', cid)
 	doSendMagicEffect(getCreaturePosition(cid), CONST_ME_MAGIC_RED)
 	topic = 0
-	
+
 	elseif topic == 9 and msgcontains(msg, 'yes') or msgcontains(msg, 'I will') then
-	npcHandler:say('So by the powers of the gods your souls are now bound together for eternity. May the gods watch with grace over your further life as a married couple. Go now and celebrate your marriage!')
+	npcHandler:say('So by the powers of the gods your souls are now bound together for eternity. May the gods watch with grace over your further life as a married couple. Go now and celebrate your marriage!', cid)
 	doSendMagicEffect(getCreaturePosition(cid), CONST_ME_MAGIC_RED)
-	
+
 	elseif msgcontains(msg, 'no') and topic == 9 then
-	npcHandler:say('Your neglection of love hurts my heart. Leave now!')	
+	npcHandler:say('Your neglection of love hurts my heart. Leave now!', cid)
 	topic = 0
 	end
-	
+
 	return true
 end
 

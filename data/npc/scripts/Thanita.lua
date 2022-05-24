@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -21,27 +21,33 @@ keywordHandler:addKeyword({'tower'}, StdModule.say, {npcHandler = npcHandler, on
 keywordHandler:addKeyword({'enem'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "The enemies I fear most here are these nasty orcs."})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'beasts') or msgcontains(msg, 'Beasts') or msgcontains(msg, 'orc') or msgcontains(msg, 'them') or msgcontains(msg, 'raid') or msgcontains(msg, 'Orc') then
-	npcHandler:say("These green, orcish raiders come in masses. Hundreds of them. They are worse than those goblins I have to deal with from time to time. ...", 1)
-	npcHandler:say("Some of them come on beastly warwolves, others shoot fireballs at you and some are just plain ugly. ...", 5)
-	npcHandler:say("They have never succeeded though in capturing this tower. So far I have always been able to put them to flight.", 9)
+	npcHandler:say({
+		"These green, orcish raiders come in masses. Hundreds of them. They are worse than those goblins I have to deal with from time to time. ...",
+		"Some of them come on beastly warwolves, others shoot fireballs at you and some are just plain ugly. ...",
+		"They have never succeeded though in capturing this tower. So far I have always been able to put them to flight."},
+		cid)
 	talk_state = 0
-			
+
 elseif msgcontains(msg, 'mission') or msgcontains(msg, 'Mission') or msgcontains(msg, 'quest') or msgcontains(msg, 'Quest') then
-	npcHandler:say("Well, I cannot provide you with a mission, I have a mission to fulfill myself. ...", 1)
-	npcHandler:say("However, when the orcs attack, you are more than welcome to help me to defeat them. ...", 5)
-	npcHandler:say("I'll even let you have all the stuff they carry with them. Even if they looted it from the tower here.", 9)
+	npcHandler:say({
+		"Well, I cannot provide you with a mission, I have a mission to fulfill myself. ...",
+		"However, when the orcs attack, you are more than welcome to help me to defeat them. ...",
+		"I'll even let you have all the stuff they carry with them. Even if they looted it from the tower here."},
+		cid)
 	talk_state = 0
 
 elseif msgcontains(msg, 'amazon') or msgcontains(msg, 'Amazon') then
-	npcHandler:say("I see you have heard of amazons before. Well let me tell you, probably everything you heard is true. We are much stronger and tougher than people think. Also, we know how to fight and could teach many men how to handle a weapon. ...", 1)
-	npcHandler:say("Not that we would do such a foolish thing.", 5)
+	npcHandler:say({
+		"I see you have heard of amazons before. Well let me tell you, probably everything you heard is true. We are much stronger and tougher than people think. Also, we know how to fight and could teach many men how to handle a weapon. ...",
+		"Not that we would do such a foolish thing."},
+		cid)
 	talk_state = 0
 
-end		
+end
     return true
 end
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

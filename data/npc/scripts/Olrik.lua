@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 
 local keywordHandler = KeywordHandler:new()
@@ -52,109 +52,109 @@ keywordHandler:addKeyword({'quero'}, StdModule.say, {npcHandler = npcHandler, on
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It's |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 if msgcontains(msg, 'parcel') or msgcontains(msg, 'Parcel') then
 	itemname = "parcel"
 	itemprice = 10
-	npcHandler:say("Would you like to buy a parcel for 10 gold?", 1)
+	npcHandler:say("Would you like to buy a parcel for 10 gold?", cid)
 	talk_state = 8595
-	
+
 elseif msgcontains(msg, 'letter') or msgcontains(msg, 'Letter') then
 	itemname = "letter"
 	itemprice = 5
-	npcHandler:say("Would you like to buy a letter for 5 gold?", 1)
-	talk_state = 8596	
-	
-			
+	npcHandler:say("Would you like to buy a letter for 5 gold?", cid)
+	talk_state = 8596
+
+
 elseif talk_state == 8595 and msgcontains(msg, 'yes') or talk_state == 8595 and msgcontains(msg, 'Yes') then
 	if doPlayerRemoveMoney(cid, 10) == true then
-		npcHandler:say("Here you are. Don't forget to write the name and the address of the receiver on the label. The label has to be in the parcel before you put the parcel in a mailbox.", 1)
+		npcHandler:say("Here you are. Don't forget to write the name and the address of the receiver on the label. The label has to be in the parcel before you put the parcel in a mailbox.", cid)
 		doPlayerAddItem(cid, 2595)
 		doPlayerAddItem(cid, 2599)
 	else
-	npcHandler:say("Oh, you do not have enough gold to buy a ".. itemname ..".", 1)
+	npcHandler:say("Oh, you do not have enough gold to buy a ".. itemname ..".", cid)
 	end
 elseif talk_state == 8596 and msgcontains(msg, 'yes') or talk_state == 8596 and msgcontains(msg, 'Yes') then
 	if doPlayerRemoveMoney(cid, 5) == true then
-		npcHandler:say("Here it is. Don't forget to write the name of the receiver in the first line and the address in the second one before you put the letter in a mailbox.", 1)
+		npcHandler:say("Here it is. Don't forget to write the name of the receiver in the first line and the address in the second one before you put the letter in a mailbox.", cid)
 		doPlayerAddItem(cid, 2597)
 	else
-	npcHandler:say("Oh, you do not have enough gold to buy a ".. itemname ..".", 1)
+	npcHandler:say("Oh, you do not have enough gold to buy a ".. itemname ..".", cid)
 	end
-	
+
 elseif talk_state == 8595 and msgcontains(msg, '') then
-npcHandler:say("Ok.", 1)
+npcHandler:say("Ok.", cid)
 elseif talk_state == 8596 and msgcontains(msg, '') then
-npcHandler:say("Ok.", 1)
+npcHandler:say("Ok.", cid)
 
 elseif  msgcontains(msg, 'mail') then
-    npcHandler:say('Our mail system is unique! And everyone can use it. Do you want to know more about it?', 1)
-    talk_state = 505   
+    npcHandler:say('Our mail system is unique! And everyone can use it. Do you want to know more about it?', cid)
+    talk_state = 505
 
         elseif talk_state == 505 and msgcontains(msg, 'yes') then
-		npcHandler:say('The Tibia Mail System enables you to send and receive letters and parcels. You can buy them here if you want.', 1)
+		npcHandler:say('The Tibia Mail System enables you to send and receive letters and parcels. You can buy them here if you want.', cid)
 		talk_state = 0
         elseif talk_state == 505 and msgcontains(msg, 'no') then
-		npcHandler:say('Is there anything else I can do for you?', 1)
+		npcHandler:say('Is there anything else I can do for you?', cid)
 		talk_state = 0
 
 	-- The Postman Missions Quest
 	elseif msgcontains(msg, 'measurements') and getPlayerStorageValue(cid,234) > 0 and getPlayerStorageValue(cid,240) < 1 then
-	npcHandler:say('My measurements? Listen, lets make that a bit more exciting ... No, no, not what you think! I mean let\'s gamble. I will roll a dice. If I roll a 6 you win and I\'ll tell you what you need to know, else I win and get 5 gold. Deal?')
+	npcHandler:say('My measurements? Listen, lets make that a bit more exciting ... No, no, not what you think! I mean let\'s gamble. I will roll a dice. If I roll a 6 you win and I\'ll tell you what you need to know, else I win and get 5 gold. Deal?', cid)
 	amount = math.random(1,6)
 	topic = 5
-	
+
 	elseif topic == 5 and msgcontains(msg, 'no') then
-	npcHandler:say('This way you\'ll never get my measurements.')
+	npcHandler:say('This way you\'ll never get my measurements.', cid)
 	topic = 0
-	
+
 	elseif topic == 5 and getPlayerMoney(cid) >= 5 and amount == 6 then
-	npcHandler:say('Ok, here we go ... 6! You have won! How lucky you are! So listen ...<tells you what you need to know>')
+	npcHandler:say('Ok, here we go ... 6! You have won! How lucky you are! So listen ...<tells you what you need to know>', cid)
 	setPlayerStorageValue(cid,240,1)
 	setPlayerStorageValue(cid,234,getPlayerStoraValue(cid,234)+1)
 	topic = 0
-	
+
 	elseif topic == 5 and getPlayerMoney(cid) >= 5 then
-	npcHandler:say('Ok, and its ... 5! You have lost. He he. Another game?')
+	npcHandler:say('Ok, and its ... 5! You have lost. He he. Another game?', cid)
 	doPlayerRemoveMoney(cid, 5)
 	topic = 6
-	
+
 	elseif topic == 5 and getPlayerMoney(cid) < 5 then
-	npcHandler:say('I am sorry, but you don\'t have so much money.')
+	npcHandler:say('I am sorry, but you don\'t have so much money.', cid)
 	topic = 0
-	
+
 	elseif topic == 6 and msgcontains(msg, 'yes') then
-	npcHandler:say('Ok, no weights in the dice, no dirty tricks, are you ready?')
+	npcHandler:say('Ok, no weights in the dice, no dirty tricks, are you ready?', cid)
 	amount2 = math.random(1,6)
 	topic = 7
-	
+
 	elseif topic == 6 and msgcontains(msg, 'no') then
-	npcHandler:say('This way you\'ll never get my measurements.')
+	npcHandler:say('This way you\'ll never get my measurements.', cid)
 	topic = 0
-	
+
 	elseif topic == 7 and getPlayerMoney(cid) >= 5 and amount2 == 6 then
-	npcHandler:say('Ok, here we go ... 6! You have won! How lucky you are! So listen ...<tells you what you need to know>')
+	npcHandler:say('Ok, here we go ... 6! You have won! How lucky you are! So listen ...<tells you what you need to know>', cid)
 	setPlayerStorageValue(cid,240,1)
 	setPlayerStorageValue(cid,234,getPlayerStorageValue(cid,234)+1)
 	topic = 0
-	
+
 	elseif topic == 7 and msgcontains(msg, 'no') then
-	npcHandler:say('This way you\'ll never get my measurements.')
+	npcHandler:say('This way you\'ll never get my measurements.', cid)
 	topic = 0
-	
+
 	elseif topic == 7 and getPlayerMoney(cid) >= 5 then
-	npcHandler:say('Ok, and its ... 5! You have lost. He he. Another game?')
+	npcHandler:say('Ok, and its ... 5! You have lost. He he. Another game?', cid)
 	doPlayerRemoveMoney(cid, 5)
 	topic = 6
-	
+
 	elseif topic == 7 and getPlayerMoney(cid) < 5 then
-	npcHandler:say('I am sorry, but you don\'t have so much money.')
-	topic = 0	
-	
-end		
+	npcHandler:say('I am sorry, but you don\'t have so much money.', cid)
+	topic = 0
+
+end
     return true
 end
 

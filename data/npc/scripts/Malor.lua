@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -18,8 +18,8 @@ function greetCallback(cid)
 	return true
 	elseif getPlayerStorageValue(cid,8128) <= 2 then
 	npcHandler:setMessage(MESSAGE_GREET, "...")
-	end	
-end	
+	end
+end
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
 local shopModule = ShopModule:new()
@@ -47,7 +47,7 @@ shopModule:addBuyableItem({''}, 					0, 2)
 shopModule:addBuyableItem({''}, 					0, 2)
 shopModule:addBuyableItem({''}, 					0, 2)
 shopModule:addBuyableItem({''}, 					0, 2)
- 
+
 
 
 keywordHandler:addKeyword({''}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = ""})
@@ -66,17 +66,17 @@ keywordHandler:addKeyword({''}, StdModule.say, {npcHandler = npcHandler, onlyFoc
 
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, '') or msgcontains(msg, '') then
 	selfSay("")
 	talk_state = 0
-			
+
 elseif msgcontains(msg, 'fuck') then
 
 
-end		
+end
     return true
 end
 

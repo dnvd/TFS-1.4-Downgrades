@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -17,8 +17,8 @@ function greetCallback(cid)
 	else
 	npcHandler:setMessage(MESSAGE_GREET, "Welcome home, Lady ".. getPlayerName(cid) ..".")
 	return true
-	end	
-end	
+	end
+end
 
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 
@@ -29,16 +29,16 @@ keywordHandler:addKeyword({'record'}, StdModule.say, {npcHandler = npcHandler, o
 keywordHandler:addKeyword({'mail'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "You can get a letter from me."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'letter') then
 	doPlayerAddItem(cid, 2597, 1)
-	npcHandler:say("Here you are.", 1)
+	npcHandler:say("Here you are.", cid)
 	talk_state = 0
 
-end		
+end
     return true
 end
 

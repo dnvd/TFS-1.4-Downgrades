@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -75,22 +75,22 @@ keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'fish'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Go away with that waterthing!"})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'buy') and msgcontains(msg, 'rotworm') then
-	npcHandler:say("Do you want to buy a rotworm?", 1)
+	npcHandler:say("Do you want to buy a rotworm?", cid)
 	talk_state = 1
 elseif talk_state == 1 and msgcontains(msg, 'yes') then
-	npcHandler:say("Hey, you don't own a drilling licence. No deal!", 1)
-	talk_state = 0	
-	
+	npcHandler:say("Hey, you don't own a drilling licence. No deal!", cid)
+	talk_state = 0
+
 elseif talk_state == 1 and msgcontains(msg, '') then
-	npcHandler:say("You will regret that.", 1)
-	talk_state = 0	
+	npcHandler:say("You will regret that.", cid)
+	talk_state = 0
 
 
-end		
+end
     return true
 end
 

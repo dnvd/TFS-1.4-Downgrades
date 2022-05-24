@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -32,20 +32,20 @@ keywordHandler:addKeyword({'equipment'}, StdModule.say, {npcHandler = npcHandler
 keywordHandler:addKeyword({'table'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I sell big tables, round tables, small tables and square tables, which would you like to buy?"})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'time') then
 		if getPlayerSex(cid) == 1 then
-			npcHandler:say('It\'s '.. getTibiaTime() ..', sire.')
+			npcHandler:say('It\'s '.. getTibiaTime() ..', sire.', cid)
 		else
-			npcHandler:say('It\'s '.. getTibiaTime() ..', my lady.')
+			npcHandler:say('It\'s '.. getTibiaTime() ..', my lady.', cid)
 		end
-	end		
+	end
 
 return true
-end	
-		
+end
+
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

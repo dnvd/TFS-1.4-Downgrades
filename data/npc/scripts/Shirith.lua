@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -34,31 +34,31 @@ keywordHandler:addKeyword({'new'}, StdModule.say, {npcHandler = npcHandler, only
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'key') or msgcontains(msg, 'Key') then
-	npcHandler:say("I would sell you a key for 50 gold, ok?", 1)
+	npcHandler:say("I would sell you a key for 50 gold, ok?", cid)
 	talk_state = 1
-			
+
 elseif talk_state == 1 and msgcontains(msg, 'yes') or talk_state == 1 and msgcontains(msg, 'Yes') then
 	if doPlayerRemoveMoney(cid, 50) == true then
 	SHADOWCAVEKEY = doPlayerAddItem(cid, 2088, 1)
 	doSetItemActionId(SHADOWCAVEKEY, 2013)
 	doSetItemSpecialDescription(SHADOWCAVEKEY, "(Key: 3033)")
-	npcHandler:say("Here it is.", 1)
+	npcHandler:say("Here it is.", cid)
 	else
-	npcHandler:say("You do not have enough gold.", 1)
+	npcHandler:say("You do not have enough gold.", cid)
 	end
 	talk_state = 0
 
 elseif talk_state == 1 and msgcontains(msg, '') then
-	npcHandler:say("Ok, then not.", 1)
+	npcHandler:say("Ok, then not.", cid)
 	talk_state = 0
-	
-	
-end		
+
+
+end
     return true
 end
 

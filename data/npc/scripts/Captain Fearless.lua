@@ -1,4 +1,5 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
+dofile('data/npc/lib/tibia.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -17,7 +18,7 @@ function greetCallback(cid)
 	else
 		npcHandler:setMessage(MESSAGE_GREET, "Welcome on board, Madam ".. getPlayerName(cid) ..".")
 		return true
-	end	
+	end
 end
 
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
@@ -63,15 +64,15 @@ addTravelKeyword('thais', 170, BOATPOS_THAIS)
 
 -- (do_later)
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 	if msgcontains(msg, 'darashia') then
-		npcHandler:say('I warn you! This route is haunted by a ghostship. Do you really want to go there?')
+		npcHandler:say('I warn you! This route is haunted by a ghostship. Do you really want to go there?', cid)
 		talk_state = 2
 	elseif msgcontains(msg, 'yes') and talk_state == 2 then
-		npcHandler:say('Do you seek a passage to Darashia for 60 gold?')
+		npcHandler:say('Do you seek a passage to Darashia for 60 gold?', cid)
 		talk_state = 3
 		town_boat = darashia
 		price = 60
@@ -94,24 +95,24 @@ function creatureSayCallback(cid, type, msg)
 						talk_state = 0
 					end
 				else
-					npcHandler:say('You don\'t have enough money.')
+					npcHandler:say('You don\'t have enough money.', cid)
 					talk_state = 0
 				end
 			else
-				npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+				npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!', cid)
 				talk_state = 0
 			end
 		else
-			npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+			npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.', cid)
 			talk_state = 0
 		end
 	elseif msgcontains(msg, 'no') and talk_state == 2 then
-		npcHandler:say('We would like to serve you some time.')
-		talk_state = 0	
+		npcHandler:say('We would like to serve you some time.', cid)
+		talk_state = 0
 	end
 
-	return true	
+	return true
 end
-	
+
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

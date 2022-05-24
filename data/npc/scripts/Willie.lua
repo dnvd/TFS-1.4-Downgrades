@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -27,7 +27,7 @@ shopModule:addBuyableItem({'bread'}, 2689, 3)
 shopModule:addBuyableItem({'cheese'}, 2696, 5)
 shopModule:addBuyableItem({'meat'}, 2666, 5)
 shopModule:addBuyableItem({'ham'}, 2671, 8)
- 
+
 
 
 keywordHandler:addKeyword({'how are you'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Fine enough."})
@@ -58,31 +58,31 @@ keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "I buy food of any kind. Since I am a great cook I need much of it."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'banana') then
-	npcHandler:say('Have you found a banana for me?')
+	npcHandler:say('Have you found a banana for me?', cid)
 	topic = 1
-	
+
 	elseif msgcontains(msg, 'yes') and getPlayerItemCount(cid, 2676) >= 1 and topic == 1 then
-	npcHandler:say('A banana! Great. Take this shield, so the &#@&* monsters don\'t beat the &@*&@ out of you.')
+	npcHandler:say('A banana! Great. Take this shield, so the &#@&* monsters don\'t beat the &@*&@ out of you.', cid)
 	doPlayerRemoveItem(cid,2676,1)
 	doPlayerAddItem(cid,2526,1)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'yes') and getPlayerItemCount(cid, 2676) < 1 and topic == 1 then
-	npcHandler:say('Hm, you don\'t have it.')
+	npcHandler:say('Hm, you don\'t have it.', cid)
 	topic = 0
-	
+
 	elseif msgcontains(msg, 'no') and topic == 1 then
-	npcHandler:say('Too bad.')
+	npcHandler:say('Too bad.', cid)
 	topic = 0
 	end
-	
+
 return true
-end	
-	
+end
+
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

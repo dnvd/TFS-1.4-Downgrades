@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -39,54 +39,54 @@ keywordHandler:addKeyword({'ship'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'tibia'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "Hehe, do you have a shovel? I can sell you a shovel if you want to return to Tibia."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'help') then
-	npcHandler:say('I need gold. Can you spend me 100 gold pieces?')
+	npcHandler:say('I need gold. Can you spend me 100 gold pieces?', cid)
 	talk_state = 1
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerMoney(cid) >= 100 then
-	npcHandler:say('Thank you very much. Can you spend me 500 more gold pieces? I will give you a nice hint.')
+	npcHandler:say('Thank you very much. Can you spend me 500 more gold pieces? I will give you a nice hint.', cid)
 	doPlayerRemoveMoney(cid, 100)
 	talk_state = 2
 	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerMoney(cid) < 100 then
-	npcHandler:say('You\'ve not enough money for me.')
+	npcHandler:say('You\'ve not enough money for me.', cid)
 	talk_state = 0
 	elseif msgcontains(msg, 'no') and talk_state == 1 then
-	npcHandler:say('Hmm, maybe next time.')
+	npcHandler:say('Hmm, maybe next time.', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 2 and getPlayerMoney(cid) >= 500 then
 	doPlayerRemoveMoney(cid, 500)
-	npcHandler:say('That\'s great! I have stolen something from Dermot. You can buy it for 200 gold. Do you want to buy it?')
+	npcHandler:say('That\'s great! I have stolen something from Dermot. You can buy it for 200 gold. Do you want to buy it?', cid)
 	talk_state = 3
 	elseif msgcontains(msg, 'yes') and talk_state == 2 and getPlayerMoney(cid) < 500 then
-	npcHandler:say('Sorry, that\'s not enough.')
+	npcHandler:say('Sorry, that\'s not enough.', cid)
 	talk_state = 0
 	elseif msgcontains(msg, 'no') and talk_state == 2 then
-	npcHandler:say('It was your decision.')
+	npcHandler:say('It was your decision.', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'yes') and talk_state == 3 and getPlayerMoney(cid) >= 200 then
-	npcHandler:say('Now you own the hot key.')
+	npcHandler:say('Now you own the hot key.', cid)
 	doPlayerRemoveMoney(cid, 200)
 	key = doPlayerAddItem(cid, 2087,1)
 	doSetItemActionId(key,3940)
 	doSetItemSpecialDescription(key, "(Key: 3940)")
 	talk_state = 0
 	elseif msgcontains(msg, 'yes') and talk_state == 3 and getPlayerMoney(cid) < 200 then
-	npcHandler:say('Pah! I said 200 gold. You don\'t have so much.')
+	npcHandler:say('Pah! I said 200 gold. You don\'t have so much.', cid)
 	talk_state = 0
 	elseif msgcontains(msg, 'no') and talk_state == 3 then
-	npcHandler:say('Ok. No problem. I\'ll find another buyer.')
+	npcHandler:say('Ok. No problem. I\'ll find another buyer.', cid)
 	talk_state = 0
-	
+
 	elseif msgcontains(msg, 'bye') and (talk_state >= 1 and talk_state <= 3) then
-	npcHandler:say('Have a nice day.')
+	npcHandler:say('Have a nice day.', cid)
 	talk_state = 0
-	
+
 	end
 
 	return true

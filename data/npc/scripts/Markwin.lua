@@ -9,8 +9,8 @@ function onThink()	npcHandler:onThink() end
 
 function greetCallback(cid)
 	if getPlayerStorageValue(cid,222) == -1 then
-		npcHandler:say('No! The hornless have reached my city! BODYGUARDS TO ME!')
-		
+		npcHandler:say('No! The hornless have reached my city! BODYGUARDS TO ME!', cid)
+
 		pos = getCreaturePosition(getNpcCid())
 		local northEast = {x=pos.x+1,y=pos.y-1,z=pos.z}
 		local northWest = {x=pos.x-1,y=pos.y-1,z=pos.z}
@@ -34,7 +34,7 @@ function greetCallback(cid)
 		npcHandler:setMessage(MESSAGE_GREET, 'Well ... you defeated my guards! Now everything is over! I guess I will have to answer your questions now.')
 		return true
 	end
-	
+
 	if getPlayerStorageValue(cid,245) == 2 then
 		npcHandler:setMessage(MESSAGE_GREET, 'Oh, it\'s you again. What do you want, hornless messenger?')
 		return true
@@ -71,32 +71,32 @@ keywordHandler:addKeyword({'karl'}, StdModule.say, {npcHandler = npcHandler, onl
 keywordHandler:addKeyword({'milk'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'No! I won\'t tell you the powers of our milk!'})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	-- The Postman Missions Quest
 	if msgcontains(msg, 'letter') and getPlayerStorageValue(cid,245) == 1 then
-	npcHandler:say('A letter from my Moohmy?? Do you have a letter from my Moohmy to me?')
+	npcHandler:say('A letter from my Moohmy?? Do you have a letter from my Moohmy to me?', cid)
 	topic = 1
-	
+
 	elseif topic == 1 and msgcontains(msg, 'yes') and getPlayerItemCount(cid,2333) >= 1 then
-	npcHandler:say('Uhm, well thank you, hornless beeing.')
+	npcHandler:say('Uhm, well thank you, hornless beeing.', cid)
 	doPlayerRemoveItem(cid,2333,1)
 	setPlayerStorageValue(cid,245,2)
 	topic = 0
-	
+
 	elseif topic == 1 and msgcontains(msg, 'yes') and getPlayerItemCount(cid,2333) < 1 then
-	npcHandler:say('Don\'t mock the king of the minotaurs or you will regret that!')
+	npcHandler:say('Don\'t mock the king of the minotaurs or you will regret that!', cid)
 	topic = 0
-	
+
 	elseif topic == 1 and msgcontains(msg, '') then
-	npcHandler:say('Uh? What??')
+	npcHandler:say('Uh? What??', cid)
 	topic = 0
 	end
-	
+
 	return true
 end
-	
+
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

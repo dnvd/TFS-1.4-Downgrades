@@ -1,3 +1,5 @@
+dofile('data/npc/lib/tibia.lua')
+
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)

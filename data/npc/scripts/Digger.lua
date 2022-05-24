@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -35,23 +35,23 @@ keywordHandler:addKeyword({'potion'}, StdModule.say, {npcHandler = npcHandler, o
 keywordHandler:addKeyword({'fluid'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "You may be interested in my life and mana fluids."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 	if msgcontains(msg, 'vial') or msgcontains(msg, 'deposit') or msgcontains(msg, 'flask') then
-		npcHandler:say("I will pay you 5 gold for every empty vial. Ok?", 1)
+		npcHandler:say("I will pay you 5 gold for every empty vial. Ok?", cid)
 		talk_state = 857
 	elseif talk_state == 857 and msgcontains(msg, 'yes') then
 		if sellPlayerEmptyVials(cid) == true then
-		npcHandler:say("Here's your money!", 1)
+		npcHandler:say("Here's your money!", cid)
 		talk_state = 0
 		else
-		npcHandler:say("You don't have any empty vials!", 1)
+		npcHandler:say("You don't have any empty vials!", cid)
 		talk_state = 0
 		end
 	end
-	
+
 	return true
 end
 

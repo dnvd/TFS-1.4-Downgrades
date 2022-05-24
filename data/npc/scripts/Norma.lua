@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -15,7 +15,7 @@ function greetCallback(cid)
 		npcHandler:setMessage(MESSAGE_GREET,'Hello, hello, '.. getPlayerName(cid) ..'! Please come in, look, and buy!')
 		return true
 	else
-		npcHandler:say('I\'m sorry '.. getPlayerName(cid) ..', but I only serve premium account customers.')
+		npcHandler:say('I\'m sorry '.. getPlayerName(cid) ..', but I only serve premium account customers.', cid)
 		return false
 	end
 end

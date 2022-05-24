@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -32,17 +32,17 @@ setConditionParam(fire, CONDITION_PARAM_DELAYED, 10)
 addDamageCondition(fire, 25, 3000, -10)
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
-	
+
 if msgcontains(msg, 'blinky') then
-	npcHandler:say("How interesting you are that stupid. Let me apply this on you and see how long you last", 1)
+	npcHandler:say("How interesting you are that stupid. Let me apply this on you and see how long you last", cid)
 	doSendMagicEffect(getCreaturePosition(getNpcCid(  )), 13)
 	doSendMagicEffect(getPlayerPosition(cid), 15)
 	doAddCondition(cid, fire)
 	talk_state = 0
-end		
+end
 
     return true
 end

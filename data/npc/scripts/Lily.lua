@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
@@ -28,25 +28,25 @@ keywordHandler:addKeyword({'life fluid'}, StdModule.say, {npcHandler = npcHandle
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is about |TIME|."})
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 
 if msgcontains(msg, 'blueberry') or msgcontains(msg, 'blueberries') then
-npcHandler:say("Do you want to sell 5 blueberries for 1 gold?", 1)
+npcHandler:say("Do you want to sell 5 blueberries for 1 gold?", cid)
 	talk_state = 301
-			
+
 elseif talk_state == 301 and msgcontains(msg, 'yes') then
 	if doPlayerRemoveItem(cid, 2677, 5) == true then
 	doPlayerAddMoney(cid, 1)
 	talk_state = 0
 	else
-	npcHandler:say("Oh, I'm sorry. I'm not buying less than 5 blueberries.", 1)
+	npcHandler:say("Oh, I'm sorry. I'm not buying less than 5 blueberries.", cid)
 	end
 elseif talk_state == 301 and msgcontains(msg, '08') then
-	npcHandler:say("As you wish.", 1)
-	
-end		
+	npcHandler:say("As you wish.", cid)
+
+end
     return true
 end
 

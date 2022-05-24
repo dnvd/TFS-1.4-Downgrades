@@ -1,4 +1,4 @@
-dofile('data/npc/scripts/lib/greeting.lua')
+dofile('data/npc/lib/greeting.lua')
 
 
 local keywordHandler = KeywordHandler:new()
@@ -75,58 +75,58 @@ keywordHandler:addKeyword({'berfasmur'}, StdModule.say, {npcHandler = npcHandler
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = "It is exactly |TIME|."})
 
 function creatureSayCallback(cid, type, msg) msg = string.lower(msg)
-	if(npcHandler.focus ~= cid) then
+	if not npcHandler:isFocused(cid) then
 		return false
 	end
 if msgcontains(msg, 'Lynda') or msgcontains(msg, 'lynda') then
 	if getPlayerSex(cid) == 1 then
-	npcHandler:say("Just between you and me: What a babe!", 1)
+	npcHandler:say("Just between you and me: What a babe!", cid)
 	else
-	npcHandler:say("A very noble lady.", 1)
+	npcHandler:say("A very noble lady.", cid)
 	end
 	talk_state = 0
-			
+
 elseif msgcontains(msg, 'hengis wulfson') then
-npcHandler:say("He is a great bard. He often graced my hut with his presence, songs, and rhymes. I wonder what happened to him lately.", 1)
+npcHandler:say("He is a great bard. He often graced my hut with his presence, songs, and rhymes. I wonder what happened to him lately.", cid)
 talk_state = 2
 
 elseif talk_state == 2 and msgcontains(msg, 'killed') or talk_state == 2 and msgcontains(msg, 'died') or talk_state == 2 and msgcontains(msg, 'dea') or talk_state == 2 and msgcontains(msg, 'slain') then
-npcHandler:say("Oh, by the gods! What do you say happened to him?", 1)
+npcHandler:say("Oh, by the gods! What do you say happened to him?", cid)
 talk_state = 3
 
 elseif talk_state == 3 and msgcontains(msg, 'cyclops') then
-npcHandler:say("That's horrible! I am in grief. I will never hear his songs again. I will even miss that strange rhyme he was obsessed with.", 1)
+npcHandler:say("That's horrible! I am in grief. I will never hear his songs again. I will even miss that strange rhyme he was obsessed with.", cid)
 talk_state = 4
 
 elseif talk_state == 4 and msgcontains(msg, 'rhyme') then
-npcHandler:say("He recitated it that often that I learned it by heart myself. I would recitate it, but I am not skilled in that kind of things.", 1)
+npcHandler:say("He recitated it that often that I learned it by heart myself. I would recitate it, but I am not skilled in that kind of things.", cid)
 talk_state = 5
 
 elseif talk_state == 5 and msgcontains(msg, 'recitate') then
-npcHandler:say("Uhm. If you insist, but I am so awful. I will stop now and then and wait, so you can tell if I should proceed, ok?", 1)
+npcHandler:say("Uhm. If you insist, but I am so awful. I will stop now and then and wait, so you can tell if I should proceed, ok?", cid)
 talk_state = 6
 
 elseif talk_state == 2 and msgcontains(msg, 'yes') then
-npcHandler:say("Well ok, but don't blame me. Chhrrr... chhrrrr,... it goes like this... chhrrr: and when the dead feast at midnight...", 1)
+npcHandler:say("Well ok, but don't blame me. Chhrrr... chhrrrr,... it goes like this... chhrrr: and when the dead feast at midnight...", cid)
 talk_state = 7
 
 elseif talk_state == 7 and msgcontains(msg, 'proceed') then
-npcHandler:say("... the ancient enemy will no longer guard the place of his unlucky heir and the living will walk the paths of the old way...", 1)
+npcHandler:say("... the ancient enemy will no longer guard the place of his unlucky heir and the living will walk the paths of the old way...", cid)
 talk_state = 8
 
 elseif talk_state == 8 and msgcontains(msg, 'proceed') then
-npcHandler:say("... Death awaits the greedy and the brave alike and many will be mourned until the long lost treasure is unearthed.", 1)
+npcHandler:say("... Death awaits the greedy and the brave alike and many will be mourned until the long lost treasure is unearthed.", cid)
 talk_state = 9
 
 elseif talk_state == 9 and msgcontains(msg, 'proceed') then
-npcHandler:say("That's all. He recitated it when he was in one of his melancholy moods.", 1)
+npcHandler:say("That's all. He recitated it when he was in one of his melancholy moods.", cid)
 talk_state = 0
 
 elseif msgcontains(msg, '') then
-npcHandler:say("Maybe next time.", 1)
+npcHandler:say("Maybe next time.", cid)
 talk_state = 0
 
-end		
+end
     return true
 end
 
