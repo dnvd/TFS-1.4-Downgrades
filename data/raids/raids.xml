@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <raids>
-<<<<<<< HEAD
-	<!--
-		<raid name="Testraid" file="testraid.xml" interval2="30" margin="0" />
-		executed on average once every 30 minutes
-	-->
-=======
 	<raid name="abdendrielbadgers" repeat="true" margin="60" interval2="600" file="abdendrielbadgers.xml"/>
 	<raid name="abdendrielwolfattack" repeat="true" margin="60" interval2="600" file="abdendrielwolfattack.xml"/>
 	<raid name="ankrahmunscarabinvasion" repeat="false" margin="60" interval2="600" file="ankrahmunscarabinvasion.xml"/>
@@ -42,5 +36,4 @@
 	<raid name="thaisorcinvasion" repeat="false" margin="60" interval2="600" file="thaisorcinvasion.xml"/>
 	<raid name="venoreelfinvasion" repeat="false" margin="60" interval2="600" file="venoreelfinvasion.xml"/>
 	<raid name="venoreswampelves" repeat="true" margin="60" interval2="600" file="venoreswampelves.xml"/>
->>>>>>> 26bbf090 (init)
 </raids>
